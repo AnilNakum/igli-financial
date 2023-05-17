@@ -1,0 +1,125 @@
+/* .authentication {
+    background: #ddf1f4;
+} */
+
+.login-card .btn-showcase .btn + .btn {
+    margin-left: 5px;
+}
+
+.login-card .login-main {
+    max-width: 450px;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 37px rgba(8, 21, 66, 0.05);
+    margin: 150px auto;
+    background-color: #fff;
+}
+
+.login-card .login-main .theme-form h4 {
+    margin-bottom: 5px;
+}
+
+.logo-container {
+    width: 225px;
+    margin: 0 auto;
+}
+
+.social .btn svg {
+    color: #208bd4 !important;
+}
+
+.profile-greeting {
+    background: transparent;
+    margin-top: 50px;
+}
+
+.profile-greeting .greeting-user h4 {
+    margin-bottom: 15px;
+}
+
+.font-primary {
+    color: #208bd4 !important;
+    font-family: Rubik, sans-serif;
+}
+
+.f-w-600 {
+    font-weight: 600;
+}
+
+.profile-greeting .greeting-user p {
+    font-weight: 500;
+    margin-bottom: 15px;
+    width: 72%;
+}
+
+.profile-greeting .media {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    position: relative;
+}
+
+.profile-greeting .media .badge-groups .badge {
+    color: #208bd4;
+    padding: 10px 14px !important;
+    background: -webkit-gradient(
+        linear,
+        right top,
+        left top,
+        color-stop(2%, rgba(255, 255, 255, 0.2)),
+        color-stop(3.07%, rgba(115, 102, 255, 0.2)),
+        color-stop(94.5%, rgba(255, 255, 255, 0.2))
+    );
+    background: linear-gradient(270deg,rgb(32 139 212 / 85%) 2%, rgb(32 139 212 / 46%) 3.07%, rgb(32 139 212 / 5%) 94.5%);
+    border-radius: 5px;
+    text-align: left;
+    border: unset;
+}
+
+.badge-groups {
+    margin-top: 35px;
+}
+
+.badge {
+    padding: 0.44em 0.7em;
+    font-family: Roboto, sans-serif;
+    font-weight: 500;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+
+.media {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    /* display: flex; */
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.media .media-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.cimg {
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+.limg {
+    max-width: 420px;
+    margin: 0 auto;
+}

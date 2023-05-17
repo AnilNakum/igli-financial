@@ -1,0 +1,1 @@
+ALTER TABLE `main_categories`  ADD `CreatedBy` INT NOT NULL  AFTER `Status`,  ADD `CreatedOn` DATETIME NOT NULL  AFTER `CreatedBy`,  ADD `ModifiedBy` INT NOT NULL  AFTER `CreatedOn`,  ADD `ModifiedOn` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP  AFTER `ModifiedBy`;

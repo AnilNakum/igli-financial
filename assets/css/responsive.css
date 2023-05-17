@@ -1,0 +1,512 @@
+@charset "utf-8";
+
+/* responsive tab */
+
+@media screen and (max-width: 1300px) {
+  .survey-header ul li a {
+    font-size: 12px;
+    padding-right: 20px;
+  }
+
+  .survey-header ul li::after {
+    font-size: 10px;
+    right: -2px;
+    top: 4px;
+  }
+
+  .survey-header {
+    padding: 10px 20px;
+  }
+
+  /*  .tab > .branch-details {    display: none;    width: 23%;  }
+      .tab > .branch-details > a {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: normal;
+        width: 100%;
+        width: 100%;
+        text-align: center;
+        vertical-align: top;
+      }
+      .tab > .branch-details.active {
+        width: 54%;
+      }
+      .tab > .branch-details.active:first-child {
+        margin-left: 23%;
+      }
+      .tab > .branch-details.active, .tab > .branch-details.prev, .tab > .branch-details.next {
+        display: block;
+      }
+      .tab > .branch-details.prev, .tab > .branch-details.next {
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+      }
+      .tab > .branch-details.next > a, .tab > .branch-details.prev > a {
+        -webkit-transition: none;
+        transition: none;
+      }
+      .tab > .branch-details.next > a .text, .tab > .branch-details.prev > a .text {
+        display: none;
+      }
+      .tab > .branch-details.next > a:after, .tab > .branch-details.next > a:after, .tab > .branch-details.prev > a:after, .tab > .branch-details.prev > a:after {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .tab > .branch-details.prev > a:after {
+        content: "\e079";
+      }
+      .tab > .branch-details.next > a:after {
+        content: "\e080";
+      }*/
+}
+
+/* CSS Document */
+@media (max-width: 1200px) {
+}
+
+/* I-pad Landscape */
+@media (max-width: 1024px) {
+  .staff-leftside .btn {
+    font-size: 15px;
+    padding: 8px 13px;
+  }
+
+  .manage-rightside .staff-iconbar i {
+    font-size: 18px;
+    margin-left: 5px;
+    min-width: auto !important;
+    padding: 4px 6px;
+    text-align: center !important;
+  }
+
+  .manage-searchbar {
+    min-width: 190px;
+  }
+
+  .manage-rightside .form-group .dropdown-toggle {
+    padding: 5px 8px;
+  }
+
+  .surveysummary-box {
+    max-width: 25%;
+    min-height: 188px;
+    height: 100%;
+  }
+
+  .surveysummary-btn-box {
+    max-width: 25%;
+    min-height: 188px;
+    height: 100%;
+    padding: 0px;
+  }
+
+  .surveyquestion-box {
+    max-width: 25%;
+    min-height: 188px;
+    height: 100%;
+  }
+
+  .instructions-box {
+    width: 49%;
+    min-height: 188px;
+    height: 100%;
+  }
+
+  .surveysummary-box .spnleft {
+    width: 50%;
+  }
+
+  .surveysummary-btn-box a.btn {
+    overflow-y: scroll;
+  }
+
+  .tabcontent-text > ul li {
+    padding: 30px 0px;
+  }
+}
+
+/* Google Nexus 7 Landscape */
+@media (max-width: 992px) {
+  .menu > ul {
+    display: block;
+  }
+
+  .menu > ul > li {
+    width: auto;
+    float: left;
+  }
+
+  .index2 section.content {
+    margin: 0px 0px 0px 0px !important;
+  }
+
+  .surveylist-block .col-md-3,
+  .surveylist-block .col-md-9 {
+    max-width: 100%;
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .btn-lg {
+    font-size: 14px;
+    padding: 10px 18px;
+    margin: 10px 2px !important;
+  }
+
+  .surveylist-content-block .surveylist-rightside .surveylist-subbutton .btn-bluborder {
+    padding: 0px 10px;
+  }
+
+  .filter {
+    font-size: 13px;
+  }
+
+  .filter img {
+    margin-right: 9px;
+    width: 30px;
+  }
+
+  .surveylist-filter-block h4 span {
+    width: auto !important;
+    max-width: auto !important;
+  }
+
+  .f1-step {
+    max-width: 120px;
+  }
+
+  .f1-step-icon::after {
+    right: -92px;
+  }
+
+  .surveysummary-box,
+  .surveysummary-btn-box {
+    min-height: 215px;
+    padding: 10px;
+  }
+
+  .surveyquestion-box {
+    min-height: 215px;
+    padding: 10px;
+  }
+
+  .instructions-box {
+    min-height: 215px;
+    padding: 10px;
+  }
+
+  .new-survey-form.left-survey {
+    padding-right: 0px;
+  }
+
+  .new-survey-instruction {
+    padding-left: 0px;
+  }
+
+  .setup-block li .btn {
+    min-width: 96%;
+    padding: 9px 10px inherit !important;
+    margin: 10px auto !important;
+  }
+
+  .tabcontent-text li p {
+    margin: 15px 4px;
+    min-height: 96px;
+  }
+}
+
+/* I-pad Portrait */
+@media (max-width: 768px) {
+  /* a.menu-icon { display:block; margin:0 auto;}
+    a.menu-text { display:block;}
+    #nav { float:none; margin:0 auto; text-align:center; position: relative;}
+    #nav ul {  background: rgba(221, 212, 189, 0.85);  display: none;  margin: 0;  overflow: hidden;  position: absolute;  right: 0;  width: 220px;}
+    #nav ul li { width:100%; margin:0; padding:0; border:none; border-bottom:1px solid #CC8458 !important;}
+    #nav ul li:last-child { border-bottom: none !important; }
+    #nav ul li a { padding:10px 0; color:#673540;}
+    Drop Down
+    #nav ul li ul { position:relative; top:0; width:100%; background:#ccc;  } */
+
+  /* .menu>ul {
+    display: none;
+  } */
+
+  .menu > ul > li {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  .index2 section.content {
+    margin: 0px 0px 0px 0px !important;
+  }
+
+  .menu-container {
+    z-index: 13;
+  }
+
+  .classname {
+    display: none;
+  }
+
+  .col-md-1,
+  .col-md-2,
+  .col-md-3,
+  .col-md-4,
+  .col-md-5,
+  .col-md-6,
+  .col-md-7,
+  .col-md-8,
+  .col-md-9,
+  .col-md-10,
+  .col-md-11,
+  .col-md-12,
+  .col-sm-1,
+  .col-sm-2,
+  .col-sm-3,
+  .col-sm-4,
+  .col-sm-5,
+  .col-sm-6,
+  .col-sm-7,
+  .col-sm-8,
+  .col-sm-9,
+  .col-sm-10,
+  .col-sm-11,
+  .col-sm-12 {
+    max-width: 100%;
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .staff-leftside {
+    text-align: center;
+  }
+
+  .manage-rightside {
+    text-align: center;
+  }
+
+  .block-header h2 {
+    font-size: 16px;
+  }
+
+  .sidebar-section .col-md-6,
+  .sidebar-section .col-md-4 {
+    flex: 50% !important;
+  }
+
+  .rateing-teacher-header ul li {
+    margin-right: 17px;
+  }
+
+  .upload-image-block .col-sm-2 {
+    flex: 0 0 16%;
+  }
+
+  .upload-image-block .col-sm-6 {
+    flex: 0 0 50%;
+  }
+
+  .upload-image-block .upload-img {
+    width: 57px;
+  }
+
+  .surveylist-allprogresbar .col-sm-3 {
+    flex: 25% !important;
+  }
+
+  .surveylist-allprogresbar .col-sm-4 {
+    flex: 33.33333333333333% !important;
+  }
+
+  .surveylist-allprogresbar .counter p {
+    line-height: 20px !important;
+    height: 30px;
+  }
+
+  .f1-step {
+    max-width: 100px;
+  }
+
+  .f1-step-icon::after {
+    right: -71px;
+  }
+
+  .surveysummary-box,
+  .surveysummary-btn-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .surveyquestion-box {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 1px;
+    margin-left: 0;
+  }
+
+  .instructions-box {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 1px;
+    margin-left: 0;
+  }
+
+  .new-survey-instruction {
+    padding-left: 0px;
+  }
+
+  .surveylist-subcontent {
+    text-align: center;
+  }
+
+  .surveylist-rightside {
+    width: 18%;
+    margin: 0 auto;
+    padding-top: 15px;
+  }
+
+  #branch_list {
+    width: 100%;
+    height: auto;
+  }
+
+  .tabcontent-text {
+    width: 100%;
+  }
+
+  .setup-block .tab div {
+    display: inline-block;
+    width: 250px;
+    max-width: 100%;
+  }
+
+  .setup-block .tab div.active {
+    border-bottom: none;
+  }
+
+  .tabcontent-text > ul li {
+    padding: 30px 10px;
+  }
+
+  .survey-steps-tabcontent .survey-substeps-tab ul li {
+    min-width: 125px;
+  }
+
+  .surveyreport-userprofile {
+    margin: 0 3.4% 25px auto;
+    width: 31%;
+  }
+
+  .col-xs-6.col-6 {
+    max-width: 50%;
+    width: 50%;
+  }
+}
+
+/* HTC One Landscape */
+@media (max-width: 640px) {
+}
+
+/* Google Nexus 7 Portrait */
+@media (max-width: 603px) {
+}
+
+/* Google Nexus 4 Landscape */
+@media (max-width: 600px) {
+}
+
+/* I-phone Landscape */
+@media (max-width: 568px) {
+}
+
+/* I-phone Landscape */
+@media (max-width: 480px) {
+  .surveylist-rightside {
+    width: 100%;
+    padding-top: 18px;
+  }
+
+  .surveylist-content-block .surveylist-rightside .surveylist-subbutton .btn-bluborder {
+    padding: 10px;
+    width: 100% !important;
+    display: block;
+    margin: 0px !important;
+  }
+
+  .surveylist-progresbar {
+    margin: 10px 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .surveyreport-userprofile {
+    margin: 0 3.4% 25px auto;
+    width: 100%;
+  }
+
+  .weightage-setting .set {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    margin-right: 15px;
+    /* text-align: left; */
+    margin: 5px 0;
+  }
+
+  .surveyreport-tab-header ul li {
+    width: 100%;
+  }
+
+  .tabcontent-text > ul li {
+    width: 100%;
+  }
+
+  .setup-block .tab div {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #add_edit_form {
+    width: 100% !important;
+  }
+
+  .popup_body_area {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .sidebar-footer {
+    padding: 15px 10px;
+    text-align: center;
+  }
+
+  #static_popup {
+    width: 100% !important;
+  }
+}
+
+/* Nokia Lumia Portrait */
+@media (max-width: 460px) {
+}
+
+/* HTC One Portrait */
+@media (max-width: 360px) {
+}
+
+/* I-phone Portrait */
+@media (max-width: 320px) {
+}
+
+/* Small mobile */
+@media (max-width: 240px) {
+}
