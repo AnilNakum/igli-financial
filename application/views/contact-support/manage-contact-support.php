@@ -1,7 +1,7 @@
 <?php
 if (count((array) $ContactSupport) > 0) {
     $Status = array('name' => 'status', 'id' => 'status_filter', 'class' => "select2 StatusFilter", "tabindex" => 4);
-    $S = array("1" => "Active", "2" => "Inactive");
+    $S = array("1" => "Waiting For Responce", "2" => "Viewed", "3" => "Colsed");
     $StatusList = array("" => "All") + $S;
 }
 ?>
