@@ -29,7 +29,7 @@ if (count((array) $ContactSupport) > 0) {
                     <div class="body text-center manage-list">
                         <div class="institute-box">
                             <img src="<?php echo ASSETS_PATH; ?>images/finder.png">
-                            <h3>1 No records for Contact Support right now.</h3>
+                            <h3>No records for Contact Support right now.</h3>
                         </div>
                     </div>
                     <?php } else {?>

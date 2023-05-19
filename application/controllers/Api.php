@@ -18,6 +18,7 @@ class Api extends REST_Controller
         
         $this->Method = $this->router->fetch_method();
         $this->Class = $this->router->fetch_class();
+        $_POST = json_decode(file_get_contents("php://input"), true);
         if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt') {
             $this->USER_ID = $this->_Check_Auth_Token();
         }
