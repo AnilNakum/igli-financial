@@ -66,33 +66,36 @@ class Api extends REST_Controller
                     if ($User->activated == 0) { // fail - not activated
                         $this->response(['status' => FALSE, 'message' => "Account Not Activated, Please Varify Your Email!"], REST_Controller::HTTP_BAD_REQUEST);
                     } else {
-                        $DefaultOTP = "112233";
-                        $OTP =$User->otp;
-                        if ($OTP == '') {
-                            $OTP = get_otp($DefaultOTP);
-                            $user_data = array(
-                                "otp" => $OTP,
-                            );
-                            $this->Common->update_info(TBL_USERS,$User->id, $user_data,'id');
-                        }
+                        if($User->phone_verified == 0){
+                            $DefaultOTP = "112233";
+                            $OTP =$User->otp;
+                            if ($OTP == '') {
+                                $OTP = get_otp($DefaultOTP);
+                                $user_data = array(
+                                    "otp" => $OTP,
+                                );
+                                $this->Common->update_info(TBL_USERS,$User->id, $user_data,'id');
+                            }
 
-                        $OPT_SMS = "$OTP verification code.";
-                        if (send_sms($User->phone, $OPT_SMS)) {
-                                $this->response(['status' => TRUE, 'message' => 'OTP Send successfully', "data" => ["phone" => $User->phone]], REST_Controller::HTTP_OK);
+                            $OPT_SMS = "$OTP verification code.";
+                            if (send_sms($User->phone, $OPT_SMS)) {
+                                    $this->response(['status' => FALSE, 'message' => 'Please Varify Your Phone No. With OTP', "data" => ["phone" => $User->phone]], REST_Controller::HTTP_BAD_REQUEST);
+                            }else{
+                                $this->response(['status' => FALSE, 'message' => "OTP Send Fail, Please Try Again"], REST_Controller::HTTP_BAD_REQUEST);
+                            }
                         }else{
-                            $this->response(['status' => FALSE, 'message' => "OTP Send Fail, Please Try Again"], REST_Controller::HTTP_BAD_REQUEST);
+                            $login_token = $this->Rest_model->get_new_token([
+                                'api_key_id' => $this->_apiuser->id,
+                                'user_id' => $User->id,
+                                'ip_address' => $_SERVER['REMOTE_ADDR'],
+                                'device_id' => $DeviceID
+                            ]);
+    
+                            $this->response(['status' => TRUE,
+                            'message' => 'Login successfully',
+                            "data" => ['user' => $User,'user_id' => $User->id, 'login_token' => $login_token]]
+                                , REST_Controller::HTTP_OK);
                         }
-                        // $login_token = $this->Rest_model->get_new_token([
-                        //     'api_key_id' => $this->_apiuser->id,
-                        //     'user_id' => $User->id,
-                        //     'ip_address' => $_SERVER['REMOTE_ADDR'],
-                        //     'device_id' => $DeviceID
-                        // ]);
-
-                        // $this->response(['status' => TRUE,
-                        // 'message' => 'Login successfully',
-                        // "data" => ['user' => $User,'user_id' => $User->id, 'login_token' => $login_token]]
-                        //     , REST_Controller::HTTP_OK);
                     }
                 }else{
                     $this->response(['status' => FALSE, 'message' => "Incorrect Password, Please Try Again"], REST_Controller::HTTP_BAD_REQUEST);
@@ -225,6 +228,7 @@ class Api extends REST_Controller
                         ]);
 
                     $user_data = array(
+                        "phone_verified" => 1,
                         "OTP" => ''
                     );
                     $this->Common->update_info(TBL_USERS,$User->id, $user_data,'id');
