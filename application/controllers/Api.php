@@ -361,7 +361,7 @@ class Api extends REST_Controller
             $Banner_info = $this->Common->get_info(TBL_BANNER,$BannerID,  'BannerID','Status=1 AND isDeleted=0');
         } else {
             $OrderBy = array("field"=>'Order',"order"=>'asc');
-            $Banner_info = $this->Common->get_all_info(TBL_BANNER,1,'Status','isDeleted=0','*',false,false,$OrderBy);
+            $Banner_info['banners'] = $this->Common->get_all_info(TBL_BANNER,1,'Status','isDeleted=0','*',false,false,$OrderBy);
         }
         if (!empty($Banner_info)) {
             $data['status'] = TRUE;
@@ -378,7 +378,7 @@ class Api extends REST_Controller
             $services_type_info = $this->Common->get_info(TBL_SERVICE_TYPE,$STID,  'STID','Status=1 AND isDeleted=0');
         } else {
             $OrderBy = array("field"=>'Order',"order"=>'asc');
-            $services_type_info = $this->Common->get_all_info(TBL_SERVICE_TYPE,1,'Status','isDeleted=0','*',false,false,$OrderBy);
+            $services_type_info['types'] = $this->Common->get_all_info(TBL_SERVICE_TYPE,1,'Status','isDeleted=0','*',false,false,$OrderBy);
         }
         if (!empty($services_type_info)) {
             $data['status'] = TRUE;
@@ -394,7 +394,7 @@ class Api extends REST_Controller
         if ($ServiceID) {
             $services_info = $this->Common->get_info(TBL_SERVICES,$ServiceID,  'ServiceID','Status=1 AND isDeleted=0');
         } else {
-            $services_info = $this->Common->get_all_info(TBL_SERVICES,1,'Status','isDeleted=0');
+            $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES,1,'Status','isDeleted=0');
         }
         if (!empty($services_info)) {
             $data['status'] = TRUE;
@@ -416,9 +416,10 @@ class Api extends REST_Controller
             }
           }
         if (!empty($services_info)) {
+            $sData['services'] = $services_info;
             $data['status'] = TRUE;
             $data['message'] = "Services Found";
-            $data["data"] = $services_info;
+            $data["data"] = $sData;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
             $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => array()], REST_Controller::HTTP_OK);

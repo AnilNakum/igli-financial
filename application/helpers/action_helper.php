@@ -18,6 +18,28 @@ EOF;
     return $return;
 }
 
+function PaymentStatus($status)
+{
+    if ($status == 'paid') {
+        $return = <<<EOF
+        <span class="text text-success badge badge-success m-l-10 hidden-sm-down">Paid</span>
+EOF;
+    } else {
+        $return = <<<EOF
+        <span class="text text-warning badge badge-warning m-l-10 hidden-sm-down">Pending</span>
+EOF;
+    }
+    return $return;
+}
+
+function PStatus($status)
+{
+        $return = <<<EOF
+        <span class="text text-uppercase">{$status}</span>
+EOF;
+    return $return;
+}
+
 
 function ContactStatus($status)
 {
@@ -131,6 +153,7 @@ EOF;
 function subadmin_action_row($UserID)
 {
     $UserID = encrypt($UserID);
+    // <a data-original-title="Assign Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form" data-id="{$UserID}" data-control="subadmin" data-method="assign_service"><i class="fa-solid fa-file-circle-plus"></i></a>
     $action = <<<EOF
             <div class="tooltip-top text-center">
                 <a data-original-title="Update Sub Admin" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$UserID}" data-control="subadmin" data-method="update"><i class="fas fa-pencil-alt"></i></a>
@@ -147,6 +170,17 @@ function support_action_row($ID)
             <div class="tooltip-top text-center">
                 <a data-original-title="View Request" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$ID}" data-control="contact_support" data-method="view_contact"><i class="fa-regular fa-comment-dots"></i></a>
                 <a data-original-title="Remove Request" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-control="remove" data-method="support"><i class="far fa-trash-alt"></i></a>
+            </div>
+EOF;
+    return $action;
+}
+
+function payment_action_row($PaymentID)
+{
+    $PaymentID = encrypt($PaymentID);
+    $action = <<<EOF
+            <div class="tooltip-top text-center">
+            <a data-original-title="Update Payment" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$PaymentID}" data-control="payment" data-method="update"><i class="fas fa-pencil-alt"></i></a>
             </div>
 EOF;
     return $action;

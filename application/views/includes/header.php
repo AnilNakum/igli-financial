@@ -136,7 +136,7 @@
 ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                <!-- <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                         role="button"><i class="zmdi zmdi-notifications"></i>
                         <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
                     </a>
@@ -198,7 +198,7 @@
                         </li>
                         <li class="footer"> <a href="javascript:void(0);">View All Notifications</a> </li>
                     </ul>
-                </li>
+                </li> -->
                 <li>
                     <a href="javascript:void(0);" class="fullscreen hidden-sm-down" data-provide="fullscreen"
                         data-close="true"><i class="zmdi zmdi-fullscreen"></i></a>
@@ -248,7 +248,7 @@
                         </div>
                         <a href="<?php echo base_url(); ?>" title="Profile"><i
                                 class="fa-regular fa-address-card"></i></a>
-                        <a href="<?php echo base_url(); ?>" title="Inbox"><i class="fa-regular fa-message"></i></a>
+                        <!-- <a href="<?php echo base_url(); ?>" title="Inbox"><i class="fa-regular fa-message"></i></a> -->
                         <a href="<?php echo base_url('auth/logout'); ?>" title="Sign out"><i
                                 class="zmdi zmdi-power"></i></a>
                     </div>
@@ -275,8 +275,7 @@
 
                 <li class="header">PAYMENT</li>
                 <li class="<?php echo (($this->uri->segment(1) == "payment")) ? 'active' : ""; ?>"> <a
-                        href="<?php echo base_url('payment'); ?>"><i class="fa-solid fa-receipt"></i>
-                        Payment <span></a>
+                        href="<?php echo base_url('payment'); ?>"><i class="fa-solid fa-receipt"></i><span>Payment </span></a>
                 </li>
 
                 <li class="header">OTHERS</li>
@@ -291,7 +290,11 @@
                         href="<?php echo base_url('contact_support'); ?>"><i class="fa-solid fa-inbox"></i><span>Contact
                             Support</span></a>
                 </li>
-                <li> <a href="javascript:void(0);"
+                <li class="<?php echo (($this->uri->segment(1) == "banner")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('banner'); ?>"><i class="fa-solid fa-images"></i><span>Banners
+                            </span></a>
+                </li>
+                <!-- <li> <a href="javascript:void(0);"
                         class="menu-toggle <?php echo (($this->uri->segment(1) == "banner") || ($this->uri->segment(1) == "setting")) ? 'active toggled' : ""; ?>"><i
                             class="zmdi zmdi-swap-alt"></i><span>Settings</span> </a>
                     <ul class="ml-menu">
@@ -300,7 +303,7 @@
                         <li class="<?php echo ($this->uri->segment(1) == "banner") ? 'active' : ""; ?>"> <a
                                 href="<?php echo base_url('banner'); ?>">Banners</a> </li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </div>
     </aside>

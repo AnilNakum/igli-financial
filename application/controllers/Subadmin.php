@@ -137,4 +137,20 @@ class Subadmin extends Base_Controller
         $this->datatables->unset_column('id');
         echo $this->datatables->generate();
     }
+
+    public function assign_service($id)
+    {
+        $id = decrypt($id);
+        if ($id > 0) {
+            $data_obj = $this->Common->get_info(TBL_USERS, $id, 'id');
+            if (is_object($data_obj) && count((array) $data_obj) > 0) {
+                $data["user_info"] = $data_obj;
+                $data['Services'] =  $this->Common->get_list(TBL_SERVICES, 'ServiceID', 'ServiceTitle', "Status=1 AND isDeleted=0");
+            } else {
+                redirect('subadmin/');
+            }
+        }
+        $data['page_title'] = "Assign Service";
+        $this->partial('subadmin/assign-servicr-form', $data);
+    }
 }

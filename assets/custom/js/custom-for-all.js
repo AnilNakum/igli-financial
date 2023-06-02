@@ -198,6 +198,13 @@ $(document).ready(function () {
                             pop_up.notification(returnData.message, 'redirect', "'" + 'subadmin/' + "'", true);
                         }
                     }
+                    if (form == 'payment_frm') {
+                        if ($('.common_datatable').length > 0) {
+                            get_updated_datatable(false);
+                        } else {
+                            pop_up.notification(returnData.message, 'redirect', "'" + 'payment/' + "'", true);
+                        }
+                    }
 
                     pop_up.close();
                     pop_up.half_close();
@@ -603,7 +610,8 @@ function get_datatable() {
 
                 var pushDataArray = {
                     'status': '#status_filter',
-                    'type': '#type_filter'
+                    'type': '#type_filter',
+                    'payment_status': '#payment_status_filter',
                 };
                 $.each(pushDataArray, function (index, item) {
                     if ($(document).find(item).length > 0 && $(document).find(item).val() != '') {
@@ -632,6 +640,11 @@ function get_datatable() {
                 }
                 if ($('.TypeFilter').length > 0) {
                     $('.TypeFilter').on("change", function () {
+                        oTable.fnDraw();
+                    });
+                }
+                if ($('.PaymentStatusFilter').length > 0) {
+                    $('.PaymentStatusFilter').on("change", function () {
                         oTable.fnDraw();
                     });
                 }
