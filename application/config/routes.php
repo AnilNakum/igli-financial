@@ -55,3 +55,7 @@ $route['translate_uri_dashes'] = true;
 $route['404_override'] = 'not_found';
 $route['type'] = 'services/type';
 $route['top-services'] = 'services/top-services';
+$route['services/ongoing'] = 'user_services/ongoing';
+$route['services/onhold'] = 'user_services/onhold';
+$route['services/completed'] = 'user_services/completed';
+$route['upload'] = 'document';

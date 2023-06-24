@@ -147,6 +147,7 @@ $(document).ready(function () {
         event.preventDefault();
         var formData = new FormData($(this)[0]);
         var form = $(this).attr('name');
+        var type = $(this).attr('type');
 
         $.ajax({
             type: 'POST',
@@ -203,6 +204,20 @@ $(document).ready(function () {
                             get_updated_datatable(false);
                         } else {
                             pop_up.notification(returnData.message, 'redirect', "'" + 'payment/' + "'", true);
+                        }
+                    }
+                    if (form == 'document_frm') {
+                        if ($('.common_datatable').length > 0) {
+                            get_updated_datatable(false);
+                        } else {
+                            pop_up.notification(returnData.message, 'redirect', "'" + 'document/' + "'", true);
+                        }
+                    }
+                    if (form == 'assign_services_frm') {
+                        if ($('.common_datatable').length > 0) {
+                            get_updated_datatable(false);
+                        } else {
+                            pop_up.notification(returnData.message, 'redirect', "'" + "services/" +type + "/'", true);
                         }
                     }
 

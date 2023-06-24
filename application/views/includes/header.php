@@ -266,11 +266,29 @@
                     <ul class="ml-menu">
                         <li class="<?php echo ($this->uri->segment(1) == "type") ? 'active' : ""; ?>"><a
                                 href="<?php echo base_url('type'); ?>">Services Type</a></li>
-                        <li class="<?php echo ($this->uri->segment(1) == "services") ? 'active' : ""; ?>"><a
+                        <li class="<?php echo ($this->uri->segment(1) == "services" && $this->uri->segment(2) == "") ? 'active' : ""; ?>"><a
                                 href="<?php echo base_url('services'); ?>">Services</a></li>
                         <li class="<?php echo ($this->uri->segment(1) == "top-services") ? 'active' : ""; ?>"><a
                                 href="<?php echo base_url('top-services'); ?>">Our Top Services</a></li>
                     </ul>
+                </li>
+                <li class="header">User Services</li>
+                <li
+                    class="<?php echo (($this->uri->segment(2) == "ongoing") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('services/ongoing'); ?>"><i class="zmdi zmdi-folder-person"></i><span>On Going</span></a>
+                </li>
+                <li
+                    class="<?php echo (($this->uri->segment(2) == "onhold") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('services/onhold'); ?>"><i class="zmdi zmdi-folder"></i><span>Hold</span></a>
+                </li>
+                <li
+                    class="<?php echo (($this->uri->segment(2) == "completed") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('services/completed'); ?>"><i class="zmdi zmdi-folder-star-alt"></i><span>Completed</span></a>
+                </li>
+
+                <li class="header">Document Upload </li>
+                <li class="<?php echo (($this->uri->segment(1) == "upload")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('upload'); ?>"><i class="fa-solid fa-cloud-arrow-up"></i><span>Upload </span></a>
                 </li>
 
                 <li class="header">PAYMENT</li>
@@ -289,6 +307,10 @@
                 <li class="<?php echo (($this->uri->segment(1) == "contact_support")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('contact_support'); ?>"><i class="fa-solid fa-inbox"></i><span>Contact
                             Support</span></a>
+                </li>
+                <li class="<?php echo (($this->uri->segment(1) == "notification")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('notification'); ?>"><i class="fa-regular fa-bell"></i><span>Notification
+                            </span></a>
                 </li>
                 <li class="<?php echo (($this->uri->segment(1) == "banner")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('banner'); ?>"><i class="fa-solid fa-images"></i><span>Banners

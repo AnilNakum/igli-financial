@@ -185,3 +185,25 @@ function payment_action_row($PaymentID)
 EOF;
     return $action;
 }
+
+function document_action_row($DocID)
+{
+    $DocID = encrypt($DocID);
+    $action = <<<EOF
+    <div class="tooltip-top text-center">
+    <a data-original-title="Remove Document" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$DocID}" data-control="remove" data-method="document"><i class="far fa-trash-alt"></i></a>
+           </div>
+EOF;
+    return $action;
+}
+
+function user_service_action_row($ID)
+{
+    $ID = encrypt($ID);
+    $action = <<<EOF
+    <div class="tooltip-top text-center">
+    <a data-original-title="Remove User Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-control="remove" data-method="user_service" data-type="soft"><i class="far fa-trash-alt"></i></a>
+           </div>
+EOF;
+    return $action;
+}

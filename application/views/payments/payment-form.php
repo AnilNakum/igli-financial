@@ -11,19 +11,21 @@ $User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tab
 $UserList = array("" => "Select User") + $Users;
 $UserID = (isset($payment_info) && $payment_info->UserID != "") ? $payment_info->UserID : set_value('user_id');
 
-$PS = array(
-    "paid" => "Paid"
-);
-$PStatus = array('name' => 'payment_status', 'id' => 'payment_status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
-$PStatusList = array("pending" => "Pending") + $PS;
-$PStatusID = (isset($payment_info) && $payment_info->PaymentStatus != "") ? $payment_info->PaymentStatus : set_value('payment_status');
+$DueAmount = array('name' => 'due_amount', 'id' => 'due_amount', 'value' => (isset($payment_info) && $payment_info->DueAmount != "") ? $payment_info->DueAmount : set_value('due_amount'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Due Amount", "data-validation" => "required");
 
-$S = array(
-    "renewal" => "Renewal","completed" => "Completed","close"=>"Close"
-);
-$Status = array('name' => 'status', 'id' => 'status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
-$StatusList = array("ongoing" => "OnGoing") + $S;
-$StatusID = (isset($payment_info) && $payment_info->Status != "") ? $payment_info->Status : set_value('status');
+// $PS = array(
+//     "paid" => "Paid"
+// );
+// $PStatus = array('name' => 'payment_status', 'id' => 'payment_status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
+// $PStatusList = array("pending" => "Pending") + $PS;
+// $PStatusID = (isset($payment_info) && $payment_info->PaymentStatus != "") ? $payment_info->PaymentStatus : set_value('payment_status');
+
+// $S = array(
+//     "renewal" => "Renewal","completed" => "Completed","close"=>"Close"
+// );
+// $Status = array('name' => 'status', 'id' => 'status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
+// $StatusList = array("ongoing" => "OnGoing") + $S;
+// $StatusID = (isset($payment_info) && $payment_info->Status != "") ? $payment_info->Status : set_value('status');
 
 $submit_btn = array('name' => 'submit_btn', 'id' => 'submit_btn', 'value' => 'SAVE', 'class' => 'btn btn-round l-blue');
 $cancel_btn = array('name' => 'cancel_btn', 'id' => 'cancel_btn', 'content' => 'CANCEL', 'class' => 'btn btn-round btn-white', "onclick" => "pop_up.close()");
@@ -49,8 +51,8 @@ $form_attr = array('class' => 'default_form payment_frm', 'id' => 'payment_frm',
             ?>
             <div class="row">
                 <div class="col-md-12 card">
-                    
-                   
+
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -70,6 +72,14 @@ $form_attr = array('class' => 'default_form payment_frm', 'id' => 'payment_frm',
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
+                                <label class="form-label">Due Amount <span class="text-danger">*</span></label>
+                                <?php echo form_input($DueAmount); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <label class="form-label">Payment Status <span class="text-danger">*</span></label>
                                 <?php echo form_dropdown($PStatus, $PStatusList, $PStatusID); ?>
                             </div>
@@ -82,7 +92,7 @@ $form_attr = array('class' => 'default_form payment_frm', 'id' => 'payment_frm',
                                 <?php echo form_dropdown($Status, $StatusList, $StatusID); ?>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

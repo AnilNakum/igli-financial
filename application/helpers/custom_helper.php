@@ -84,7 +84,7 @@ function upload_file($post_file_name, $inner_dir, $old_file_name = '', $ExConfig
             $_config['create_thumb'] = false;
             $_config = array_merge($_config, $ExConfig);
             $ci->load->library('image_lib', $_config);
-            $ci->image_lib->resize();
+            // $ci->image_lib->resize();
             $upload_data = $ci->upload->data();
             if (!empty($old_file_name)) {
                 $file_path = UPLOAD_DIR . "/" . $old_file_name;

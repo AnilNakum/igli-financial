@@ -45,6 +45,7 @@ define('UPLOAD_DIR', 'uploads/');
 define('BANNER_IMG', 'banner/');
 define('SERVICE_LOGO', 'service-logo/');
 define('USER_PROFILE', 'user-profile/');
+define('DOCUMENT', 'document/');
 define("IMAGE_DIR", BASE_URL.UPLOAD_DIR);
 
 define('PROTOCOL', 'smtp');

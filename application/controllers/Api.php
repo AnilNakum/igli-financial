@@ -453,4 +453,39 @@ class Api extends REST_Controller
             }
         }
     }
+
+    public function document_get($DocID = false) {
+        if ($DocID) {
+            $Doc_info = $this->Common->get_info(TBL_DOCUMENT,$DocID, 'ID','UserID = '.$this->USER_ID.' AND isDeleted=0');
+        } else {
+            $Doc_info['documents'] = $this->Common->get_all_info(TBL_DOCUMENT,1,'Status','UserID = '.$this->USER_ID.' AND isDeleted=0','*',false,false);
+        }
+        if (!empty($Doc_info)) {
+            $data['status'] = TRUE;
+            $data['message'] = "Document Found";
+            $data["data"] = $Doc_info;
+            $this->response($data, REST_Controller::HTTP_OK);
+        } else {
+            $this->response(['status' => TRUE, 'message' => "Document Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function my_service_get($ServiceID = false) {
+        $join = array(
+            array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=us.ServiceID", 'type' => ''),
+        );
+        if ($ServiceID) {
+            $Service_info = $this->Common->get_info(TBL_USER_SERVICES.' us',$ServiceID, 'us.ID','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join);
+        } else {
+            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES .' us',1,1,'us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join,false);
+        }
+        if (!empty($Service_info)) {
+            $data['status'] = TRUE;
+            $data['message'] = "Service Found";
+            $data["data"] = $Service_info;
+            $this->response($data, REST_Controller::HTTP_OK);
+        } else {
+            $this->response(['status' => TRUE, 'message' => "Service Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+        }
+    }
 }
