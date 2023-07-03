@@ -216,6 +216,7 @@ class Services extends Base_Controller
 
     public function manage()
     {
+        
         $this->datatables->select('s.Logo,s.ServiceID,st.Name,s.ServiceTitle,s.Status,s.CreatedAt');
 
         if ($this->input->post('type')) {
@@ -223,6 +224,9 @@ class Services extends Base_Controller
         }
         if ($this->input->post('status')) {
             $this->datatables->where('s.Status', $this->input->post('status'));
+        }
+        if(ROLE == 2){
+            $this->datatables->where_in('s.ServiceID',USER_SERVICE);
         }
         $this->datatables->where('s.isDeleted', 0);
         $this->datatables->join(TBL_SERVICE_TYPE . ' st', 'st.STID=s.STID', '');

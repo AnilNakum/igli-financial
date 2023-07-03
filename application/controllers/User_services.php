@@ -53,6 +53,27 @@ class User_services extends Base_Controller
         $this->partial('user-services/assign-service-form', $data);
     }
 
+    public function update($id)
+    {
+        $link = $_SERVER['REQUEST_URI'];
+        $link_array = explode('/',$link);
+        $page = end($link_array);
+        $id = decrypt($id);
+        if ($id > 0) {
+            $data_obj = $this->Common->get_info(TBL_USER_SERVICES, $id, 'ID');
+            if (is_object($data_obj) && count((array) $data_obj) > 0) {
+                $data["us_info"] = $data_obj;
+            } else {
+                redirect('services/'.$page);
+            }
+        }
+        $data['page_title'] = "Update Services Status";
+        $data['type'] = $page;
+        $data['Services'] =  $this->Common->get_list(TBL_SERVICES, 'ServiceID', 'ServiceTitle', "Status=1 AND isDeleted=0");
+        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'first_name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,'username');
+        $this->partial('user-services/assign-service-form', $data);
+    }
+
     public function submit_form()
     {
         if ($this->input->post()) {

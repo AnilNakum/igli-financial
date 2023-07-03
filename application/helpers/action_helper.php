@@ -153,9 +153,9 @@ EOF;
 function subadmin_action_row($UserID)
 {
     $UserID = encrypt($UserID);
-    // <a data-original-title="Assign Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form" data-id="{$UserID}" data-control="subadmin" data-method="assign_service"><i class="fa-solid fa-file-circle-plus"></i></a>
     $action = <<<EOF
-            <div class="tooltip-top text-center">
+    <div class="tooltip-top text-center">
+                <a data-original-title="Assign Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form" data-id="{$UserID}" data-control="subadmin" data-method="assign_service"><i class="fa-solid fa-file-circle-plus"></i></a>
                 <a data-original-title="Update Sub Admin" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$UserID}" data-control="subadmin" data-method="update"><i class="fas fa-pencil-alt"></i></a>
                 <a data-original-title="Remove Sub Admin" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$UserID}" data-control="remove" data-method="user"><i class="far fa-trash-alt"></i></a>
             </div>
@@ -202,6 +202,7 @@ function user_service_action_row($ID)
     $ID = encrypt($ID);
     $action = <<<EOF
     <div class="tooltip-top text-center">
+    <a data-original-title="Update Service Status" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="update"><i class="fas fa-pencil-alt"></i></a>       
     <a data-original-title="Remove User Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-control="remove" data-method="user_service" data-type="soft"><i class="far fa-trash-alt"></i></a>
            </div>
 EOF;

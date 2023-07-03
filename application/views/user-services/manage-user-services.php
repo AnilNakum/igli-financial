@@ -12,8 +12,10 @@
                 </h2>
             </div>
             <div class="col-lg-7 col-md-8 col-sm-8">
+            <?php if(ROLE == 1){?>
                 <a href="javascript:void(0);" class="btn btn-round l-blue pull-right open_my_form" data-control="user_services"
                     data-method="add/<?php echo $type;?>">Assign New Service</a>
+                    <?php } ?>
             </div>
         </div>
     </div>
@@ -26,10 +28,13 @@
                     <div class="body text-center manage-list">
                         <div class="institute-box">
                             <img src="<?php echo ASSETS_PATH; ?>images/finder.png">
-                            <h3>No records right now <br /> Please add new</h3>
+                            <h3>No records right now  </h3><br />
+                            <?php if(ROLE == 1){?>
+                                <h3>Please add new</h3>
                             <a href="javascript:void(0);" class="open_my_form" data-control="user_services"
                                 data-method="add"><img class="add-btn"
                                     src="<?php echo ASSETS_PATH; ?>images/btn.png"></a>
+                                    <?php } ?>
                         </div>
                     </div>
                     <?php } else {?>

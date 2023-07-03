@@ -15,6 +15,7 @@ class Api extends REST_Controller
         $this->lang->load('tank_auth');
         $this->load->model('tank_auth/users');
         $this->load->model('Rest_model');
+        $this->load->model('Remove_records');
         
         $this->Method = $this->router->fetch_method();
         $this->Class = $this->router->fetch_class();
@@ -206,6 +207,40 @@ class Api extends REST_Controller
         }
     }
 
+    public function update_profile_post() {
+        $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
+        $this->form_validation->set_rules('phone', 'Phone Number', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $FirstName = $this->post('first_name');
+            $LastName = $this->post('last_name');
+            $Phone = $this->post('phone');
+            $DeviceID = $this->post('device_id');
+
+            if ($this->Common->check_is_exists(TBL_USERS,$Phone,'phone',$this->USER_ID,'id')) {
+                $this->response(['status' => FALSE, 'message' => "Phone no is already used by another user. Please choose another Phone No."], REST_Controller::HTTP_BAD_REQUEST);
+            }else{
+                $data = array(
+                    "first_name" => $FirstName,
+                    "last_name" => $LastName,
+                    "name" => $FirstName.' '.$LastName,
+                    'phone' => $Phone,
+                );
+                $this->Common->update_info(TBL_USERS,$this->USER_ID, $data,'id');
+                $User = $this->Common->get_info(TBL_USERS,$this->USER_ID,'id');
+
+                $this->response(['status' => TRUE,
+                'message' => 'Profile Updated successfully.',
+                "data" => ["phone" => $User]]
+                    , REST_Controller::HTTP_OK);     
+                            
+                       
+                }
+            } 
+        }
+
     public function confirmopt_post() {
         $this->form_validation->set_rules('phone', 'Phone No', 'trim|required');
         $this->form_validation->set_rules('otp', 'OTP', 'required');
@@ -390,11 +425,14 @@ class Api extends REST_Controller
         }
     }
 
-    public function services_get($ServiceID = false) {
-        if ($ServiceID) {
-            $services_info = $this->Common->get_info(TBL_SERVICES,$ServiceID,  'ServiceID','Status=1 AND isDeleted=0');
+    public function services_get($ServiceType = false) {
+        $join = array(
+            array('table' => TBL_SERVICE_TYPE . ' st', 'on' => "st.STID=s.STID", 'type' => ''),
+        );
+        if ($ServiceType) {
+            $services_info = $this->Common->get_info(TBL_SERVICES.' s',$ServiceType,'s.STID','s.Status=1 AND s.isDeleted=0','*',$join);
         } else {
-            $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES,1,'Status','isDeleted=0');
+            $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES.' s',1,'s.Status','s.isDeleted=0','*',$join);
         }
         if (!empty($services_info)) {
             $data['status'] = TRUE;
@@ -470,12 +508,12 @@ class Api extends REST_Controller
         }
     }
 
-    public function my_service_get($ServiceID = false) {
+    public function my_service_get($ServiceStatus = false) {
         $join = array(
             array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=us.ServiceID", 'type' => ''),
         );
-        if ($ServiceID) {
-            $Service_info = $this->Common->get_info(TBL_USER_SERVICES.' us',$ServiceID, 'us.ID','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join);
+        if ($ServiceStatus) {
+            $Service_info = $this->Common->get_all_info(TBL_USER_SERVICES.' us',$ServiceStatus, 'us.ServiceStatus','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join);
         } else {
             $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES .' us',1,1,'us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join,false);
         }
@@ -486,6 +524,51 @@ class Api extends REST_Controller
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
             $this->response(['status' => TRUE, 'message' => "Service Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function interest_get() {
+        $join = array(
+            array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=us.ServiceID", 'type' => ''),
+        );
+            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_INTEREST .' us',1,1,'us.UserID = '.$this->USER_ID,'*',$join,false);
+        if (!empty($Service_info) && count($Service_info['services']) > 0) {
+            $data['status'] = TRUE;
+            $data['message'] = "Service Found";
+            $data["data"] = $Service_info;
+            $this->response($data, REST_Controller::HTTP_OK);
+        } else {
+            $this->response(['status' => TRUE, 'message' => "Service Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function interest_post() {
+        $this->form_validation->set_rules('serviceid', 'Service', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $ServiceID = $this->post('serviceid');
+            $UserID = $this->USER_ID;
+
+            if ($this->Common->check_is_exists(TBL_USER_INTEREST,$ServiceID,'ServiceID',0,'ID','UserID = '.$UserID)) {
+                $data_remove = $this->Remove_records->remove_data($ServiceID, 'ServiceID', TBL_USER_INTEREST,'UserID = '.$UserID,'hard');
+
+                $this->response(['status' => TRUE, 'message' => "Service Removed From Interest successfully."], REST_Controller::HTTP_OK);
+            }else{
+                $data = array(
+                    'UserID' => $UserID,
+                    'ServiceID' => $ServiceID,
+                    'CreatedAt' => date("Y-m-d H:i:s")
+                );
+
+                if ($this->Common->add_info(TBL_USER_INTEREST, $data)) {
+                    $this->response(['status' => TRUE,
+                    'message' => 'Service Added To Interest successfully.']
+                        , REST_Controller::HTTP_OK);
+                } else {
+                    $this->response(['status' => FALSE, 'message' => "Something went wrong, Please try again!"], REST_Controller::HTTP_BAD_REQUEST);
+                }
+            }
         }
     }
 }

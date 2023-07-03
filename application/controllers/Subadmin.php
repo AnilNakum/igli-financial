@@ -153,4 +153,36 @@ class Subadmin extends Base_Controller
         $data['page_title'] = "Assign Service";
         $this->partial('subadmin/assign-servicr-form', $data);
     }
+
+    public function assign_form(){
+        if ($this->input->post()) {
+            $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
+            $this->form_validation
+                ->set_rules('service_id', 'Service', 'required');
+            $this->form_validation->set_message('required', '{field} field should not be blank.');
+            $error_element = error_elements();
+            $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
+            if ($this->form_validation->run()) {
+                
+                $post_data = array(
+                    "ServiceID" => $this->input->post('service_id'),
+                    "UserID" => $this->input->post('user_id'),
+                    "Status" => $this->input->post('status')
+                );
+                
+                $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
+                $post_data['CreatedAt'] = date("Y-m-d H:i:s");
+                if ($ID = $this->Common->add_info(TBL_SUBADMIN_SERVICES, $post_data)) {
+                    $response = array("status" => "ok", "heading" => "Assign successfully...", "message" => "Details Assign successfully.");
+                } else {
+                    $response = array("status" => "error", "heading" => "Not Assign successfully...", "message" => "Details not Assign successfully.");
+                }
+
+            } else {
+                $response['error'] = $this->form_validation->error_array();
+            }
+            echo json_encode($response);
+            die;
+        }
+    }
 }

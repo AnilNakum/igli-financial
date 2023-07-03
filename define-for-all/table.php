@@ -19,6 +19,7 @@ define('TBL_PAYMENT', 'payment');
 define('TBL_SUBADMIN_SERVICES', 'subadmin_services');
 define('TBL_USER_SERVICES', 'user_services');
 define('TBL_DOCUMENT', 'document');
+define('TBL_USER_INTEREST', 'user_interest');
 
 define("TBL_SITE_MODULE", "site_module");
 define("TBL_SITE_MODULE_PERMISSION", "site_module_permission");

@@ -232,8 +232,6 @@
     </nav>
 
     <!-- Left Sidebar -->
-    <?php if ($this->uri->segment(1) != 'setup') {
-    ?>
     <aside id="leftsidebar" class="sidebar">
         <div class="menu">
             <ul class="list">
@@ -258,42 +256,51 @@
                     class="<?php echo (($this->uri->segment(1) == "dashboard") || ($this->uri->segment(1) == "")) ? 'active' : ""; ?>">
                     <a href="<?php echo base_url(); ?>"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a>
                 </li>
+                
                 <li class="header">Services</li>
                 <li> <a href="javascript:void(0);"
-                        class="menu-toggle <?php echo (($this->uri->segment(1) == "services") || ($this->uri->segment(1) == "type") || ($this->uri->segment(1) == "top-services")) ? 'active toggled' : ""; ?>"><i
+                        class="menu-toggle <?php echo (($this->uri->segment(1) == "services" && $this->uri->segment(2) == "")|| ($this->uri->segment(1) == "type") || ($this->uri->segment(1) == "top-services")) ? 'active toggled' : ""; ?>"><i
                             class="zmdi zmdi-apps"></i><span>Services</span>
                     </a>
                     <ul class="ml-menu">
+                    <?php if(ROLE == 1){?>
                         <li class="<?php echo ($this->uri->segment(1) == "type") ? 'active' : ""; ?>"><a
                                 href="<?php echo base_url('type'); ?>">Services Type</a></li>
-                        <li class="<?php echo ($this->uri->segment(1) == "services" && $this->uri->segment(2) == "") ? 'active' : ""; ?>"><a
-                                href="<?php echo base_url('services'); ?>">Services</a></li>
+                                <?php } ?>
+                        <li
+                            class="<?php echo ($this->uri->segment(1) == "services" && $this->uri->segment(2) == "") ? 'active' : ""; ?>">
+                            <a href="<?php echo base_url('services'); ?>">Services</a></li>
+                            <?php if(ROLE == 1){?>
                         <li class="<?php echo ($this->uri->segment(1) == "top-services") ? 'active' : ""; ?>"><a
                                 href="<?php echo base_url('top-services'); ?>">Our Top Services</a></li>
+                                <?php } ?>
                     </ul>
                 </li>
+               
                 <li class="header">User Services</li>
-                <li
-                    class="<?php echo (($this->uri->segment(2) == "ongoing") ) ? 'active' : ""; ?>">
-                    <a href="<?php echo base_url('services/ongoing'); ?>"><i class="zmdi zmdi-folder-person"></i><span>On Going</span></a>
+                <li class="<?php echo (($this->uri->segment(2) == "ongoing") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('services/ongoing'); ?>"><i
+                            class="zmdi zmdi-folder-person"></i><span>On Going</span></a>
                 </li>
-                <li
-                    class="<?php echo (($this->uri->segment(2) == "onhold") ) ? 'active' : ""; ?>">
-                    <a href="<?php echo base_url('services/onhold'); ?>"><i class="zmdi zmdi-folder"></i><span>Hold</span></a>
+                <li class="<?php echo (($this->uri->segment(2) == "onhold") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('services/onhold'); ?>"><i
+                            class="zmdi zmdi-folder"></i><span>Hold</span></a>
                 </li>
-                <li
-                    class="<?php echo (($this->uri->segment(2) == "completed") ) ? 'active' : ""; ?>">
-                    <a href="<?php echo base_url('services/completed'); ?>"><i class="zmdi zmdi-folder-star-alt"></i><span>Completed</span></a>
+                <li class="<?php echo (($this->uri->segment(2) == "completed") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('services/completed'); ?>"><i
+                            class="zmdi zmdi-folder-star-alt"></i><span>Completed</span></a>
                 </li>
 
                 <li class="header">Document Upload </li>
                 <li class="<?php echo (($this->uri->segment(1) == "upload")) ? 'active' : ""; ?>"> <a
-                        href="<?php echo base_url('upload'); ?>"><i class="fa-solid fa-cloud-arrow-up"></i><span>Upload </span></a>
+                        href="<?php echo base_url('upload'); ?>"><i class="fa-solid fa-cloud-arrow-up"></i><span>Upload
+                        </span></a>
                 </li>
-
+                <?php if(ROLE == 1){?>
                 <li class="header">PAYMENT</li>
                 <li class="<?php echo (($this->uri->segment(1) == "payment")) ? 'active' : ""; ?>"> <a
-                        href="<?php echo base_url('payment'); ?>"><i class="fa-solid fa-receipt"></i><span>Payment </span></a>
+                        href="<?php echo base_url('payment'); ?>"><i class="fa-solid fa-receipt"></i><span>Payment
+                        </span></a>
                 </li>
 
                 <li class="header">OTHERS</li>
@@ -309,13 +316,15 @@
                             Support</span></a>
                 </li>
                 <li class="<?php echo (($this->uri->segment(1) == "notification")) ? 'active' : ""; ?>"> <a
-                        href="<?php echo base_url('notification'); ?>"><i class="fa-regular fa-bell"></i><span>Notification
-                            </span></a>
+                        href="<?php echo base_url('notification'); ?>"><i
+                            class="fa-regular fa-bell"></i><span>Notification
+                        </span></a>
                 </li>
                 <li class="<?php echo (($this->uri->segment(1) == "banner")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('banner'); ?>"><i class="fa-solid fa-images"></i><span>Banners
-                            </span></a>
+                        </span></a>
                 </li>
+                <?php } ?>
                 <!-- <li> <a href="javascript:void(0);"
                         class="menu-toggle <?php echo (($this->uri->segment(1) == "banner") || ($this->uri->segment(1) == "setting")) ? 'active toggled' : ""; ?>"><i
                             class="zmdi zmdi-swap-alt"></i><span>Settings</span> </a>
@@ -329,5 +338,3 @@
             </ul>
         </div>
     </aside>
-    <?php }
-?>

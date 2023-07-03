@@ -34,6 +34,7 @@ class Datatables
     protected $joins = array();
     protected $columns = array();
     protected $where = array();
+    protected $where_in = array();
     protected $filter = array();
     protected $add_columns = array();
     protected $edit_columns = array();
@@ -187,6 +188,21 @@ class Datatables
         $this->where[] = array($key_condition, $val, $backtick_protect);
         $this->ci->db->or_where($key_condition, $val, $backtick_protect);
         return $this;
+    }
+
+    /**
+    * Generates the WHERE IN portion of the query
+    *
+    * @param mixed $key_condition
+    * @param string $val
+    * @param bool $backtick_protect
+    * @return mixed
+    */
+    public function where_in($key_condition, $val = NULL, $backtick_protect = true)
+    {
+      $this->where_in[] = array($key_condition, $val, $backtick_protect);
+      $this->ci->db->where_in($key_condition, $val, $backtick_protect);
+      return $this;
     }
 
     /**

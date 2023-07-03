@@ -5,7 +5,13 @@ if (isset($user_info) && $user_info->id > 0) {
 
 $Service = array('name' => 'service_id', 'id' => 'service_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
 $ServiceList = array("" => "Select Service") + $Services;
-// $ServiceID = (isset($payment_info) && $payment_info->ServiceID != "") ? $payment_info->ServiceID : set_value('service_id');
+
+$S = array(
+    "2" => "Inactive",
+);
+$Status = array('name' => 'status', 'id' => 'status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
+$StatusList = array("1" => "Active") + $S;
+$StatusID = set_value('status');
 
 $submit_btn = array('name' => 'submit_btn', 'id' => 'submit_btn', 'value' => 'SAVE', 'class' => 'btn btn-round l-blue');
 $cancel_btn = array('name' => 'cancel_btn', 'id' => 'cancel_btn', 'content' => 'CANCEL', 'class' => 'btn btn-round btn-white', "onclick" => "pop_up.close()");
@@ -52,6 +58,14 @@ $form_attr = array('class' => 'default_form assign_frm', 'id' => 'assign_frm', '
                             <div class="form-group">
                                 <label class="form-label">Service <span class="text-danger">*</span></label>
                                 <?php echo form_dropdown($Service, $ServiceList); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Status <span class="text-danger">*</span></label>
+                                <?php echo form_dropdown($Status, $StatusList, $StatusID); ?>
                             </div>
                         </div>
                     </div>
