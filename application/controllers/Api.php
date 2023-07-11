@@ -207,6 +207,18 @@ class Api extends REST_Controller
         }
     }
 
+    public function profile_get() {
+        $User_info = $this->Common->get_info(TBL_USERS,$this->USER_ID,  'id','activated=1');
+        if (!empty($User_info)) {
+            $data['status'] = TRUE;
+            $data['message'] = "Profile Found";
+            $data["data"] = $User_info;
+            $this->response($data, REST_Controller::HTTP_OK);
+        } else {
+            $this->response(['status' => TRUE, 'message' => "Profile Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+        }
+    }
+
     public function update_profile_post() {
         $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
@@ -237,9 +249,9 @@ class Api extends REST_Controller
                     , REST_Controller::HTTP_OK);     
                             
                        
-                }
-            } 
-        }
+            }
+        } 
+    }
 
     public function confirmopt_post() {
         $this->form_validation->set_rules('phone', 'Phone No', 'trim|required');
@@ -430,7 +442,7 @@ class Api extends REST_Controller
             array('table' => TBL_SERVICE_TYPE . ' st', 'on' => "st.STID=s.STID", 'type' => ''),
         );
         if ($ServiceType) {
-            $services_info = $this->Common->get_info(TBL_SERVICES.' s',$ServiceType,'s.STID','s.Status=1 AND s.isDeleted=0','*',$join);
+            $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES.' s',$ServiceType,'s.STID','s.Status=1 AND s.isDeleted=0','*',$join);
         } else {
             $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES.' s',1,'s.Status','s.isDeleted=0','*',$join);
         }
@@ -513,7 +525,7 @@ class Api extends REST_Controller
             array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=us.ServiceID", 'type' => ''),
         );
         if ($ServiceStatus) {
-            $Service_info = $this->Common->get_all_info(TBL_USER_SERVICES.' us',$ServiceStatus, 'us.ServiceStatus','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join);
+            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES.' us',$ServiceStatus, 'us.ServiceStatus','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join);
         } else {
             $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES .' us',1,1,'us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join,false);
         }
