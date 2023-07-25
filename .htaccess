@@ -8,7 +8,7 @@ RewriteRule ^(.*)$ index.php?/$1 [L]
 
 <IfModule !mod_rewrite.c>
 ErrorDocument 404 /index.php
-</IfModule>
+</IfModule> 
 
 <FilesMatch "\.(ttf|otf|eot|woff|woff2)$">
   <IfModule mod_headers.c>

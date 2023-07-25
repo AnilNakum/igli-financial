@@ -583,4 +583,20 @@ class Api extends REST_Controller
             }
         }
     }
+
+    public function calendar_get($EID = false) {
+        if ($EID) {
+            $event_info = $this->Common->get_info(TBL_EVENT,$EID, 'ID','isDeleted=0');
+        } else {
+            $event_info['events'] = $this->Common->get_all_info(TBL_EVENT,1,'Status','isDeleted=0','*',false,false);
+        }
+        if (!empty($event_info)) {
+            $data['status'] = TRUE;
+            $data['message'] = "Event Found";
+            $data["data"] = $event_info;
+            $this->response($data, REST_Controller::HTTP_OK);
+        } else {
+            $this->response(['status' => TRUE, 'message' => "Event Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+        }
+    }
 }

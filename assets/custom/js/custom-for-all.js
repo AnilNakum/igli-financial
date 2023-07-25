@@ -220,6 +220,13 @@ $(document).ready(function () {
                             pop_up.notification(returnData.message, 'redirect', "'" + "services/" +type + "/'", true);
                         }
                     }
+                    if (form == 'contact_frm') {
+                        if ($('.common_datatable').length > 0) {
+                            get_updated_datatable(false);
+                        } else {
+                            pop_up.notification(returnData.message, 'redirect', "'" + "contact_support/" + "'", true);
+                        }
+                    }
 
                     pop_up.close();
                     pop_up.half_close();

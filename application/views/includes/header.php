@@ -311,6 +311,9 @@
                         href="<?php echo base_url('subadmin'); ?>"><i class="fa-solid fa-user-tie"></i><span>Sub Admin
                         </span></a>
                 </li>
+                <li class="<?php echo (($this->uri->segment(1) == "calendar")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('calendar'); ?>"><i class="zmdi zmdi-calendar"></i><span>Compliance Calendar</span></a>
+                </li>
                 <li class="<?php echo (($this->uri->segment(1) == "contact_support")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('contact_support'); ?>"><i class="fa-solid fa-inbox"></i><span>Contact
                             Support</span></a>
