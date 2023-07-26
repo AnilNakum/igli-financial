@@ -19,8 +19,10 @@ if (count((array) $Services) > 0) {
                 </h2>
             </div>
             <div class="col-lg-7 col-md-8 col-sm-8">
+            <?php if(ROLE == 1){?>
                 <a href="javascript:void(0);" class="btn btn-round l-blue pull-right open_my_form" data-form_type="full"
                     data-control="services" data-method="add">Add New Service</a>
+                    <?php } ?>
             </div>
         </div>
     </div>

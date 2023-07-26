@@ -280,15 +280,15 @@
                 <li class="header">User Services</li>
                 <li class="<?php echo (($this->uri->segment(2) == "ongoing") ) ? 'active' : ""; ?>">
                     <a href="<?php echo base_url('services/ongoing'); ?>"><i
-                            class="zmdi zmdi-folder-person"></i><span>On Going</span></a>
+                            class="fa-solid fa-circle-play"></i><span>On Going</span></a>
                 </li>
                 <li class="<?php echo (($this->uri->segment(2) == "onhold") ) ? 'active' : ""; ?>">
                     <a href="<?php echo base_url('services/onhold'); ?>"><i
-                            class="zmdi zmdi-folder"></i><span>Hold</span></a>
+                            class="fa-solid fa-circle-pause"></i><span>Hold</span></a>
                 </li>
                 <li class="<?php echo (($this->uri->segment(2) == "completed") ) ? 'active' : ""; ?>">
                     <a href="<?php echo base_url('services/completed'); ?>"><i
-                            class="zmdi zmdi-folder-star-alt"></i><span>Completed</span></a>
+                            class="fa-solid fa-circle-check"></i><span>Completed</span></a>
                 </li>
 
                 <li class="header">Document Upload </li>

@@ -447,6 +447,14 @@ class Api extends REST_Controller
             $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES.' s',1,'s.Status','s.isDeleted=0','*',$join);
         }
         if (!empty($services_info)) {
+            foreach ($services_info['services'] as $key => $value) {
+                $User_info = $this->Common->get_info(TBL_USER_INTEREST,$value->ServiceID,'ServiceID','UserID='.$this->USER_ID);
+                if (!empty($User_info)) {
+                $services_info['services'][$key]->Save = "1";
+            }else{
+                    $services_info['services'][$key]->Save = "0";
+                }
+            }
             $data['status'] = TRUE;
             $data['message'] = "Services Found";
             $data["data"] = $services_info;
@@ -454,6 +462,32 @@ class Api extends REST_Controller
         } else {
             $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => array()], REST_Controller::HTTP_OK);
         }
+    }
+
+    public function search_services_post() {
+        
+            $Str = $this->post('search');
+            if ($Str) {
+                $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES.' s',1,'s.Status','s.ServiceTitle like "%'.$Str.'%" AND s.isDeleted=0','*');
+            } else {
+                $services_info['services'] = $this->Common->get_all_info(TBL_SERVICES.' s',1,'s.Status','s.isDeleted=0','*');
+            }
+            if (!empty($services_info)) {
+                foreach ($services_info['services'] as $key => $value) {
+                    $User_info = $this->Common->get_info(TBL_USER_INTEREST,$value->ServiceID,'ServiceID','UserID='.$this->USER_ID);
+                    if (!empty($User_info)) {
+                    $services_info['services'][$key]->Save = "1";
+                }else{
+                        $services_info['services'][$key]->Save = "0";
+                    }
+                }
+                $data['status'] = TRUE;
+                $data['message'] = "Services Found";
+                $data["data"] = $services_info;
+                $this->response($data, REST_Controller::HTTP_OK);
+            } else {
+                $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            }
     }
 
     public function top_services_get() {
@@ -530,6 +564,14 @@ class Api extends REST_Controller
             $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES .' us',1,1,'us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join,false);
         }
         if (!empty($Service_info)) {
+            foreach ($Service_info['services'] as $key => $value) {
+                $User_info = $this->Common->get_info(TBL_USER_INTEREST,$value->ServiceID,'ServiceID','UserID='.$this->USER_ID);
+                if (!empty($User_info)) {
+                $Service_info['services'][$key]->Save = "1";
+            }else{
+                    $Service_info['services'][$key]->Save = "0";
+                }
+            }
             $data['status'] = TRUE;
             $data['message'] = "Service Found";
             $data["data"] = $Service_info;
@@ -545,6 +587,14 @@ class Api extends REST_Controller
         );
             $Service_info['services'] = $this->Common->get_all_info(TBL_USER_INTEREST .' us',1,1,'us.UserID = '.$this->USER_ID,'*',$join,false);
         if (!empty($Service_info) && count($Service_info['services']) > 0) {
+            foreach ($Service_info['services'] as $key => $value) {
+                $User_info = $this->Common->get_info(TBL_USER_INTEREST,$value->ServiceID,'ServiceID','UserID='.$this->USER_ID);
+                if (!empty($User_info)) {
+                $Service_info['services'][$key]->Save = "1";
+            }else{
+                    $Service_info['services'][$key]->Save = "0";
+                }
+            }
             $data['status'] = TRUE;
             $data['message'] = "Service Found";
             $data["data"] = $Service_info;

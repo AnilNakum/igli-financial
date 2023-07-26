@@ -211,6 +211,49 @@ function clean($string)
 
 function send_sms($mobileNumber, $message)
 {
+    // $curl = curl_init();
+
+    // curl_setopt_array($curl, array(
+    // CURLOPT_URL => 'https://api.interakt.ai/v1/public/message/',
+    // CURLOPT_RETURNTRANSFER => true,
+    // CURLOPT_ENCODING => '',
+    // CURLOPT_MAXREDIRS => 10,
+    // CURLOPT_TIMEOUT => 0,
+    // CURLOPT_FOLLOWLOCATION => true,
+    // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    // CURLOPT_CUSTOMREQUEST => 'POST',
+    // CURLOPT_POSTFIELDS =>'{
+    //     "countryCode": "91", 
+    //     "phoneNumber": '.$mobileNumber.', 
+    //     "type": "Template", 
+    //     "template": {
+    //         "name": "delivered_alert_101", 
+    //         "languageCode": "en", 
+    //         "headerValues": [
+    //             "Alert" 
+    //         ],
+    //         "bodyValues": [
+    //             "There", 
+    //             "1234" 
+    //         ],
+    //         "buttonValues": {
+    //             "0" : [
+    //                 "12344" 
+    //             ]
+    //         }
+    //     }
+    // }',
+    // CURLOPT_HTTPHEADER => array(
+    //     'Authorization: Basic 23456',
+    //     'content-type: application/json'
+    // ),
+    // ));
+
+    // $response = curl_exec($curl);
+
+    // curl_close($curl);
+    // echo $response->result;
+
     return true;
 }
 

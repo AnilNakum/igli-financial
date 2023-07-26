@@ -129,12 +129,21 @@ EOF;
 function service_action_row($ServiceID)
 {
     $ServiceID = encrypt($ServiceID);
+    if(ROLE == 1){
     $action = <<<EOF
             <div class="tooltip-top text-center">
                 <a data-original-title="Update Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="full" data-id="{$ServiceID}" data-control="services" data-method="update"><i class="fas fa-pencil-alt"></i></a>
                 <a data-original-title="Remove Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ServiceID}" data-control="remove" data-method="service"><i class="far fa-trash-alt"></i></a>
             </div>
 EOF;
+    }else{
+        $action = <<<EOF
+            <div class="tooltip-top text-center">
+                <a data-original-title="Update Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="full" data-id="{$ServiceID}" data-control="services" data-method="update"><i class="fas fa-pencil-alt"></i></a>
+            </div>
+EOF;
+
+    }
     return $action;
 }
 
@@ -200,11 +209,20 @@ EOF;
 function user_service_action_row($ID)
 {
     $ID = encrypt($ID);
+    if(ROLE == 1){
     $action = <<<EOF
     <div class="tooltip-top text-center">
     <a data-original-title="Update Service Status" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="update"><i class="fas fa-pencil-alt"></i></a>       
     <a data-original-title="Remove User Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-control="remove" data-method="user_service" data-type="soft"><i class="far fa-trash-alt"></i></a>
            </div>
 EOF;
+}else{
+    $action = <<<EOF
+    <div class="tooltip-top text-center">
+    <a data-original-title="Update Service Status" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="update"><i class="fas fa-pencil-alt"></i></a>       
+           </div>
+EOF;
+
+}
     return $action;
 }

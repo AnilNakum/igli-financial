@@ -130,6 +130,10 @@ class User_services extends Base_Controller
         $this->datatables->where('us.isDeleted', 0);
         $this->datatables->where('us.ServiceStatus',  $page );
     
+        if(ROLE == 2){
+            $this->datatables->where_in('s.ServiceID',USER_SERVICE);
+        }
+        
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=us.ServiceID', '');
         $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');
         $this->datatables->from(TBL_USER_SERVICES.' us')
