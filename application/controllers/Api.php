@@ -52,7 +52,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('user', 'Username/Email/Phone', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $Email = $this->post('user');
             $Password = $this->post('password');
@@ -115,7 +115,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
         $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|matches[password]');
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $FirstName = $this->post('first_name');
             $LastName = $this->post('last_name');
@@ -215,7 +215,7 @@ class Api extends REST_Controller
             $data["data"] = $User_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Profile Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Profile Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
@@ -224,7 +224,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
         $this->form_validation->set_rules('phone', 'Phone Number', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $FirstName = $this->post('first_name');
             $LastName = $this->post('last_name');
@@ -258,7 +258,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('otp', 'OTP', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $PhoneNo = $this->post('phone');
             $OTP = $this->post('otp');
@@ -297,7 +297,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('phone', 'Phone No', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $PhoneNo = $this->post('phone');
             if ($User = $this->Common->get_info(TBL_USERS,$PhoneNo,'phone')){
@@ -326,7 +326,7 @@ class Api extends REST_Controller
     public function forgot_password_post() {
         $this->form_validation->set_rules('email', 'Email', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $Email = $this->post('email');
             if (!is_null($User = $this->users->get_user_by_email($Email))) { 
@@ -360,7 +360,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('new_password', 'New Password', 'trim|required');
         $this->form_validation->set_rules('confirm_new_password', 'Confirm New Password', 'trim|required|matches[new_password]');
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $user_id = $this->USER_ID;
             $old_pass = $this->post('old_password');
@@ -416,7 +416,7 @@ class Api extends REST_Controller
             $data["data"] = $Banner_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Banner Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Banner Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
@@ -433,7 +433,7 @@ class Api extends REST_Controller
             $data["data"] = $services_type_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Service Type Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Service Type Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
@@ -460,7 +460,7 @@ class Api extends REST_Controller
             $data["data"] = $services_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
@@ -486,7 +486,7 @@ class Api extends REST_Controller
                 $data["data"] = $services_info;
                 $this->response($data, REST_Controller::HTTP_OK);
             } else {
-                $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+                $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
             }
     }
 
@@ -506,7 +506,7 @@ class Api extends REST_Controller
             $data["data"] = $sData;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Services Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
@@ -514,7 +514,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('subject', 'Subject', 'trim|required');
         $this->form_validation->set_rules('message', 'Message', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $Subject = $this->post('subject');
             $Message = $this->post('message');
@@ -550,7 +550,7 @@ class Api extends REST_Controller
             $data["data"] = $Doc_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Document Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Document Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
@@ -577,7 +577,7 @@ class Api extends REST_Controller
             $data["data"] = $Service_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Service Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Service Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
@@ -590,8 +590,8 @@ class Api extends REST_Controller
             foreach ($Service_info['services'] as $key => $value) {
                 $User_info = $this->Common->get_info(TBL_USER_INTEREST,$value->ServiceID,'ServiceID','UserID='.$this->USER_ID);
                 if (!empty($User_info)) {
-                $Service_info['services'][$key]->Save = "1";
-            }else{
+                    $Service_info['services'][$key]->Save = "1";
+                }else{
                     $Service_info['services'][$key]->Save = "0";
                 }
             }
@@ -600,14 +600,14 @@ class Api extends REST_Controller
             $data["data"] = $Service_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Service Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Service Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 
     public function interest_post() {
         $this->form_validation->set_rules('serviceid', 'Service', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
-            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => array()], REST_Controller::HTTP_BAD_REQUEST);
+            $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $ServiceID = $this->post('serviceid');
             $UserID = $this->USER_ID;
@@ -646,7 +646,7 @@ class Api extends REST_Controller
             $data["data"] = $event_info;
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
-            $this->response(['status' => TRUE, 'message' => "Event Not Found", 'data' => array()], REST_Controller::HTTP_OK);
+            $this->response(['status' => TRUE, 'message' => "Event Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 }

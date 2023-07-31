@@ -49,10 +49,10 @@ define('DOCUMENT', 'document/');
 define("IMAGE_DIR", BASE_URL.UPLOAD_DIR);
 
 define('PROTOCOL', 'smtp');
-define('SMTP_HOST', "smtp.hostinger.com");
+define('SMTP_HOST', "ssl://smtp.googlemail.com");
 define('SMTP_PORT', "465");
-define('SMTP_USER', "igli.financial@gmail.com");
-define('SMTP_PASS', "Qwdskijdsdsjk8$");
+define('SMTP_USER', "info.iglifinancial@gmail.com");
+define('SMTP_PASS', "rpwhocxqzqiptpsc");
 
 define('SMSAUTHKEY', "69866AT3vL0g3m358ef28ef");
 

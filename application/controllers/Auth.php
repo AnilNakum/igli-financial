@@ -634,8 +634,8 @@ class Auth extends Base_Controller
         $this->email->message($this->load->view('email/' . $type . '-html', $data, true));
         $this->email->set_alt_message($this->load->view('email/' . $type . '-txt', $data, true));
         $this->email->send();
-        echo $this->email->print_debugger();
-        exit;
+        // echo $this->email->print_debugger();
+        // exit;
     }
 
     /**
