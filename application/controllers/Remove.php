@@ -139,6 +139,23 @@ class Remove extends Base_Controller {
         endif;
     }
 
+    function event($did = 0, $field = 'ID') {
+        $id = ($did > 0) ? $did : (($this->input->post('id')) ? $this->input->post('id') : 0);
+        $where = ($this->input->post('where')) ? $this->input->post('where') : '';
+        $type = $this->input->post('type');
+        $id = decrypt($id);
+        if ($id > 0):
+            $data_remove = $this->Remove_records->remove_data($id, $field, TBL_EVENT,$where,$type);
+            if ($did > 0):
+                return ($data_remove) ? TRUE : FALSE;
+            else:
+                $response = ($data_remove) ? array('status' => 'ok', 'message' => 'Data deleted successfully!') : array('status' => 'ok', 'message' => 'Data not deleted successfully!');
+                $this->response($response);
+            endif;
+
+        endif;
+    }
+
     
 
 }

@@ -20,6 +20,21 @@ $SStatus = array('name' => 'service_status', 'id' => 'service_status', 'class' =
 $SStatusList = array("ongoing" => "Ongoing") + $SS;
 $SStatusID = (isset($us_info) && $us_info->ServiceStatus != "") ? $us_info->ServiceStatus : $type;
 
+if($type == 'ongoing'){ 
+    $PS = array(
+        "Pending By IGLI" => "Pending By IGLI",
+        "Pending By Government" => "Pending By Government",
+        "Pending By Customer" => "Pending By Customer"
+    );
+    $PStatus = array('name' => 'progress_status', 'id' => 'progress_status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
+    $PStatusList = array("On Going" => "On Going") + $PS;
+    $PStatusID = (isset($us_info) && $us_info->ProgressStatus != "") ? $us_info->ProgressStatus:set_value('progress_status');
+ } else{
+    $PStatus = array('name' => 'progress_status', 'id' => 'progress_status', 'value' => "On Going", 'type' => 'hidden');
+    echo form_input($PStatus);
+ }
+
+$Reason = array('name' => 'reason', 'id' => 'reason', 'value' => (isset($us_info) && $us_info->Reason != "") ? $us_info->Reason : set_value('reason'), 'class' => "form-control", "rows" => 5, "tabindex" => 2, "style" => "resize:none");
 
 $submit_btn = array('name' => 'submit_btn', 'id' => 'submit_btn', 'value' => 'SAVE', 'class' => 'btn btn-round l-blue');
 $cancel_btn = array('name' => 'cancel_btn', 'id' => 'cancel_btn', 'content' => 'CANCEL', 'class' => 'btn btn-round btn-white', "onclick" => "pop_up.close()");
@@ -72,7 +87,24 @@ $form_attr = array('class' => 'default_form assign_services_frm', 'id' => 'assig
                             </div>
                         </div>
                     </div>
-                    
+                    <?php if($type == 'ongoing'){ ?>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Service Progress Status <span class="text-danger">*</span></label>
+                                <?php echo form_dropdown($PStatus, $PStatusList, $PStatusID); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Reason Note </label>
+                                <?php echo form_textarea($Reason); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>

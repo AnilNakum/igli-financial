@@ -5,7 +5,7 @@ if (isset($event_info) && $event_info->ID > 0) {
 
 // $Date = array('name' => 'date', 'id' => 'date', 'value' => (isset($event_info) && $event_info->Date != "") ? $event_info->Date : set_value('date'), 'class' => "form-control");
 
-$Date = array('name' => 'event_date', 'id' => 'event_date', 'value' => (isset($event_info) && $event_info->Date != "" && $event_info->Date != "0000-00-00") ? date('l d F Y - H:m', strtotime($ProductData[0]->Date)) : set_value('event_date'), 'size' => 30, 'class' => "form-control event_date", 'placeholder' => "Please choose date & time...", "tabindex" => 1, 'style' => "cursor:pointer;");
+$Date = array('name' => 'event_date', 'id' => 'event_date', 'value' => (isset($event_info) && $event_info->DateTime != "" && $event_info->DateTime != "0000-00-00") ? date('l d F Y - h:i A', strtotime($event_info->DateTime)) : set_value('event_date'), 'size' => 30, 'class' => "form-control event_date", 'placeholder' => "Please choose date & time...", "tabindex" => 1, 'style' => "cursor:pointer;");
 $Title = array('name' => 'title', 'id' => 'title', 'value' => (isset($event_info) && $event_info->Title != "") ? $event_info->Title : set_value('title'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Banner Title", "data-validation" => "required");
 $Description = array('name' => 'description', 'id' => 'description', 'value' => (isset($event_info) && $event_info->Description != "") ? $event_info->Description : set_value('description'), 'class' => "form-control", "rows" => 6, "tabindex" => 2, "style" => "resize:none");
 

@@ -67,6 +67,7 @@
                                                 <tr>
                                                     <th>Service</th>
                                                     <th>User</th>
+                                                    <?php if($type == 'ongoing'){ ?><th>Progress Status</th><?php } ?>
                                                     <th>Created At</th>
                                                     <th class="no-sort text-center">Action</th>
                                                 </tr>

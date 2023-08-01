@@ -55,7 +55,7 @@ class User_services extends Base_Controller
 
     public function update($id)
     {
-        $link = $_SERVER['REQUEST_URI'];
+        $link = $_SERVER['HTTP_HOST'];
         $link_array = explode('/',$link);
         $page = end($link_array);
         $id = decrypt($id);
@@ -68,7 +68,7 @@ class User_services extends Base_Controller
             }
         }
         $data['page_title'] = "Update Services Status";
-        $data['type'] = $page;
+        $data['type'] = $data_obj->ServiceStatus;
         $data['Services'] =  $this->Common->get_list(TBL_SERVICES, 'ServiceID', 'ServiceTitle', "Status=1 AND isDeleted=0");
         $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'first_name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,'username');
         $this->partial('user-services/assign-service-form', $data);
@@ -87,14 +87,48 @@ class User_services extends Base_Controller
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                
+                $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"None";
                 $post_data = array(
                     "ServiceID" => $this->input->post('service_id'),
                     "UserID" => $this->input->post('user_id'),
                     "ServiceStatus" => $this->input->post('service_status'),
+                    "ProgressStatus" => ($this->input->post('progress_status'))?$this->input->post('progress_status'):"On Going",
+                    "Reason" => $Reason
                 );
                 
                 if ($ID > 0) {
+                    $userService =  $this->Common->get_info(TBL_USER_SERVICES, $ID, 'ID');
+                    if($userService->ServiceStatus != $this->input->post('service_status')){
+                        $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
+                        $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
+                        if($this->tank_auth->get_user_id() == 1){
+                            $Name = 'IGLI Financial Admin';
+                        }else{
+                            $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
+                            $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
+                        }
+
+                        if($user){
+                            if($this->input->post('service_status') == 'onhold'){
+                                $msgData = array(
+                                    "name"=> 'service_hold_xv',
+                                    "languageCode"=> "en", 
+                                    'headerValues' => array(),
+                                    'bodyValues' => array($Name,$service->ServiceTitle,$Reason),
+                                );
+                                send_wp_msg($user->phone,$msgData);
+                            }else if($this->input->post('service_status') == 'completed'){
+                                $msgData = array(
+                                    "name"=> 'service_complete',
+                                    "languageCode"=> "en", 
+                                    'headerValues' => array(),
+                                    'bodyValues' => array($service->ServiceTitle,$Name),
+                                );
+                                send_wp_msg($user->phone,$msgData);
+                            }
+                        }
+                    }
+
                     $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
                     if ($this->Common->update_info(TBL_USER_SERVICES, $ID, $post_data, 'ID')) :
@@ -125,7 +159,11 @@ class User_services extends Base_Controller
         $link = $_SERVER['REQUEST_URI'];
         $link_array = explode('/',$link);
         $page = end($link_array);
-        $this->datatables->select('us.ID,CONCAT(u.first_name," ",u.last_name) as  name,s.ServiceTitle,us.CreatedAt');
+        if($page == 'ongoing'){
+            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.ProgressStatus,us.CreatedAt');
+        }else{
+            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.CreatedAt');
+        }
         
         $this->datatables->where('us.isDeleted', 0);
         $this->datatables->where('us.ServiceStatus',  $page );
@@ -137,8 +175,11 @@ class User_services extends Base_Controller
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=us.ServiceID', '');
         $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');
         $this->datatables->from(TBL_USER_SERVICES.' us')
-            ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)')
-            ->add_column('action', '$1', 'user_service_action_row(us.ID)');
+            ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
+        // if($page == 'ongoing'){
+        //     $this->datatables->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
+        // }
+        $this->datatables->add_column('action', '$1', 'user_service_action_row(us.ID)');
         $this->datatables->unset_column('us.ID');
         echo $this->datatables->generate();
     }

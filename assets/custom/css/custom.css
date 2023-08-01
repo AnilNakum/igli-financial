@@ -2410,9 +2410,10 @@ input[type="radio"]:checked+label .btn {
 }
 
 .manage-body table,
-tr,
-th,
-td {
+.manage-body tr,
+.manage-body th,
+.manage-body td 
+{
     border: none !important;
 }
 
@@ -6147,4 +6148,13 @@ img.tax-img {
 .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle),
 a.menu-toggle.active.toggled {
     color: #2196f3;
+}
+
+.fc .fc-view-container .fc-view.fc-basic-view > table tbody tr td:first-child.fc-widget-content, .fc .fc-view-container .fc-view.fc-agenda > table tbody tr td:first-child.fc-widget-content {
+    border-left: 1px solid #eee !important;
+}
+.fc .fc-view-container .fc-view.fc-basic-view > table tbody tr td.fc-widget-content, .fc .fc-view-container .fc-view.fc-agenda > table tbody tr td.fc-widget-content {
+    border: 0;
+    border-bottom: 1px solid #eee !important;
+    border-right: 1px solid #eee !important;
 }

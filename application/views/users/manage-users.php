@@ -17,7 +17,8 @@ if (count((array) $Users) > 0) {
             </div>
             <div class="col-lg-7 col-md-8 col-sm-8">
                 <a href="javascript:void(0);" class="btn btn-round l-blue pull-right open_my_form" data-control="user"
-                    data-method="add" data-form_type="half">Add New User</a>
+                data-method="add" data-form_type="half">Add New User</a>
+                <a href="<?php echo base_url('user/export_user'); ?>" class="btn btn-round l-blue pull-right" >Export User <i class="fa-solid fa-file-export"></i> </a>
             </div>
         </div>
     </div>

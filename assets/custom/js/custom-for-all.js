@@ -227,6 +227,9 @@ $(document).ready(function () {
                             pop_up.notification(returnData.message, 'redirect', "'" + "contact_support/" + "'", true);
                         }
                     }
+                    if (form == 'event_frm') {
+                        pop_up.notification(returnData.message, 'redirect', "'" + "calendar/" + "'", true);
+                    }
 
                     pop_up.close();
                     pop_up.half_close();
@@ -1008,4 +1011,25 @@ var loadImage = function (event) {
 function redirect(slug) {
     window.location.href = BASEURL + slug;
 }
+
+function getEventData(start,end,view) {
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: BASEURL + '/calendar/view/1',
+        data: { start:start,end:end,view: view },
+        success: function (returnData) {
+            if (returnData.status == "ok") {
+                // $.getScript(ASSETS_PATH + 'custom/js/fullcalendarscripts.bundle.js');
+                // $.getScript(ASSETS_PATH + 'custom/js/calendar.js');
+                $("#event-data").html(returnData.html);
+            }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            if (xhr.status == 401) {
+                login.pop_up();
+            }
+        }
+    });
+}    
 

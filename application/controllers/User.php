@@ -137,4 +137,41 @@ class User extends Base_Controller
         $this->datatables->unset_column('id');
         echo $this->datatables->generate();
     }
+
+    public function export_user() {
+        $Users = $this->Common->get_all_info(TBL_USERS,3,'role_id','isDeleted=0');
+        // create file name
+        $fileName = 'data-'.time().'.xlsx';  
+        // load excel library
+        $this->load->library('excel');
+        // $listInfo = $this->export->exportList();
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        // set Header
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Username');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Name');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Email');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Contact No');
+        // set Row
+        $rowCount = 2;
+        foreach ($Users as $list) {
+            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $list->username);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $list->name);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $list->email);
+            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $list->phone);
+            $rowCount++;
+        }
+        foreach(range('A','D') as $columnID) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+        
+        $filename = "Users-". date("d-m-Y").".csv";
+        header('Content-Type: application/vnd.ms-excel'); 
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: max-age=0'); 
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
+        $objWriter->save('php://output'); 
+ 
+    }
 }

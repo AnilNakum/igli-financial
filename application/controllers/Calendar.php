@@ -14,9 +14,30 @@ class Calendar extends Base_Controller
 
     public function index()
     {
-        $data['page_title'] = "Compliance Calendar";
-        $data['extra_js'] = ["fullcalendarscripts.bundle","calendar"];
-        $this->view('calendar/calendar', $data);
+        
+    }
+
+    public function eventdata($Code = false) {
+        // pr($_POST);
+        $module = 'events';
+        $method = 'event_view';
+        $Code = $_POST;
+        $this->load->add_package_path(APPPATH . 'packages/' . $module . '/');
+        $this->load->library($module);
+        if (method_exists($module, $method)) {
+            list($view) = $this->$module->$method($Code);
+            if ($this->input->is_ajax_request()) {
+                $response = array('status' => 'ok', 'html' => $view, 'Code' => $_POST, 'page_title' => "Compliance Calendar");
+                echo json_encode($response);
+                die;
+            } else {
+            $data["extra_js"] = ['fullcalendarscripts.bundle','calendar'];
+            $data['html'] = $view;
+            $data['Code'] = $_POST;
+            $data['page_title'] = "Compliance Calendar";
+            $this->view('calendar/calendar', $data);
+            }
+        }
     }
 
     public function add()

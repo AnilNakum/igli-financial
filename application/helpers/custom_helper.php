@@ -257,6 +257,39 @@ function send_sms($mobileNumber, $message)
     return true;
 }
 
+function send_wp_msg($mobileNumber, $data)
+{
+    $curl = curl_init();
+
+    $Template = json_encode($data);
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://api.interakt.ai/v1/public/message/',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS =>'{
+        "countryCode": "91", 
+        "phoneNumber": '.$mobileNumber.', 
+        "type": "Template", 
+        "template": '.$Template.'
+    }',
+    CURLOPT_HTTPHEADER => array(
+        'Authorization: Basic SmppTjFrZWRLbW5KUzhDT2loVWloMHpnaEsyUVI2YjVQYlRSc0FTX19sRTo=',
+        'content-type: application/json'
+    ),
+    ));
+
+    $response = json_decode(curl_exec($curl));
+
+    curl_close($curl);
+    return $response->result;
+    // return true;
+}
+
 function capital($string)
 {
     return ucwords(strtolower($string));
