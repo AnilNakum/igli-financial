@@ -98,9 +98,10 @@ class User_services extends Base_Controller
                 
                 if ($ID > 0) {
                     $userService =  $this->Common->get_info(TBL_USER_SERVICES, $ID, 'ID');
+                    $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
+                    $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
+
                     if($userService->ServiceStatus != $this->input->post('service_status')){
-                        $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
-                        $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
                         if($this->tank_auth->get_user_id() == 1){
                             $Name = 'IGLI Financial Admin';
                         }else{
@@ -127,6 +128,10 @@ class User_services extends Base_Controller
                                 send_wp_msg($user->phone,$msgData);
                             }
                         }
+                    }
+
+                    if($userService->ProgressStatus != $this->input->post('progress_status')){
+                        
                     }
 
                     $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();

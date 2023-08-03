@@ -112,6 +112,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
         $this->form_validation->set_rules('phone', 'Phone Number', 'trim|required');
         $this->form_validation->set_rules('email', 'Email', 'trim|required');
+        $this->form_validation->set_rules('dob', 'Date Of Birth', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
         $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|matches[password]');
         if ($this->form_validation->run() == FALSE) {
@@ -121,6 +122,7 @@ class Api extends REST_Controller
             $LastName = $this->post('last_name');
             $Phone = $this->post('phone');
             $Email = $this->post('email');
+            $DOB = $this->post('dob');
             $Password = $this->post('password');
             $CPassword = $this->post('confirm_password');
             $DeviceID = $this->post('device_id');
@@ -150,6 +152,7 @@ class Api extends REST_Controller
                     "name" => $FirstName.' '.$LastName,
                     'email' => $Email,
                     'phone' => $Phone,
+                    'dob' => $DOB,
                     'activated' => 1
                 );
 
@@ -223,6 +226,7 @@ class Api extends REST_Controller
         $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
         $this->form_validation->set_rules('phone', 'Phone Number', 'trim|required');
+        $this->form_validation->set_rules('dob', 'Date Of Birth', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
             $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
         } else {
@@ -230,6 +234,7 @@ class Api extends REST_Controller
             $LastName = $this->post('last_name');
             $Phone = $this->post('phone');
             $DeviceID = $this->post('device_id');
+            $DOB = $this->post('dob');
 
             if ($this->Common->check_is_exists(TBL_USERS,$Phone,'phone',$this->USER_ID,'id')) {
                 $this->response(['status' => FALSE, 'message' => "Phone no is already used by another user. Please choose another Phone No."], REST_Controller::HTTP_BAD_REQUEST);
@@ -239,6 +244,7 @@ class Api extends REST_Controller
                     "last_name" => $LastName,
                     "name" => $FirstName.' '.$LastName,
                     'phone' => $Phone,
+                    'dob' => $DOB,
                 );
                 $this->Common->update_info(TBL_USERS,$this->USER_ID, $data,'id');
                 $User = $this->Common->get_info(TBL_USERS,$this->USER_ID,'id');
@@ -647,6 +653,18 @@ class Api extends REST_Controller
             $this->response($data, REST_Controller::HTTP_OK);
         } else {
             $this->response(['status' => TRUE, 'message' => "Event Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function contact_history_get() {
+            $contact_info['history'] = $this->Common->get_all_info(TBL_CONTACT_SUPPORT,0,'isDeleted','CreatedBy = '.$this->USER_ID);
+        if (!empty($contact_info) && count($contact_info['history']) > 0) {
+            $data['status'] = TRUE;
+            $data['message'] = "History Found";
+            $data["data"] = $contact_info;
+            $this->response($data, REST_Controller::HTTP_OK);
+        } else {
+            $this->response(['status' => TRUE, 'message' => "History Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
 }
