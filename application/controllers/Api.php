@@ -78,8 +78,16 @@ class Api extends REST_Controller
                                 $this->Common->update_info(TBL_USERS,$User->id, $user_data,'id');
                             }
 
-                            $OPT_SMS = "$OTP verification code.";
-                            if (send_sms($User->phone, $OPT_SMS)) {
+                            $OPT_SMS = "One-Time Password (OTP) for verification is: $OTP  Please use this OTP to complete your verification process.";
+
+                        $msgData = array(
+                            "name"=> 'app',
+                            "languageCode"=> "en", 
+                            'headerValues' => array(),
+                            'bodyValues' => array($User->name,$OPT_SMS),
+                        );
+
+                        if (send_wp_msg($User->phone,$msgData)) {
                                     $this->response(['status' => FALSE, 'message' => 'Please Varify Your Phone No. With OTP', "data" => ["phone" => $User->phone]], REST_Controller::HTTP_BAD_REQUEST);
                             }else{
                                 $this->response(['status' => FALSE, 'message' => "OTP Send Fail, Please Try Again"], REST_Controller::HTTP_BAD_REQUEST);
@@ -191,8 +199,17 @@ class Api extends REST_Controller
                             );
                             $this->Common->update_info(TBL_USERS,$User->id, $user_data,'id');
                         }
-                        $OPT_SMS = "$OTP verification code.";
-                        if (send_sms($User->phone, $OPT_SMS)) {
+
+                        $OPT_SMS = "One-Time Password (OTP) for verification is: $OTP  Please use this OTP to complete your verification process.";
+
+                        $msgData = array(
+                            "name"=> 'app',
+                            "languageCode"=> "en", 
+                            'headerValues' => array(),
+                            'bodyValues' => array($User->name,$OPT_SMS),
+                        );
+
+                        if (send_wp_msg($User->phone,$msgData)) {
                             $this->response(['status' => TRUE,
                             // 'message' => 'You have successfully registered.Check your email address to verify your email.',
                             // "data" => ['user' => $User,$User,'user_id' => $User->id, 'login_token' => $login_token]]
@@ -239,6 +256,8 @@ class Api extends REST_Controller
             if ($this->Common->check_is_exists(TBL_USERS,$Phone,'phone',$this->USER_ID,'id')) {
                 $this->response(['status' => FALSE, 'message' => "Phone no is already used by another user. Please choose another Phone No."], REST_Controller::HTTP_BAD_REQUEST);
             }else{
+
+                $User = $this->Common->get_info(TBL_USERS,$this->USER_ID,'id');
                 $data = array(
                     "first_name" => $FirstName,
                     "last_name" => $LastName,
@@ -246,6 +265,9 @@ class Api extends REST_Controller
                     'phone' => $Phone,
                     'dob' => $DOB,
                 );
+                if($User->phone != $Phone){
+                    $data['phone_verified'] = 0;
+                }
                 $this->Common->update_info(TBL_USERS,$this->USER_ID, $data,'id');
                 $User = $this->Common->get_info(TBL_USERS,$this->USER_ID,'id');
 
@@ -285,7 +307,7 @@ class Api extends REST_Controller
                         "OTP" => ''
                     );
                     $this->Common->update_info(TBL_USERS,$User->id, $user_data,'id');
-
+                    $User = $this->Common->get_info(TBL_USERS,$PhoneNo,'phone');
                     $this->response(['status' => TRUE,
                     'message' => 'Login successfully',
                     "data" => ['user' => $User,'user_id' => $User->id, 'login_token' => $login_token]]
@@ -312,8 +334,16 @@ class Api extends REST_Controller
                 } else {
                     $OTP = rand(111111, 999999);
                 }
-                $OPT_SMS = "$OTP verification code.";
-                if (send_sms($User->phone, $OPT_SMS)) {
+                $OPT_SMS = "One-Time Password (OTP) for verification is: $OTP  Please use this OTP to complete your verification process.";
+
+                $msgData = array(
+                    "name"=> 'app',
+                    "languageCode"=> "en", 
+                    'headerValues' => array(),
+                    'bodyValues' => array($User->name,$OPT_SMS),
+                );
+
+                if (send_wp_msg($User->phone,$msgData)) {
                     $user_data = array(
                         "otp" => $OTP,
                     );
@@ -351,7 +381,7 @@ class Api extends REST_Controller
 
                     $this->response(['status' => TRUE,
                         'message' => 'An email with instructions for creating a new password has been sent to you.',
-                        "data" => []]
+                        "data" => new stdClass()]
                             , REST_Controller::HTTP_OK);
                     
                 
