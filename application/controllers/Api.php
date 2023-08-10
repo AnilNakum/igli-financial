@@ -590,6 +590,25 @@ class Api extends REST_Controller
         }
     }
 
+    public function due_payment_get($PaymentID = false) {
+        $join = array(
+            array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=p.ServiceID", 'type' => ''),
+        );
+        if ($PaymentID) {
+            $Payment_info = $this->Common->get_info(TBL_PAYMENT.' p',$PaymentID, 'ID','p.UserID = '.$this->USER_ID);
+        } else {
+            $Payment_info['payment'] = $this->Common->get_all_info(TBL_PAYMENT.' p',1,1,'p.UserID = '.$this->USER_ID,'p.*,s.ServiceTitle',$join);
+        }
+        if (!empty($Payment_info)) {
+            $data['status'] = TRUE;
+            $data['message'] = "Payment Due Found";
+            $data["data"] = $Payment_info;
+            $this->response($data, REST_Controller::HTTP_OK);
+        } else {
+            $this->response(['status' => TRUE, 'message' => "Due Payment Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
+        }
+    }
+
     public function my_service_get($ServiceStatus = false) {
         $join = array(
             array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=us.ServiceID", 'type' => ''),
