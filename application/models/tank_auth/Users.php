@@ -57,6 +57,7 @@ class Users extends CI_Model
         $this->db->where('LOWER(username)=', strtolower($login));
         $this->db->or_where('LOWER(email)=', strtolower($login));
         $this->db->or_where('phone=', strtolower($login));
+        $this->db->where('isDeleted=', 0);
 
         $query = $this->db->get($this->table_name);
         if ($query->num_rows() == 1) {
