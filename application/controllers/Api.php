@@ -161,27 +161,27 @@ class Api extends REST_Controller
                     'email' => $Email,
                     'phone' => $Phone,
                     'dob' => $DOB,
-                    'activated' => 1
+                    'activated' => 0
                 );
 
                 $data['new_email_key'] = md5(rand() . microtime());
-                if (!is_null($res = $this->users->create_user($data))) {
+                if (!is_null($res = $this->users->create_user($data,false))) {
                     
                     $data['user_id'] = $res['user_id'];
                     $data['password'] = $Password;
                     
                     $data['site_name'] = $this->config->item('website_name', 'tank_auth');
-                    // $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
+                    $data['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
 
-                    // $this->_send_email('activate', $data['email'], $data);
+                    $this->_send_email('activate', $data['email'], $data);
 
-                    // unset($data['password']); // Clear password (just for any case)
+                    unset($data['password']); // Clear password (just for any case)
 
                     
-                        if ($this->config->item('email_account_details', 'tank_auth')) { // send "welcome" email
-                            $this->_send_email('welcome', $data['email'], $data);
-                        }
-                        unset($data['password']); // Clear password (just for any case)
+                        // if ($this->config->item('email_account_details', 'tank_auth')) { // send "welcome" email
+                        //     $this->_send_email('welcome', $data['email'], $data);
+                        // }
+                        // unset($data['password']); // Clear password (just for any case)
 
                         $User = $this->users->get_user_by_email($Email);
                         // $login_token = $this->Rest_model->get_new_token([
@@ -211,9 +211,9 @@ class Api extends REST_Controller
 
                         if (send_wp_msg($User->phone,$msgData)) {
                             $this->response(['status' => TRUE,
-                            // 'message' => 'You have successfully registered.Check your email address to verify your email.',
+                            'message' => 'You have successfully registered.Check your email address to verify your email & Verify OTP to complete your verification process.',
                             // "data" => ['user' => $User,$User,'user_id' => $User->id, 'login_token' => $login_token]]
-                            'message' => 'You have successfully registered.OTP Send successfully.',
+                            // 'message' => 'You have successfully registered. OTP Send successfully.',
                             "data" => ["phone" => $User->phone]]
                                 , REST_Controller::HTTP_OK);
                         }else{

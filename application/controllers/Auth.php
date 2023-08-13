@@ -388,8 +388,9 @@ class Auth extends Base_Controller
 
         // Activate user
         if ($this->tank_auth->activate_user($user_id, $new_email_key)) { // success
-            $this->tank_auth->logout();
-            $this->_show_message($this->lang->line('auth_message_activation_completed') . ' ' . anchor('/auth/login/', 'Login'));
+            // $this->tank_auth->logout();
+            // $this->_show_message($this->lang->line('auth_message_activation_completed') . ' ' . anchor('/auth/login/', 'Login'));
+            $this->_show_message($this->lang->line('auth_message_activation_completed'));
         } else { // fail
             $this->_show_message($this->lang->line('auth_message_activation_failed'));
         }
