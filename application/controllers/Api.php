@@ -727,7 +727,9 @@ class Api extends REST_Controller
 
     public function birthday_wise_get() {
         $currentDate = date("Y-m-d");
-        $user_info = $this->Common->get_all_info(TBL_USERS,$currentDate,'dob','isDeleted  = 0');
+        $desiredDay = date("d"); 
+        $desiredMonth = date("m"); 
+        $user_info = $this->Common->get_all_info(TBL_USERS,0,'isDeleted ',"DAY(dob) = '$desiredDay' AND MONTH(dob) = '$desiredMonth'");
     if (!empty($user_info) && count($user_info) > 0) {
         foreach ($user_info as $key => $user) {
             $Name = $user->first_name.' '.$user->last_name;
@@ -737,7 +739,7 @@ class Api extends REST_Controller
                 'headerValues' => array(),
                 'bodyValues' => array($Name),
             );
-            send_wp_msg($user->phone,$msgData);
+            // send_wp_msg($user->phone,$msgData);
         }
         $data['status'] = TRUE;
         $data['data'] = $user_info;
