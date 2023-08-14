@@ -247,7 +247,7 @@ class Auth extends Base_Controller
             $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
             $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
             $this->form_validation->set_rules('phone', 'Phone Number', 'trim|required|numeric');
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']|alpha_dash');
+            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']');
             $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|matches[password]');
 
             $data['errors'] = array();
@@ -448,7 +448,7 @@ class Auth extends Base_Controller
         $user_id = $this->uri->segment(3);
         $new_pass_key = $this->uri->segment(4);
 
-        $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']|alpha_dash');
+        $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']');
         $this->form_validation->set_rules('confirm_new_password', 'Confirm new Password', 'trim|required|matches[new_password]');
 
         $data['errors'] = array();
@@ -492,7 +492,7 @@ class Auth extends Base_Controller
             redirect('/auth/login/');
         } else {
             $this->form_validation->set_rules('old_password', 'Old Password', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']|alpha_dash');
+            $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']');
             $this->form_validation->set_rules('confirm_new_password', 'Confirm new Password', 'trim|required|matches[new_password]');
 
             $data['errors'] = array();

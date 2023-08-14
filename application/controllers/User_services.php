@@ -103,7 +103,7 @@ class User_services extends Base_Controller
 
                     if($userService->ServiceStatus != $this->input->post('service_status')){
                         if($this->tank_auth->get_user_id() == 1){
-                            $Name = 'IGLI Financial Admin';
+                            $Name = 'Parth Mavani';
                         }else{
                             $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
                             $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
@@ -126,21 +126,39 @@ class User_services extends Base_Controller
                                     'bodyValues' => array($service->ServiceTitle,$Name),
                                 );
                                 send_wp_msg($user->phone,$msgData);
+                            }else{
+                                $msgData = array(
+                                    "name"=> 'ongoing_services',
+                                    "languageCode"=> "en", 
+                                    'headerValues' => array(),
+                                    'bodyValues' => array($service->ServiceTitle,$Name),
+                                );
+                                send_wp_msg($user->phone,$msgData);
                             }
                         }
                     }
 
                     if($userService->ProgressStatus != $this->input->post('progress_status')){
-                        
+                        if($this->input->post('progress_status') == 'Pending By Customer'){
+                            $mailData = array(
+                                'username' => $user->name,
+                                'ServiceTitle' => $service->ServiceTitle,
+                                'progressStatus' => 'Pending By Customer',
+                                'Reason' => $Reason,
+                                'site_name' => $this->config->item('website_name', 'tank_auth')
+                            );
+                            $Subject = $this->config->item('website_name', 'tank_auth').' Service:'.$service->ServiceTitle.' Status';
+                            $this->_send_email($Subject,'pending_customer', $user->email, $mailData);
+                        }
                     }
 
                     $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
-                    if ($this->Common->update_info(TBL_USER_SERVICES, $ID, $post_data, 'ID')) :
+                    if ($this->Common->update_info(TBL_USER_SERVICES, $ID, $post_data, 'ID')) {
                         $response = array("status" => "ok", "heading" => "Updated successfully...", "message" => "Details updated successfully.");
-                    else :
+                    } else {
                         $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
-                    endif;
+                     }
                 }else{
                     $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['CreatedAt'] = date("Y-m-d H:i:s");
@@ -187,5 +205,20 @@ class User_services extends Base_Controller
         $this->datatables->add_column('action', '$1', 'user_service_action_row(us.ID)');
         $this->datatables->unset_column('us.ID');
         echo $this->datatables->generate();
+    }
+
+    public function _send_email($subject,$type, $email, &$data)
+    {
+        $this->load->library('email');
+        $this->email->from($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->to($email);
+        $this->email->subject($subject, $this->config->item('website_name', 'tank_auth'));
+        $this->email->message($this->load->view('email/' . $type . '-html', $data, true));
+        $this->email->set_alt_message($this->load->view('email/' . $type . '-txt', $data, true));
+        $this->email->send();
+        // echo $this->email->print_debugger();
+        // exit;
+        return;
     }
 }

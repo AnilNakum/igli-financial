@@ -20,7 +20,7 @@ class Api extends REST_Controller
         $this->Method = $this->router->fetch_method();
         $this->Class = $this->router->fetch_class();
         $_POST = json_decode(file_get_contents("php://input"), true);
-        if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt') {
+        if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt' && $this->Method != 'birthday_wise') {
             $this->USER_ID = $this->_Check_Auth_Token();
         }
     }
@@ -536,6 +536,14 @@ class Api extends REST_Controller
             }
           }
         if (!empty($services_info)) {
+            foreach ($services_info as $key => $value) {
+                $User_info = $this->Common->get_info(TBL_USER_INTEREST,$value->ServiceID,'ServiceID','UserID='.$this->USER_ID);
+                if (!empty($User_info)) {
+                $services_info[$key]->Save = "1";
+            }else{
+                    $services_info[$key]->Save = "0";
+                }
+            }
             $sData['services'] = $services_info;
             $data['status'] = TRUE;
             $data['message'] = "Services Found";
@@ -716,4 +724,26 @@ class Api extends REST_Controller
             $this->response(['status' => TRUE, 'message' => "History Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
         }
     }
+
+    public function birthday_wise_get() {
+        $currentDate = date("Y-m-d");
+        $user_info = $this->Common->get_all_info(TBL_USERS,$currentDate,'dob','isDeleted  = 0');
+    if (!empty($user_info) && count($user_info) > 0) {
+        foreach ($user_info as $key => $user) {
+            $Name = $user->first_name.' '.$user->last_name;
+            $msgData = array(
+                "name"=> 'birth_day_wish',
+                "languageCode"=> "en", 
+                'headerValues' => array(),
+                'bodyValues' => array($Name),
+            );
+            send_wp_msg($user->phone,$msgData);
+        }
+        $data['status'] = TRUE;
+        $data['data'] = $user_info;
+        $this->response($data, REST_Controller::HTTP_OK);
+    } else {
+        $this->response(['status' => TRUE, 'message' => "History Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
+    }
+}
 }
