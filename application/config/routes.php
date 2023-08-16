@@ -59,6 +59,7 @@ $route['services/ongoing'] = 'user_services/ongoing';
 $route['services/onhold'] = 'user_services/onhold';
 $route['services/completed'] = 'user_services/completed';
 $route['upload'] = 'document';
+$route['pages'] = 'setting/pages';
 
 $route['calendar'] = 'calendar/eventdata';
 $route['calendar/view/(:any)'] = 'calendar/eventdata/$1';

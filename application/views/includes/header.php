@@ -324,7 +324,11 @@
                         </span></a>
                 </li>
                 <li class="<?php echo (($this->uri->segment(1) == "banner")) ? 'active' : ""; ?>"> <a
-                        href="<?php echo base_url('banner'); ?>"><i class="fa-solid fa-images"></i><span>Banners
+                        href="<?php echo base_url('banner'); ?>"><i class="fa-solid fa-images"></i><span>App Banners
+                        </span></a>
+                </li>
+                <li class="<?php echo (($this->uri->segment(1) == "pages")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('pages'); ?>"><i class="fa-solid fa-file-lines"></i><span>App Help Pages
                         </span></a>
                 </li>
                 <?php } ?>

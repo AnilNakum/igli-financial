@@ -160,6 +160,25 @@ class User_services extends Base_Controller
                         $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
                      }
                 }else{
+                    if($this->input->post('service_status') == 'ongoing'){
+                        $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
+                        $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
+                        if($this->tank_auth->get_user_id() == 1){
+                            $Name = 'Parth Mavani';
+                        }else{
+                            $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
+                            $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
+                        }
+                        
+                        $msgData = array(
+                            "name"=> 'ongoing_services',
+                            "languageCode"=> "en", 
+                            'headerValues' => array(),
+                            'bodyValues' => array($service->ServiceTitle,$Name),
+                        );
+                        send_wp_msg($user->phone,$msgData);
+                    }
+
                     $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['CreatedAt'] = date("Y-m-d H:i:s");
                     if ($ID = $this->Common->add_info(TBL_USER_SERVICES, $post_data)) {

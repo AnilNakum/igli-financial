@@ -15,12 +15,13 @@ class Api extends REST_Controller
         $this->lang->load('tank_auth');
         $this->load->model('tank_auth/users');
         $this->load->model('Rest_model');
+        $this->load->model('Settings_model');
         $this->load->model('Remove_records');
         
         $this->Method = $this->router->fetch_method();
         $this->Class = $this->router->fetch_class();
         $_POST = json_decode(file_get_contents("php://input"), true);
-        if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt' && $this->Method != 'birthday_wise') {
+        if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt' && $this->Method != 'help_pages' && $this->Method != 'birthday_wise') {
             $this->USER_ID = $this->_Check_Auth_Token();
         }
     }
@@ -745,7 +746,19 @@ class Api extends REST_Controller
         $data['data'] = $user_info;
         $this->response($data, REST_Controller::HTTP_OK);
     } else {
-        $this->response(['status' => TRUE, 'message' => "History Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
+        $this->response(['status' => TRUE, 'message' => "User Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
+    }
+}
+
+public function help_pages_get() {
+    $Page_info['pages'] = $this->Settings_model->get_settings('page');
+    if (!empty($Page_info)) {
+        $data['status'] = TRUE;
+        $data['message'] = "Pages Info Found";
+        $data["data"] = $Page_info;
+        $this->response($data, REST_Controller::HTTP_OK);
+    } else {
+        $this->response(['status' => TRUE, 'message' => "Pages Info Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
     }
 }
 }

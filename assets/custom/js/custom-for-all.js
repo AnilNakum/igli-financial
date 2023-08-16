@@ -162,8 +162,6 @@ $(document).ready(function () {
             },
             success: function (returnData) {
                 if (returnData.status == "ok") {
-
-
                     if (form == 'banner_frm') {
                         if ($('.common_datatable').length > 0) {
                             get_updated_datatable(false);
@@ -229,6 +227,9 @@ $(document).ready(function () {
                     }
                     if (form == 'event_frm') {
                         pop_up.notification(returnData.message, 'redirect', "'" + "calendar/" + "'", true);
+                    }
+                    if (form == 'page_setting_frm') {
+                        pop_up.notification(returnData.message, 'redirect', "'" + "pages/" + "'", true);
                     }
 
                     pop_up.close();

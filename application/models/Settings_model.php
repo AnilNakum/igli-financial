@@ -8,8 +8,11 @@ class Settings_model extends CI_Model
         parent::__construct();
     }
 
-    public function get_settings()
+    public function get_settings($code='')
     {
+        if($code != ''){
+            $this->db->where('Code', $code);
+        }
         $result = $this->db->get(TBL_SETTINGS);
         $return = array();
         foreach ($result->result() as $results) {
