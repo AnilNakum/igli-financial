@@ -93,7 +93,8 @@ class User_services extends Base_Controller
                     "UserID" => $this->input->post('user_id'),
                     "ServiceStatus" => $this->input->post('service_status'),
                     "ProgressStatus" => ($this->input->post('progress_status'))?$this->input->post('progress_status'):"On Going",
-                    "Reason" => $Reason
+                    "Reason" => $Reason,
+                    "AdminID"=>$this->tank_auth->get_user_id()
                 );
                 
                 if ($ID > 0) {
@@ -207,12 +208,13 @@ class User_services extends Base_Controller
             $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.CreatedAt');
         }
         
+        $this->datatables->where('us.AdminID', $this->tank_auth->get_user_id());
         $this->datatables->where('us.isDeleted', 0);
         $this->datatables->where('us.ServiceStatus',  $page );
     
-        if(ROLE == 2){
-            $this->datatables->where_in('s.ServiceID',USER_SERVICE);
-        }
+        // if(ROLE == 2){
+        //     $this->datatables->where_in('s.ServiceID',USER_SERVICE);
+        // }
         
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=us.ServiceID', '');
         $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');

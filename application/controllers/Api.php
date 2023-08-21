@@ -621,9 +621,10 @@ class Api extends REST_Controller
     public function my_service_get($ServiceStatus = false) {
         $join = array(
             array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=us.ServiceID", 'type' => ''),
+            array('table' => TBL_USERS . ' u', 'on' => "u.ID=us.AdminID", 'type' => ''),
         );
         if ($ServiceStatus) {
-            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES.' us',$ServiceStatus, 'us.ServiceStatus','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join);
+            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES.' us',$ServiceStatus, 'us.ServiceStatus','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','us.*,CONCAT(u.first_name," ",u.last_name) as  RMname,s.*',$join);
         } else {
             $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES .' us',1,1,'us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join,false);
         }
@@ -740,7 +741,7 @@ class Api extends REST_Controller
                 'headerValues' => array(),
                 'bodyValues' => array($Name),
             );
-            // send_wp_msg($user->phone,$msgData);
+            send_wp_msg($user->phone,$msgData);
         }
         $data['status'] = TRUE;
         $data['data'] = $user_info;

@@ -145,6 +145,7 @@ class Subadmin extends Base_Controller
             $data_obj = $this->Common->get_info(TBL_USERS, $id, 'id');
             if (is_object($data_obj) && count((array) $data_obj) > 0) {
                 $data["user_info"] = $data_obj;
+                $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'first_name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,'username');
                 $data['Services'] =  $this->Common->get_list(TBL_SERVICES, 'ServiceID', 'ServiceTitle', "Status=1 AND isDeleted=0");
             } else {
                 redirect('subadmin/');
@@ -158,31 +159,102 @@ class Subadmin extends Base_Controller
         if ($this->input->post()) {
             $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $this->form_validation
-                ->set_rules('service_id', 'Service', 'required');
+                ->set_rules('service_id', 'Service', 'required')
+                ->set_rules('service_user_id', 'User', 'required');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                
-                $post_data = array(
+
+                $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"None";
+                $user_data = array(
                     "ServiceID" => $this->input->post('service_id'),
-                    "UserID" => $this->input->post('user_id'),
-                    "Status" => $this->input->post('status')
+                    "UserID" => $this->input->post('service_user_id'),
+                    "ServiceStatus" => 'ongoing',
+                    "ProgressStatus" => "On Going",
+                    "Reason" => $Reason,
+                    "AdminID"=> $this->input->post('user_id')
                 );
-                
-                $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
-                $post_data['CreatedAt'] = date("Y-m-d H:i:s");
-                if ($ID = $this->Common->add_info(TBL_SUBADMIN_SERVICES, $post_data)) {
-                    $response = array("status" => "ok", "heading" => "Assign successfully...", "message" => "Details Assign successfully.");
-                } else {
+
+                $subAdmin = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
+                $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
+                $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
+                $user = $this->Common->get_info(TBL_USERS, $this->input->post('service_user_id'),'id');
+
+                $msgData = array(
+                    "name"=> 'ongoing_services',
+                    "languageCode"=> "en", 
+                    'headerValues' => array(),
+                    'bodyValues' => array($service->ServiceTitle,$Name),
+                );
+                send_wp_msg($user->phone,$msgData);
+                $user_data['CreatedBy'] = $this->tank_auth->get_user_id();
+                $user_data['CreatedAt'] = date("Y-m-d H:i:s");
+
+                if ($ID = $this->Common->add_info(TBL_USER_SERVICES, $user_data)) {
+                    $post_data = array(
+                        "ServiceID" => $this->input->post('service_id'),
+                        "UserID" => $this->input->post('user_id'),
+                        "Status" => $this->input->post('status')
+                    );
+                    
+                    $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
+                    $post_data['CreatedAt'] = date("Y-m-d H:i:s");
+                    if ($ID = $this->Common->add_info(TBL_SUBADMIN_SERVICES, $post_data)) {
+                        $response = array("status" => "ok", "heading" => "Assign successfully...", "message" => "Details Assign successfully.");
+                    } else {
+                        $response = array("status" => "error", "heading" => "Not Assign successfully...", "message" => "Details not Assign successfully.");
+                    }
+                }else {
                     $response = array("status" => "error", "heading" => "Not Assign successfully...", "message" => "Details not Assign successfully.");
                 }
-
             } else {
                 $response['error'] = $this->form_validation->error_array();
             }
             echo json_encode($response);
             die;
         }
+    }
+
+    public function service_users($id = 1){
+        if($id != 1){
+            $id = decrypt($id);
+        }
+        $data['page_title'] = "Sub Admin User Services";
+        $data['SubAdmin'] = $this->Common->get_info(TBL_USERS, $id, 'id');
+        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'first_name', "role_id=2 AND activated=1 AND isDeleted=0",false,false,false,'username');
+        $data['Services'] = $this->Common->get_all_info(TBL_USER_SERVICES,'ongoing','ServiceStatus','AdminID = '.$id.' AND isDeleted=0');
+        $data['id'] = $id;
+        $this->view('subadmin/manage-user-services', $data);
+    }
+
+    public function manage_user_service($id) {
+        $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.ServiceStatus,CONCAT(a.first_name," ",a.last_name) as  rm,us.CreatedAt');
+        
+        if ($this->input->post('user_id')) {
+            $this->datatables->where('us.AdminID', $this->input->post('user_id'));
+        }
+        // else{
+        //     if($id != 1){
+        //         $this->datatables->where('us.AdminID', $id);
+        //     }
+        // }
+        if ($this->input->post('service_status')) {
+            $this->datatables->where('us.ServiceStatus',  $this->input->post('service_status') );
+        }
+        $this->datatables->where('us.isDeleted', 0);
+
+    
+        
+        $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=us.ServiceID', '');
+        $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');
+        $this->datatables->join(TBL_USERS . ' a', 'a.id=us.AdminID', '');
+        $this->datatables->from(TBL_USER_SERVICES.' us')
+            ->edit_column('us.ServiceStatus', '$1', 'ServiceStatus(us.ServiceStatus)')
+            ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
+        
+        $this->datatables->add_column('action', '$1', 'sa_user_service_action_row(us.ID)');
+        $this->datatables->unset_column('us.ID');
+        echo $this->datatables->generate();
     }
 }

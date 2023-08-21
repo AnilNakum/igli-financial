@@ -63,3 +63,5 @@ $route['pages'] = 'setting/pages';
 
 $route['calendar'] = 'calendar/eventdata';
 $route['calendar/view/(:any)'] = 'calendar/eventdata/$1';
+$route['service-users'] = 'subadmin/service_users';
+$route['service-users/(:any)'] = 'subadmin/service_users/$1';

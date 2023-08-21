@@ -1,13 +1,18 @@
 <?php
 if (isset($us_info) && $us_info->ID > 0) {
     $ID = array('name' => 'id', 'id' => 'id', 'value' => ($us_info->ID > 0) ? $us_info->ID : "", 'type' => 'hidden');
+    $Service = array('name' => 'service_id', 'id' => 'service_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required","disabled"=>"disabled");
+    $User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required","disabled"=>"disabled");
+    $HServiceID = array('name' => 'service_id', 'id' => 'service_id', 'value' => ($us_info->ServiceID > 0) ? $us_info->ServiceID : "", 'type' => 'hidden');
+    $HUserID = array('name' => 'user_id', 'id' => 'user_id', 'value' => ($us_info->UserID > 0) ? $us_info->UserID : "", 'type' => 'hidden');
+}else{
+    $Service = array('name' => 'service_id', 'id' => 'service_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
+    $User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
 }
 
-$Service = array('name' => 'service_id', 'id' => 'service_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
 $ServiceList = array("" => "Select Service") + $Services;
 $ServiceID = (isset($us_info) && $us_info->ServiceID != "") ? $us_info->ServiceID : set_value('service_id');
 
-$User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
 $UserList = array("" => "Select User") + $Users;
 $UserID = (isset($us_info) && $us_info->UserID != "") ? $us_info->UserID : set_value('user_id');
 
@@ -55,6 +60,8 @@ $form_attr = array('class' => 'default_form assign_services_frm', 'id' => 'assig
             <?php echo validation_errors(); 
              if (isset($us_info) && $us_info->ID > 0) {
                 echo form_input($ID);
+                echo form_input($HServiceID);
+                echo form_input($HUserID);
             }
             
             ?>

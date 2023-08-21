@@ -59,6 +59,24 @@ EOF;
     return $return;
 }
 
+function ServiceStatus($status)
+{
+    if ($status == 'onhold') {
+        $return = <<<EOF
+        <span class="text text-warning "><i class="fa-solid fa-circle-pause"></i> On Hold</span>
+EOF;
+    } else if ($status == 'completed') {
+        $return = <<<EOF
+        <span class="text text-success"><i class="fa-solid fa-circle-check"></i> Completed</span>
+EOF;
+    } else {
+        $return = <<<EOF
+        <span class="text text-info"><i class="fa-solid fa-circle-play"></i> On Going</span>
+EOF;
+    }
+    return $return;
+}
+
 function ProductAprovelStatus($status)
 {
     if ($status == 'pending') {
@@ -137,12 +155,12 @@ function service_action_row($ServiceID)
             </div>
 EOF;
     }else{
-        $action = <<<EOF
-            <div class="tooltip-top text-center">
-                <a data-original-title="Update Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="full" data-id="{$ServiceID}" data-control="services" data-method="update"><i class="fas fa-pencil-alt"></i></a>
-            </div>
-EOF;
-
+//         $action = <<<EOF
+//             <div class="tooltip-top text-center">
+//                 <a data-original-title="Update Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="full" data-id="{$ServiceID}" data-control="services" data-method="update"><i class="fas fa-pencil-alt"></i></a>
+//             </div>
+// EOF;
+$action ='None';
     }
     return $action;
 }
@@ -162,8 +180,10 @@ EOF;
 function subadmin_action_row($UserID)
 {
     $UserID = encrypt($UserID);
+    $URL = base_url('/service-users/'.$UserID);
     $action = <<<EOF
     <div class="tooltip-top text-center">
+                <a data-original-title="Assigned User" data-placement="top" data-toggle="tooltip" href="{$URL}" class="btn btn-xs  l-cyan  btn-equal btn-sm btn-edit btn-mini" data-id="{$UserID}" data-control="subadmin" data-method="assign_service"><i class="fa-solid fa-eye"></i></a>
                 <a data-original-title="Assign Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form" data-id="{$UserID}" data-control="subadmin" data-method="assign_service"><i class="fa-solid fa-file-circle-plus"></i></a>
                 <a data-original-title="Update Sub Admin" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$UserID}" data-control="subadmin" data-method="update"><i class="fas fa-pencil-alt"></i></a>
                 <a data-original-title="Remove Sub Admin" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$UserID}" data-control="remove" data-method="user"><i class="far fa-trash-alt"></i></a>
@@ -224,5 +244,16 @@ EOF;
 EOF;
 
 }
+    return $action;
+}
+
+function sa_user_service_action_row($ID)
+{
+    $ID = encrypt($ID);
+    $action = <<<EOF
+    <div class="tooltip-top text-center">
+        <a data-original-title="Remove User Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-control="remove" data-method="user_service" data-type="soft"><i class="far fa-trash-alt"></i></a>
+    </div>
+EOF;
     return $action;
 }
