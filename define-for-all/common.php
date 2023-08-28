@@ -14,8 +14,8 @@ if ($_SERVER['HTTP_HOST'] == 'localhost') {
     $BASE_URL = 'https://' . $_SERVER['HTTP_HOST'] . '/';
 }
 
-define("WEBSITE", "IGLI Financial");
-define("WEBSITE_NAME", "IGLI Financial");
+define("WEBSITE", "IGLI FINANCIAL");
+define("WEBSITE_NAME", "IGLI FINANCIAL");
 define("WEBSITE_URL", "https://iglifinancial.com/");
 define("WEBSITE_EMAIL", "info@iglifinancial.com");
 define("SUPPORT_EMAIL", "info@iglifinancial.com");

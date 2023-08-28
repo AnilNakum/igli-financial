@@ -82,7 +82,7 @@ class Document extends Base_Controller
     
                         if($this->tank_auth->get_user_id() == 1){
                             $Name = 'Parth Mavani';
-                            $No = '8511468963';
+                            $No = '9409494483';
                         }else{
                             $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
                             $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
