@@ -120,6 +120,7 @@ class Document extends Base_Controller
             $this->datatables->where('d.Status', $this->input->post('status'));
         }
         $this->datatables->where('d.isDeleted', 0);
+        $this->datatables->where('d.CreatedBy', $this->tank_auth->get_user_id());
     
         $this->datatables->join(TBL_USERS . ' u', 'u.id=d.UserID', '');
         $this->datatables->from(TBL_DOCUMENT.' d')

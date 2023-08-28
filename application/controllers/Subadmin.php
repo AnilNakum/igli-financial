@@ -56,7 +56,21 @@ class Subadmin extends Base_Controller
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
+
+            
             if ($this->form_validation->run()) {
+                $Phone = $this->input->post('phone');
+                $Email = $this->input->post('email');
+                if (!$this->users->is_email_available($Email)) {
+                    $response = array("status" => "error", "heading" => "Not Added successfully...", "message" => "Email is already used by another user. Please choose another email.");
+                    echo json_encode($response);
+            die;
+                }else if (!$this->users->is_phone_available($Phone)) {
+                    $response = array("status" => "error", "heading" => "Not Added successfully...", "message" => "Phone no is already used by another user. Please choose another Phone No.");
+                    echo json_encode($response);
+            die;
+                }
+                
                 
                 $post_data = array(
                     "username" => $this->input->post('username'),

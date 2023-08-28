@@ -75,9 +75,9 @@ class Users extends CI_Model
      */
     public function get_user_by_login($login)
     {
-        $this->db->where('isDeleted=',0);
         $this->db->where('LOWER(username)=', strtolower($login));
         $this->db->or_where('LOWER(email)=', strtolower($login));
+        $this->db->where('isDeleted=',0);
 
         $query = $this->db->get($this->table_name);
         if ($query->num_rows() == 1) {
@@ -96,6 +96,7 @@ class Users extends CI_Model
     public function get_user_by_username($username)
     {
         $this->db->where('LOWER(username)=', strtolower($username));
+        $this->db->where('isDeleted=',0);
 
         $query = $this->db->get($this->table_name);
         if ($query->num_rows() == 1) {
@@ -114,6 +115,7 @@ class Users extends CI_Model
     public function get_user_by_email($email)
     {
         $this->db->where('LOWER(email)=', strtolower($email));
+        $this->db->where('isDeleted=',0);
 
         $query = $this->db->get($this->table_name);
         if ($query->num_rows() == 1) {
@@ -133,6 +135,7 @@ class Users extends CI_Model
     {
         $this->db->select('1', false);
         $this->db->where('LOWER(username)=', strtolower($username));
+        $this->db->where('isDeleted=',0);
 
         $query = $this->db->get($this->table_name);
         return $query->num_rows() == 0;
@@ -149,6 +152,7 @@ class Users extends CI_Model
         $this->db->select('1', false);
         $this->db->where('LOWER(email)=', strtolower($email));
         $this->db->or_where('LOWER(new_email)=', strtolower($email));
+        $this->db->where('isDeleted=', 0);
 
         $query = $this->db->get($this->table_name);
         return $query->num_rows() == 0;
@@ -164,6 +168,7 @@ class Users extends CI_Model
     {
         $this->db->select('1', false);
         $this->db->where('phone=', $phone);
+        $this->db->where('isDeleted=', 0);
 
         $query = $this->db->get($this->table_name);
         return $query->num_rows() == 0;

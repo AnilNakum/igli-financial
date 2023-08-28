@@ -34,14 +34,16 @@ class Base_Controller extends CI_Controller
                 define('ROLE',$this->tank_auth->get_role_id());
                 if(ROLE == 2){
                     $ServiceIDs = $this->Common->get_info(TBL_SUBADMIN_SERVICES, $this->tank_auth->get_user_id(), 'UserID',false,'ServiceID');
-                    $ServiceID = '';
+                    $ServiceID = '0';
                     $cnt = 0;
-                    foreach ($ServiceIDs as $key => $value) {
-                        if($cnt != 0){
-                            $ServiceID .= ',';
+                    if($ServiceIDs){
+                        foreach ($ServiceIDs as $key => $value) {
+                            if($cnt != 0){
+                                $ServiceID .= ',';
+                            }
+                            $ServiceID .=  $value;
+                            $cnt++;
                         }
-                        $ServiceID .=  $value;
-                        $cnt++;
                     }
                     define('USER_SERVICE', $ServiceID);
                 }
