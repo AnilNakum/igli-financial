@@ -605,6 +605,7 @@ function get_datatable() {
         var oTable = $(this).dataTable({
             bProcessing: true,
             bServerSide: true,
+            bPaginate: false,
             lengthChange: false,
             searching: true,
             ordering: true,
