@@ -290,10 +290,11 @@
                     <a href="<?php echo base_url('services/completed'); ?>"><i
                             class="fa-solid fa-circle-check"></i><span>Completed</span></a>
                 </li>
+                <?php if(ROLE == 1){?>
                 <li class="<?php echo (($this->uri->segment(1) == "service-users") ) ? 'active' : ""; ?>">
                     <a href="<?php echo base_url('service-users'); ?>"><i class="fa-solid fa-circle-user"></i><span>By SubAdmin</span></a>
                 </li>
-
+<?php } ?>
                 <li class="header">Document Upload </li>
                 <li class="<?php echo (($this->uri->segment(1) == "upload")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('upload'); ?>"><i class="fa-solid fa-cloud-arrow-up"></i><span>Upload

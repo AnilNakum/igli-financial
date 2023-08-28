@@ -51,8 +51,10 @@ define("IMAGE_DIR", BASE_URL.UPLOAD_DIR);
 define('PROTOCOL', 'smtp');
 define('SMTP_HOST', "ssl://smtp.googlemail.com");
 define('SMTP_PORT', "465");
-define('SMTP_USER', "info.iglifinancial@gmail.com");
-define('SMTP_PASS', "rpwhocxqzqiptpsc");
+define('SMTP_USER', "welcome.iglifinancial@gmail.com");
+define('SMTP_PASS', "pvkzplieuxsufvob");
+// define('SMTP_USER', "info.iglifinancial@gmail.com");
+// define('SMTP_PASS', "rpwhocxqzqiptpsc");
 
 define('SMSAUTHKEY', "69866AT3vL0g3m358ef28ef");
 

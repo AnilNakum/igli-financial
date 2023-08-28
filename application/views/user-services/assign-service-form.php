@@ -27,9 +27,9 @@ $SStatusID = (isset($us_info) && $us_info->ServiceStatus != "") ? $us_info->Serv
 
 if($type == 'ongoing'){ 
     $PS = array(
-        "Pending By IGLI" => "Pending By IGLI",
-        "Pending By Government" => "Pending By Government",
-        "Pending By Customer" => "Pending By Customer"
+        "Pending With IGLI FINANCIAL" => "Pending With IGLI FINANCIAL",
+        "Pending with Government" => "Pending with Government",
+        "Pending With Client" => "Pending With Client"
     );
     $PStatus = array('name' => 'progress_status', 'id' => 'progress_status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
     $PStatusList = array("On Going" => "On Going") + $PS;
@@ -106,7 +106,7 @@ $form_attr = array('class' => 'default_form assign_services_frm', 'id' => 'assig
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label">Reason Note </label>
+                                <label class="form-label">Reason Note <span class="text-danger">*</span></label>
                                 <?php echo form_textarea($Reason); ?>
                             </div>
                         </div>

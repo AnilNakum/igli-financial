@@ -77,6 +77,28 @@ EOF;
     return $return;
 }
 
+function GetProgressStatus($status)
+{
+    if ($status == 'Pending With Client') {
+        $return = <<<EOF
+        <span class="text text-warning badge badge-warning m-l-10 hidden-sm-down"> Pending With Client</span>
+EOF;
+    } else if ($status == 'Pending with Government') {
+        $return = <<<EOF
+        <span class="text text-success badge badge-success m-l-10 hidden-sm-down"> Pending with Government</span>
+EOF;
+    }else if ($status == 'Pending With IGLI FINANCIAL') {
+        $return = <<<EOF
+        <span class="text text-danger badge badge-danger m-l-10 hidden-sm-down"> Pending With IGLI FINANCIAL</span>
+EOF;
+    } else {
+        $return = <<<EOF
+        <span class="text text-info badge badge-info m-l-10 hidden-sm-down"> On Going</span>
+EOF;
+    }
+    return $return;
+}
+
 function ProductAprovelStatus($status)
 {
     if ($status == 'pending') {

@@ -87,7 +87,13 @@ class User_services extends Base_Controller
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"None";
+                if (($this->input->post('progress_status') != 'On Going') && $ID != 0 && $this->input->post('reason') == '') {
+                    $response = array("status" => "error", "heading" => "Reason Note Missing", "message" => "Reason Note should not be blank.");
+                    echo json_encode($response);
+                    die;
+                }
+
+                $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"";
                 $post_data = array(
                     "ServiceID" => $this->input->post('service_id'),
                     "UserID" => $this->input->post('user_id'),
@@ -102,13 +108,15 @@ class User_services extends Base_Controller
                     $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
                     $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
 
+                    if($this->tank_auth->get_user_id() == 1){
+                        $Name = 'Parth Mavani';
+                        $No = '8511468963';
+                    }else{
+                        $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
+                        $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
+                        $No = $subAdmin->phone;
+                    }
                     if($userService->ServiceStatus != $this->input->post('service_status')){
-                        if($this->tank_auth->get_user_id() == 1){
-                            $Name = 'Parth Mavani';
-                        }else{
-                            $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
-                            $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
-                        }
 
                         if($user){
                             if($this->input->post('service_status') == 'onhold'){
@@ -140,17 +148,19 @@ class User_services extends Base_Controller
                     }
 
                     if($userService->ProgressStatus != $this->input->post('progress_status')){
-                        if($this->input->post('progress_status') == 'Pending By Customer'){
+                        // if($this->input->post('progress_status') == 'Pending With Client'){
                             $mailData = array(
                                 'username' => $user->name,
                                 'ServiceTitle' => $service->ServiceTitle,
-                                'progressStatus' => 'Pending By Customer',
+                                'progressStatus' => $this->input->post('progress_status'),
                                 'Reason' => $Reason,
+                                'RMName' => $Name,
+                                'RMNo' => $No,
                                 'site_name' => $this->config->item('website_name', 'tank_auth')
                             );
-                            $Subject = $this->config->item('website_name', 'tank_auth').' Service:'.$service->ServiceTitle.' Status';
+                            $Subject = $this->config->item('website_name', 'tank_auth').' Service:'.$service->ServiceTitle.' ('.$this->input->post('progress_status').')';
                             $this->_send_email($Subject,'pending_customer', $user->email, $mailData);
-                        }
+                        // }
                     }
 
                     $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
@@ -211,6 +221,10 @@ class User_services extends Base_Controller
         $this->datatables->where('us.AdminID', $this->tank_auth->get_user_id());
         $this->datatables->where('us.isDeleted', 0);
         $this->datatables->where('us.ServiceStatus',  $page );
+        
+        if ($this->input->post('progress_status')) {
+            $this->datatables->where('us.ProgressStatus',  $this->input->post('progress_status') );
+        }
     
         // if(ROLE == 2){
         //     $this->datatables->where_in('s.ServiceID',USER_SERVICE);
@@ -219,7 +233,8 @@ class User_services extends Base_Controller
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=us.ServiceID', '');
         $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');
         $this->datatables->from(TBL_USER_SERVICES.' us')
-            ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
+            ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)')
+            ->edit_column('us.ProgressStatus', '$1', 'GetProgressStatus(us.ProgressStatus)');
         // if($page == 'ongoing'){
         //     $this->datatables->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
         // }

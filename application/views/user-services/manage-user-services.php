@@ -1,5 +1,14 @@
 <?php
-
+if($type == 'ongoing'){ 
+    $PS = array(
+        "On Going" => "On Going",
+        "Pending With IGLI FINANCIAL" => "Pending With IGLI FINANCIAL",
+        "Pending with Government" => "Pending with Government",
+        "Pending With Client" => "Pending With Client"
+    );
+    $PStatus = array('name' => 'progress_status', 'id' => 'progress_status_filter', 'class' => "select2 ProgressStatusFilter", "tabindex" => 4, "data-validation" => "required");
+    $PStatusList = array("" => "All") + $PS;
+ }
 ?>
 <section class="content home">
     <div class="block-header">
@@ -43,7 +52,15 @@
                             <div class="setup-header">
                                 <div class="row">
                                     
-                                    <div class="col-md-6 col-sm-6"></div>
+                                <div class="col-md-3 col-sm-3">
+                                    <?php if($type == 'ongoing'){ ?>
+                                        <div class="form-group">
+                                        <label class="form-label">Service Progress Status</label>
+                                            <?php echo form_dropdown($PStatus, $PStatusList); ?>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3"></div>
                                     <div class="col-md-6 col-sm-6">
                                         <div class="manage-rightside">
                                             <div class="form-group">

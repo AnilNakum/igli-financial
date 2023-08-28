@@ -640,6 +640,7 @@ function get_datatable() {
                     'payment_status': '#payment_status_filter',
                     'user_id': '#user_id_filter',
                     'service_status': '#service_status_filter',
+                    'progress_status': '#progress_status_filter',
                 };
                 $.each(pushDataArray, function (index, item) {
                     if ($(document).find(item).length > 0 && $(document).find(item).val() != '') {
@@ -683,6 +684,11 @@ function get_datatable() {
                 }
                 if ($('.ServieStatusFilter').length > 0) {
                     $('.ServieStatusFilter').on("change", function () {
+                        oTable.fnDraw();
+                    });
+                }
+                if ($('.ProgressStatusFilter').length > 0) {
+                    $('.ProgressStatusFilter').on("change", function () {
                         oTable.fnDraw();
                     });
                 }

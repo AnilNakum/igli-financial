@@ -77,6 +77,27 @@ class Document extends Base_Controller
                     $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['CreatedAt'] = date("Y-m-d H:i:s");
                     if ($ID = $this->Common->add_info(TBL_DOCUMENT, $post_data)) {
+
+                        $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
+    
+                        if($this->tank_auth->get_user_id() == 1){
+                            $Name = 'Parth Mavani';
+                            $No = '8511468963';
+                        }else{
+                            $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
+                            $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
+                            $No = $subAdmin->phone;
+                        }
+
+                        $mailData = array(
+                            'username' => $user->name,
+                            'DocName' => $this->input->post('doc_name'),
+                            'RMName' => $Name,
+                            'site_name' => $this->config->item('website_name', 'tank_auth')
+                        );
+                        $Subject = $this->config->item('website_name', 'tank_auth').' - Document Uploaded';
+                        $this->_send_email($Subject,'document_uploaded', $user->email, $mailData);
+
                         $response = array("status" => "ok", "heading" => "Add successfully...", "message" => "Details added successfully.");
                     } else {
                         $response = array("status" => "error", "heading" => "Not Added successfully...", "message" => "Details not added successfully.");
@@ -108,5 +129,20 @@ class Document extends Base_Controller
         $this->datatables->unset_column('d.ID');
         // $this->datatables->group_by('d.UserID'); 
         echo $this->datatables->generate();
+    }
+
+    public function _send_email($subject,$type, $email, &$data)
+    {
+        $this->load->library('email');
+        $this->email->from($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->to($email);
+        $this->email->subject($subject, $this->config->item('website_name', 'tank_auth'));
+        $this->email->message($this->load->view('email/' . $type . '-html', $data, true));
+        $this->email->set_alt_message($this->load->view('email/' . $type . '-txt', $data, true));
+        $this->email->send();
+        // echo $this->email->print_debugger();
+        // exit;
+        return;
     }
 }
