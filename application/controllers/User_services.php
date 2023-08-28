@@ -87,7 +87,8 @@ class User_services extends Base_Controller
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                if (($this->input->post('progress_status') != 'On Going') && $ID != 0 && $this->input->post('reason') == '') {
+                
+                if ($this->input->post('service_status') == 'ongoing' && ($this->input->post('progress_status') != 'On Going') && $ID != 0 && $this->input->post('reason') == '') {
                     $response = array("status" => "error", "heading" => "Reason Note Missing", "message" => "Reason Note should not be blank.");
                     echo json_encode($response);
                     die;
