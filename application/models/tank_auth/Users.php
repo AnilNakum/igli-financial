@@ -75,6 +75,7 @@ class Users extends CI_Model
      */
     public function get_user_by_login($login)
     {
+        $this->db->where('isDeleted=',0);
         $this->db->where('LOWER(username)=', strtolower($login));
         $this->db->or_where('LOWER(email)=', strtolower($login));
 
