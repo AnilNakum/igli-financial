@@ -1,11 +1,14 @@
 <?php
 if (count((array) $Payments) > 0) {
     $PStatus = array('name' => 'payment_status', 'id' => 'payment_status_filter', 'class' => "select2 PaymentStatusFilter", "tabindex" => 4);
-    $PS = array("pending" => "Pending", "paid" => "Paid");
+    $PS = array("pending" => "Pending", "completed" => "Completed");
     $PStatusList = array("" => "All") + $PS;
 
     $Status = array('name' => 'status', 'id' => 'status_filter', 'class' => "select2 StatusFilter", "tabindex" => 4);
-    $S = array("ongoing" => "OnGoing", "renewal" => "Renewal","completed" => "Completed","close"=>"Close");
+    $S = array("ongoing" => "On Going", 
+        "onhold" => "On hold",
+        "completed" => "Completed"
+    );
     $StatusList = array("" => "All") + $S;
 }
 ?>
@@ -46,14 +49,16 @@ if (count((array) $Payments) > 0) {
                             <div class="setup-header">
                                 <div class="row">
                                     <div class="col-md-3 col-sm-3">
-                                        <!-- <div class="form-group">
+                                        <div class="form-group">
+                                        <label class="form-label">Payment Status</label>
                                             <?php echo form_dropdown($PStatus, $PStatusList); ?>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3">
-                                        <!-- <div class="form-group">
+                                        <div class="form-group">
+                                        <label class="form-label">Service Status</label>
                                             <?php echo form_dropdown($Status, $StatusList); ?>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6">
                                         <div class="manage-rightside">
@@ -79,7 +84,9 @@ if (count((array) $Payments) > 0) {
                                                     <th>No.</th>
                                                     <th>Service</th>
                                                     <th>User</th>
-                                                    <th>Due Payment</th>
+                                                    <th>Payment</th>
+                                                    <th>Payment Status</th>
+                                                    <th>Service Status</th>
                                                     <th>Created At</th>
                                                     <th class="no-sort text-center">Action</th>
                                                 </tr>

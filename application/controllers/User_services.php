@@ -87,12 +87,6 @@ class User_services extends Base_Controller
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                
-                if ($this->input->post('service_status') == 'ongoing' && ($this->input->post('progress_status') != 'On Going') && $ID != 0 && $this->input->post('reason') == '') {
-                    $response = array("status" => "error", "heading" => "Reason Note Missing", "message" => "Reason Note should not be blank.");
-                    echo json_encode($response);
-                    die;
-                }
 
                 $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"";
                 $post_data = array(
@@ -105,7 +99,16 @@ class User_services extends Base_Controller
                 );
                 
                 if ($ID > 0) {
+
                     $userService =  $this->Common->get_info(TBL_USER_SERVICES, $ID, 'ID');
+                    if($this->input->post('progress_status')){
+                        if (($this->input->post('service_status') == 'onhold' || ($userService->ProgressStatus != $this->input->post('progress_status'))) && $this->input->post('reason') == '') {
+                            $response = array("status" => "error", "heading" => "Reason Note Missing", "message" => "Reason Note should not be blank.");
+                            echo json_encode($response);
+                            die;
+                        }   
+                    }
+
                     $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
                     $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
 
@@ -118,7 +121,6 @@ class User_services extends Base_Controller
                         $No = $subAdmin->phone;
                     }
                     if($userService->ServiceStatus != $this->input->post('service_status')){
-
                         if($user){
                             if($this->input->post('service_status') == 'onhold'){
                                 $msgData = array(

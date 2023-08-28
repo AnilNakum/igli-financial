@@ -422,7 +422,7 @@ $(document).ready(function () {
     });
     $(document).on("click", ".delete_btn", function () {
         var data_id = $(this).attr('data-id');
-        var data_type = ($(this).attr('data-type')) ?? 'soft';
+        var data_type = ($(this).attr('data-type')) ?? 'hard';
         var data_where = ($(this).attr('data-where')) ?? '';
         var control = $(this).attr('data-control');
         var method = $(this).attr('data-method');

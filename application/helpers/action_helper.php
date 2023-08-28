@@ -20,9 +20,9 @@ EOF;
 
 function PaymentStatus($status)
 {
-    if ($status == 'paid') {
+    if ($status == 'completed') {
         $return = <<<EOF
-        <span class="text text-success badge badge-success m-l-10 hidden-sm-down">Paid</span>
+        <span class="text text-success badge badge-success m-l-10 hidden-sm-down">Completed</span>
 EOF;
     } else {
         $return = <<<EOF
@@ -34,9 +34,13 @@ EOF;
 
 function PStatus($status)
 {
-        $return = <<<EOF
-        <span class="text text-uppercase">{$status}</span>
-EOF;
+    if ($status == 'onhold') {
+        $return = 'On Hold';
+    } else if ($status == 'completed') {
+        $return ='Completed';
+    } else {
+        $return ='On Going';
+    }
     return $return;
 }
 
@@ -232,6 +236,7 @@ function payment_action_row($PaymentID)
     $action = <<<EOF
             <div class="tooltip-top text-center">
             <a data-original-title="Update Payment" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$PaymentID}" data-control="payment" data-method="update"><i class="fas fa-pencil-alt"></i></a>
+            <a data-original-title="Remove Payment" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$PaymentID}" data-control="remove" data-method="payment"><i class="far fa-trash-alt"></i></a>
             </div>
 EOF;
     return $action;

@@ -13,19 +13,20 @@ $UserID = (isset($payment_info) && $payment_info->UserID != "") ? $payment_info-
 
 $DueAmount = array('name' => 'due_amount', 'id' => 'due_amount', 'value' => (isset($payment_info) && $payment_info->DueAmount != "") ? $payment_info->DueAmount : set_value('due_amount'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Due Amount", "data-validation" => "required");
 
-// $PS = array(
-//     "paid" => "Paid"
-// );
-// $PStatus = array('name' => 'payment_status', 'id' => 'payment_status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
-// $PStatusList = array("pending" => "Pending") + $PS;
-// $PStatusID = (isset($payment_info) && $payment_info->PaymentStatus != "") ? $payment_info->PaymentStatus : set_value('payment_status');
+$PS = array(
+    "completed" => "Completed"
+);
+$PStatus = array('name' => 'payment_status', 'id' => 'payment_status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
+$PStatusList = array("pending" => "Pending") + $PS;
+$PStatusID = (isset($payment_info) && $payment_info->PaymentStatus != "") ? $payment_info->PaymentStatus : set_value('payment_status');
 
-// $S = array(
-//     "renewal" => "Renewal","completed" => "Completed","close"=>"Close"
-// );
-// $Status = array('name' => 'status', 'id' => 'status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
-// $StatusList = array("ongoing" => "OnGoing") + $S;
-// $StatusID = (isset($payment_info) && $payment_info->Status != "") ? $payment_info->Status : set_value('status');
+$S = array(
+    "onhold" => "On hold",
+        "completed" => "Completed"
+);
+$Status = array('name' => 'status', 'id' => 'status', 'class' => "select2 ", "tabindex" => 4, "data-validation" => "required");
+$StatusList = array("ongoing" => "On Going") + $S;
+$StatusID = (isset($payment_info) && $payment_info->Status != "") ? $payment_info->Status : set_value('status');
 
 $submit_btn = array('name' => 'submit_btn', 'id' => 'submit_btn', 'value' => 'SAVE', 'class' => 'btn btn-round l-blue');
 $cancel_btn = array('name' => 'cancel_btn', 'id' => 'cancel_btn', 'content' => 'CANCEL', 'class' => 'btn btn-round btn-white', "onclick" => "pop_up.close()");
@@ -77,7 +78,7 @@ $form_attr = array('class' => 'default_form payment_frm', 'id' => 'payment_frm',
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Payment Status <span class="text-danger">*</span></label>
@@ -88,11 +89,11 @@ $form_attr = array('class' => 'default_form payment_frm', 'id' => 'payment_frm',
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label">Status <span class="text-danger">*</span></label>
+                                <label class="form-label">Service Status <span class="text-danger">*</span></label>
                                 <?php echo form_dropdown($Status, $StatusList, $StatusID); ?>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>

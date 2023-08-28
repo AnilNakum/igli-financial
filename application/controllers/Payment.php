@@ -62,9 +62,22 @@ class Payment extends Base_Controller
                     "ServiceID" => $this->input->post('service_id'),
                     "UserID" => $this->input->post('user_id'),
                     "DueAmount" => $this->input->post('due_amount'),
+                    "PaymentStatus" => $this->input->post('payment_status'),
+                    "Status" => $this->input->post('status'),
                 );
                 
                 if ($PID > 0) {
+                    if($this->input->post('payment_status') == 'completed'){
+                        $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
+                        $Name = $user->first_name.' '.$user->last_name;
+                        $msgData = array(
+                            "name"=> 'payment_received__rq',
+                            "languageCode"=> "en", 
+                            'headerValues' => array(),
+                            'bodyValues' => array($Name,$this->input->post('due_amount')),
+                        );
+                        send_wp_msg($user->phone,$msgData);
+                    }
                     $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
                     if ($this->Common->update_info(TBL_PAYMENT, $PID, $post_data, 'PID')) :
@@ -92,20 +105,20 @@ class Payment extends Base_Controller
 
     public function manage()
     {
-        $this->datatables->select('p.PID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,p.DueAmount,p.CreatedAt');
+        $this->datatables->select('p.PID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,p.DueAmount,p.PaymentStatus,p.Status,p.CreatedAt');
 
-        // if ($this->input->post('payment_status')) {
-        //     $this->datatables->where('p.PaymentStatus', $this->input->post('payment_status'));
-        // }
-        // if ($this->input->post('status')) {
-        //     $this->datatables->where('p.Status', $this->input->post('status'));
-        // }
+        if ($this->input->post('payment_status')) {
+            $this->datatables->where('p.PaymentStatus', $this->input->post('payment_status'));
+        }
+        if ($this->input->post('status')) {
+            $this->datatables->where('p.Status', $this->input->post('status'));
+        }
     
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=p.ServiceID', '');
         $this->datatables->join(TBL_USERS . ' u', 'u.id=p.UserID', '');
         $this->datatables->from(TBL_PAYMENT.' p')
-        // ->edit_column('p.PaymentStatus', '$1', 'PaymentStatus(p.PaymentStatus)')
-        // ->edit_column('p.Status', '$1', 'PStatus(p.Status)')
+        ->edit_column('p.PaymentStatus', '$1', 'PaymentStatus(p.PaymentStatus)')
+        ->edit_column('p.Status', '$1', 'ServiceStatus(p.Status)')
         ->edit_column('p.CreatedAt', '$1', 'DatetimeFormat(p.CreatedAt)')
         ->add_column('action', '$1', 'payment_action_row(p.PID)');
         $this->datatables->unset_column('PID');

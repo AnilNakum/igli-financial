@@ -14,6 +14,7 @@ class Remove_records extends CI_Model {
 //    }
 
     function remove_data($id, $field, $table, $where ,$type ) {
+        
         if ($id && $field) {
             $this->db->where($field, $id);
         }

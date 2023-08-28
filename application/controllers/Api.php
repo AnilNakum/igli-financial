@@ -387,7 +387,7 @@ class Api extends REST_Controller
                     
                 
             } else {
-                $this->response(['status' => FALSE, 'message' => "Email mot exist!"], REST_Controller::HTTP_BAD_REQUEST);
+                $this->response(['status' => FALSE, 'message' => "Email not exist!"], REST_Controller::HTTP_BAD_REQUEST);
             }
         }
     }
@@ -632,10 +632,11 @@ class Api extends REST_Controller
             foreach ($Service_info['services'] as $key => $value) {
                 $User_info = $this->Common->get_info(TBL_USER_INTEREST,$value->ServiceID,'ServiceID','UserID='.$this->USER_ID);
                 if (!empty($User_info)) {
-                $Service_info['services'][$key]->Save = "1";
-            }else{
+                    $Service_info['services'][$key]->Save = "1";
+                }else{
                     $Service_info['services'][$key]->Save = "0";
                 }
+                $Service_info['services'][$key]->ServiceStatus = PStatus($Service_info['services'][$key]->ServiceStatus);
             }
             $data['status'] = TRUE;
             $data['message'] = "Service Found";
