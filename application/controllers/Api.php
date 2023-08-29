@@ -296,7 +296,7 @@ class Api extends REST_Controller
 
                 $this->response(['status' => TRUE,
                 'message' => 'Profile Updated successfully.',
-                "data" => [ $User]]
+                "data" => $User]
                     , REST_Controller::HTTP_OK);     
                             
                        
