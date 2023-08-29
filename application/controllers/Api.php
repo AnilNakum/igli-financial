@@ -604,11 +604,21 @@ class Api extends REST_Controller
             array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=p.ServiceID", 'type' => ''),
         );
         if ($PaymentID) {
-            $Payment_info = $this->Common->get_info(TBL_PAYMENT.' p',$PaymentID, 'ID','p.UserID = '.$this->USER_ID);
+            $Payment_info = $this->Common->get_info(TBL_PAYMENT.' p',$PaymentID, 'PID','p.UserID = '.$this->USER_ID);
         } else {
             $Payment_info['payment'] = $this->Common->get_all_info(TBL_PAYMENT.' p',1,1,'p.UserID = '.$this->USER_ID,'p.*,s.ServiceTitle',$join);
         }
         if (!empty($Payment_info)) {
+            if(!is_object($Payment_info)){
+                foreach ($Payment_info['payment'] as $key => $value) {
+                    $Payment_info['payment'][$key]->PaymentStatus = PStatus($Payment_info['payment'][$key]->PaymentStatus);
+                    $Payment_info['payment'][$key]->Status = PStatus($Payment_info['payment'][$key]->Status);
+                }
+            }else{
+                $Payment_info->PaymentStatus = PStatus($Payment_info->PaymentStatus);
+                $Payment_info->Status = PStatus($Payment_info->Status);
+            }
+
             $data['status'] = TRUE;
             $data['message'] = "Payment Due Found";
             $data["data"] = $Payment_info;

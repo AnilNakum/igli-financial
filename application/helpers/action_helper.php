@@ -38,6 +38,8 @@ function PStatus($status)
         $return = 'On Hold';
     } else if ($status == 'completed') {
         $return ='Completed';
+    } else if($status == 'pending'){
+        $return ='Pending';
     } else {
         $return ='On Going';
     }
