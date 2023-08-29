@@ -20,7 +20,9 @@ class Api extends REST_Controller
         
         $this->Method = $this->router->fetch_method();
         $this->Class = $this->router->fetch_class();
-        $_POST = json_decode(file_get_contents("php://input"), true);
+        if($this->Method != 'update_profile'){
+            $_POST = json_decode(file_get_contents("php://input"), true);
+        }
         if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt' && $this->Method != 'help_pages' && $this->Method != 'birthday_wise') {
             $this->USER_ID = $this->_Check_Auth_Token();
         }
@@ -241,6 +243,9 @@ class Api extends REST_Controller
     }
 
     public function update_profile_post() {
+        // $response['data'] = $_FILES;
+        //             echo json_encode($response);
+        //             die;
         $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
         $this->form_validation->set_rules('phone', 'Phone Number', 'trim|required');
@@ -253,6 +258,8 @@ class Api extends REST_Controller
             $Phone = $this->post('phone');
             $DeviceID = $this->post('device_id');
             $DOB = $this->post('dob');
+
+               
 
             if ($this->Common->check_is_exists(TBL_USERS,$Phone,'phone',$this->USER_ID,'id')) {
                 $this->response(['status' => FALSE, 'message' => "Phone no is already used by another user. Please choose another Phone No."], REST_Controller::HTTP_BAD_REQUEST);
@@ -269,12 +276,27 @@ class Api extends REST_Controller
                 if($User->phone != $Phone){
                     $data['phone_verified'] = 0;
                 }
+                if (isset($_FILES['image']['name']) && !empty($_FILES['image']['name'])) {
+                    // $old_file = ($this->input->post('old_image') && $this->input->post('old_image') != "") ? $this->input->post('old_image') : '';
+                    $old_file = $User->profile_image_name;
+                     $upload_path = USER_PROFILE;
+                     $upload_data = upload_file('image', USER_PROFILE, $old_file);
+                     if (is_array($upload_data) && $upload_data['file_name'] != "") {
+                         $data['profile_image_name'] = USER_PROFILE.$upload_data['file_name'];
+                     } else {
+                         $response['message'] = $upload_data;
+                         echo json_encode($response);
+                         die;
+                     }
+                 } 
+                 
+               
                 $this->Common->update_info(TBL_USERS,$this->USER_ID, $data,'id');
                 $User = $this->Common->get_info(TBL_USERS,$this->USER_ID,'id');
 
                 $this->response(['status' => TRUE,
                 'message' => 'Profile Updated successfully.',
-                "data" => ["phone" => $User]]
+                "data" => [ $User]]
                     , REST_Controller::HTTP_OK);     
                             
                        
