@@ -150,8 +150,8 @@ class User_services extends Base_Controller
                         }
                     }
 
-                    if($userService->ProgressStatus != $this->input->post('progress_status')){
-                        // if($this->input->post('progress_status') == 'Pending With Client'){
+                    if($this->input->post('progress_status') != 'On Going'){
+                        if($this->input->post('service_status') == 'ongoing' || $userService->ProgressStatus != $this->input->post('progress_status')){
                             $mailData = array(
                                 'username' => $user->name,
                                 'ServiceTitle' => $service->ServiceTitle,
@@ -163,7 +163,7 @@ class User_services extends Base_Controller
                             );
                             $Subject = $this->config->item('website_name', 'tank_auth').' Service:'.$service->ServiceTitle.' ('.$this->input->post('progress_status').')';
                             $this->_send_email($Subject,'pending_customer', $user->email, $mailData);
-                        // }
+                        }
                     }
 
                     $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
