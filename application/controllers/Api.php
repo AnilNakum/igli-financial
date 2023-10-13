@@ -656,9 +656,9 @@ class Api extends REST_Controller
             array('table' => TBL_USERS . ' u', 'on' => "u.ID=us.AdminID", 'type' => ''),
         );
         if ($ServiceStatus) {
-            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES.' us',$ServiceStatus, 'us.ServiceStatus','us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','us.*,CONCAT(u.first_name," ",u.last_name) as  RMname,s.*',$join);
+            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES.' us',$ServiceStatus, 'us.ServiceStatus','(us.UserID = '.$this->USER_ID.' OR '.$this->USER_ID.' IN (us.PartnersID)) AND us.isDeleted=0','us.*,CONCAT(u.first_name," ",u.last_name) as  RMname,s.*',$join);
         } else {
-            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES .' us',1,1,'us.UserID = '.$this->USER_ID.' AND us.isDeleted=0','*',$join,false);
+            $Service_info['services'] = $this->Common->get_all_info(TBL_USER_SERVICES .' us',1,1,'(us.UserID = '.$this->USER_ID.' OR '.$this->USER_ID.' IN (us.PartnersID)) AND us.isDeleted=0','*',$join,false);
         }
         if (!empty($Service_info)) {
             foreach ($Service_info['services'] as $key => $value) {
