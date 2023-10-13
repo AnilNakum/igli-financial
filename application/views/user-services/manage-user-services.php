@@ -84,6 +84,7 @@ if($type == 'ongoing'){
                                                 <tr>
                                                     <th>Service</th>
                                                     <th>User</th>
+                                                    <th width="20%">Sub Users/Partners</th>
                                                     <?php if($type == 'ongoing'){ ?><th>Progress Status</th><?php } ?>
                                                     <th>Created At</th>
                                                     <th class="no-sort text-center">Action</th>

@@ -76,6 +76,7 @@ class User_services extends Base_Controller
 
     public function submit_form()
     {
+        
         if ($this->input->post()) {
             $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $ID = ($this->input->post('id') && $this->input->post('id') > 0) ? $this->input->post('id') : 0;
@@ -87,11 +88,15 @@ class User_services extends Base_Controller
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-
+                $Partner = '';
+                if($this->input->post('partner')){
+                    $Partner = implode(',', $this->input->post('partner'));
+                }
                 $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"";
                 $post_data = array(
                     "ServiceID" => $this->input->post('service_id'),
                     "UserID" => $this->input->post('user_id'),
+                    "PartnersID" => $Partner,
                     "ServiceStatus" => $this->input->post('service_status'),
                     "ProgressStatus" => ($this->input->post('progress_status'))?$this->input->post('progress_status'):"On Going",
                     "Reason" => $Reason,
@@ -130,6 +135,10 @@ class User_services extends Base_Controller
                                     'bodyValues' => array($Name,$service->ServiceTitle,$Reason),
                                 );
                                 send_wp_msg($user->phone,$msgData);
+                                if($this->input->post('partner')){
+                                    $this->partnerMsg($this->input->post('partner'),$msgData);
+                                }
+
                             }else if($this->input->post('service_status') == 'completed'){
                                 $msgData = array(
                                     "name"=> 'service_complete',
@@ -138,6 +147,9 @@ class User_services extends Base_Controller
                                     'bodyValues' => array($service->ServiceTitle,$Name),
                                 );
                                 send_wp_msg($user->phone,$msgData);
+                                if($this->input->post('partner')){
+                                    $this->partnerMsg($this->input->post('partner'),$msgData);
+                                }
                             }else{
                                 $msgData = array(
                                     "name"=> 'ongoing_services',
@@ -146,6 +158,9 @@ class User_services extends Base_Controller
                                     'bodyValues' => array($service->ServiceTitle,$Name),
                                 );
                                 send_wp_msg($user->phone,$msgData);
+                                if($this->input->post('partner')){
+                                    $this->partnerMsg($this->input->post('partner'),$msgData);
+                                }
                             }
                         }
                     }
@@ -163,6 +178,22 @@ class User_services extends Base_Controller
                             );
                             $Subject = $this->config->item('website_name', 'tank_auth').' Service:'.$service->ServiceTitle.' ('.$this->input->post('progress_status').')';
                             $this->_send_email($Subject,'pending_customer', $user->email, $mailData);
+                            if($this->input->post('partner')){
+                                foreach ($this->input->post('partner') as $key => $p) {
+                                    $user = $this->Common->get_info(TBL_USERS, $p,'id');
+                                    $mailData = array(
+                                        'username' => $user->name,
+                                        'ServiceTitle' => $service->ServiceTitle,
+                                        'progressStatus' => $this->input->post('progress_status'),
+                                        'Reason' => $Reason,
+                                        'RMName' => $Name,
+                                        'RMNo' => $No,
+                                        'site_name' => $this->config->item('website_name', 'tank_auth')
+                                    );
+                                    $Subject = $this->config->item('website_name', 'tank_auth').' Service:'.$service->ServiceTitle.' ('.$this->input->post('progress_status').')';
+                                    $this->_send_email($Subject,'pending_customer', $user->email, $mailData);
+                                }
+                            }
                         }
                     }
 
@@ -191,6 +222,9 @@ class User_services extends Base_Controller
                             'bodyValues' => array($service->ServiceTitle,$Name),
                         );
                         send_wp_msg($user->phone,$msgData);
+                        if($this->input->post('partner')){
+                            $this->partnerMsg($this->input->post('partner'),$msgData);
+                        }
                     }
 
                     $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
@@ -216,9 +250,9 @@ class User_services extends Base_Controller
         $link_array = explode('/',$link);
         $page = end($link_array);
         if($page == 'ongoing'){
-            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.ProgressStatus,us.CreatedAt');
+            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.ProgressStatus,us.CreatedAt');
         }else{
-            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.CreatedAt');
+            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.CreatedAt');
         }
         
         $this->datatables->where('us.AdminID', $this->tank_auth->get_user_id());
@@ -236,6 +270,7 @@ class User_services extends Base_Controller
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=us.ServiceID', '');
         $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');
         $this->datatables->from(TBL_USER_SERVICES.' us')
+            ->edit_column('us.PartnersID', '$1', 'PartnersName(us.PartnersID)')
             ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)')
             ->edit_column('us.ProgressStatus', '$1', 'GetProgressStatus(us.ProgressStatus)');
         // if($page == 'ongoing'){
@@ -258,6 +293,14 @@ class User_services extends Base_Controller
         $this->email->send();
         // echo $this->email->print_debugger();
         // exit;
+        return;
+    }
+
+    public function partnerMsg($Partners,$msgData) {
+        foreach ($Partners as $key => $p) {
+            $user = $this->Common->get_info(TBL_USERS, $p,'id');   
+            send_wp_msg($user->phone,$msgData);
+        }
         return;
     }
 }

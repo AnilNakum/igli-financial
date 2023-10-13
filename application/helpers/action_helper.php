@@ -286,3 +286,24 @@ function sa_user_service_action_row($ID)
 EOF;
     return $action;
 }
+
+
+function PartnersName($P) {
+    $ci = &get_instance();
+    if($P != ''){
+        $Name = '';
+        $Partners = explode(",",$P);
+        $cnt = 0;
+        foreach ($Partners as $key => $p) {
+            $user = $ci->Common->get_info(TBL_USERS, $p,'id');  
+            if($cnt != 0){
+                $Name .= ', ';
+            }
+            $Name .= $user->first_name.' '.$user->last_name;
+            $cnt++;
+        }
+        return $Name;
+    }else{
+        return '-';
+    }
+}

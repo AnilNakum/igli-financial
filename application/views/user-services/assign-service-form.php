@@ -3,11 +3,13 @@ if (isset($us_info) && $us_info->ID > 0) {
     $ID = array('name' => 'id', 'id' => 'id', 'value' => ($us_info->ID > 0) ? $us_info->ID : "", 'type' => 'hidden');
     $Service = array('name' => 'service_id', 'id' => 'service_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required","disabled"=>"disabled");
     $User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required","disabled"=>"disabled");
+    $Partner = array('name' => 'partner[]', 'id' => 'partner', 'class' => "select2",'multiple'=>"multiple", "tabindex" => 4);
     $HServiceID = array('name' => 'service_id', 'id' => 'service_id', 'value' => ($us_info->ServiceID > 0) ? $us_info->ServiceID : "", 'type' => 'hidden');
     $HUserID = array('name' => 'user_id', 'id' => 'user_id', 'value' => ($us_info->UserID > 0) ? $us_info->UserID : "", 'type' => 'hidden');
 }else{
     $Service = array('name' => 'service_id', 'id' => 'service_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
     $User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
+    $Partner = array('name' => 'partner[]', 'id' => 'partner', 'class' => "select2",'multiple'=>"multiple", "tabindex" => 4);
 }
 
 $ServiceList = array("" => "Select Service") + $Services;
@@ -15,6 +17,10 @@ $ServiceID = (isset($us_info) && $us_info->ServiceID != "") ? $us_info->ServiceI
 
 $UserList = array("" => "Select User") + $Users;
 $UserID = (isset($us_info) && $us_info->UserID != "") ? $us_info->UserID : set_value('user_id');
+
+$PartnersList = $Users;
+$PartnersID =  (isset($us_info) && $us_info->PartnersID != "") ? explode(",",$us_info->PartnersID) : set_value('partner');
+
 
 
 $SS = array(
@@ -82,6 +88,14 @@ $form_attr = array('class' => 'default_form assign_services_frm', 'id' => 'assig
                             <div class="form-group">
                                 <label class="form-label">User <span class="text-danger">*</span></label>
                                 <?php echo form_dropdown($User, $UserList, $UserID); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Sub Users / Partners  <span class="text-info">Optional</span></label>
+                                <?php echo form_dropdown($Partner, $PartnersList, $PartnersID); ?>
                             </div>
                         </div>
                     </div>

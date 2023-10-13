@@ -179,11 +179,15 @@ class Subadmin extends Base_Controller
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-
+                $Partner = '';
+                if($this->input->post('partner')){
+                    $Partner = implode(',', $this->input->post('partner'));
+                }
                 $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"None";
                 $user_data = array(
                     "ServiceID" => $this->input->post('service_id'),
                     "UserID" => $this->input->post('service_user_id'),
+                    "PartnersID" => $Partner,
                     "ServiceStatus" => 'ongoing',
                     "ProgressStatus" => "On Going",
                     "Reason" => $Reason,
@@ -202,6 +206,12 @@ class Subadmin extends Base_Controller
                     'bodyValues' => array($service->ServiceTitle,$Name),
                 );
                 send_wp_msg($user->phone,$msgData);
+                if($this->input->post('partner')){
+                    foreach ($this->input->post('partner') as $key => $p) {
+                        $user = $this->Common->get_info(TBL_USERS, $p,'id');   
+                        send_wp_msg($user->phone,$msgData);
+                    }
+                }
                 $user_data['CreatedBy'] = $this->tank_auth->get_user_id();
                 $user_data['CreatedAt'] = date("Y-m-d H:i:s");
 
@@ -243,7 +253,7 @@ class Subadmin extends Base_Controller
     }
 
     public function manage_user_service($id) {
-        $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.ServiceStatus,CONCAT(a.first_name," ",a.last_name) as  rm,us.CreatedAt');
+        $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.ServiceStatus,CONCAT(a.first_name," ",a.last_name) as  rm,us.CreatedAt');
         
         if ($this->input->post('user_id')) {
             $this->datatables->where('us.AdminID', $this->input->post('user_id'));
@@ -264,6 +274,7 @@ class Subadmin extends Base_Controller
         $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');
         $this->datatables->join(TBL_USERS . ' a', 'a.id=us.AdminID', '');
         $this->datatables->from(TBL_USER_SERVICES.' us')
+        ->edit_column('us.PartnersID', '$1', 'PartnersName(us.PartnersID)')
             ->edit_column('us.ServiceStatus', '$1', 'ServiceStatus(us.ServiceStatus)')
             ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
         

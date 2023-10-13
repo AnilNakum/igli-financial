@@ -9,6 +9,10 @@ $ServiceList = array("" => "Select Service") + $Services;
 $User = array('name' => 'service_user_id', 'id' => 'service_user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
 $UserList = array("" => "Select User") + $Users;
 
+$Partner = array('name' => 'partner[]', 'id' => 'partner', 'class' => "select2",'multiple'=>"multiple", "tabindex" => 4);
+$PartnersList = $Users;
+
+
 
 $S = array(
     "2" => "Inactive",
@@ -70,6 +74,14 @@ $form_attr = array('class' => 'default_form assign_frm', 'id' => 'assign_frm', '
                             <div class="form-group">
                                 <label class="form-label">User <span class="text-danger">*</span></label>
                                 <?php echo form_dropdown($User, $UserList); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Sub Users / Partners  <span class="text-info">Optional</span></label>
+                                <?php echo form_dropdown($Partner, $PartnersList); ?>
                             </div>
                         </div>
                     </div>

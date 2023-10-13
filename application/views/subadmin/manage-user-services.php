@@ -80,6 +80,7 @@ $StatusList = array("" => "All") + $S;
                                                 <tr>
                                                     <th>Service</th>
                                                     <th>User</th>
+                                                    <th width="20%">Sub Users/Partners</th>
                                                     <th>Status</th>
                                                     <th>RM Name</th>
                                                     <th>Created At</th>
