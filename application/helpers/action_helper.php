@@ -296,11 +296,13 @@ function PartnersName($P) {
         $cnt = 0;
         foreach ($Partners as $key => $p) {
             $user = $ci->Common->get_info(TBL_USERS, $p,'id');  
-            if($cnt != 0){
-                $Name .= ', ';
+            if($user){
+                if($cnt != 0){
+                    $Name .= ', ';
+                }
+                $Name .= $user->first_name.' '.$user->last_name;
+                $cnt++;
             }
-            $Name .= $user->first_name.' '.$user->last_name;
-            $cnt++;
         }
         return $Name;
     }else{
