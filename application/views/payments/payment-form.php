@@ -7,9 +7,10 @@ $Service = array('name' => 'service_id', 'id' => 'service_id', 'class' => "selec
 $ServiceList = array("" => "Select Service") + $Services;
 $ServiceID = (isset($payment_info) && $payment_info->ServiceID != "") ? $payment_info->ServiceID : set_value('service_id');
 
-$User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
-$UserList = array("" => "Select User") + $Users;
-$UserID = (isset($payment_info) && $payment_info->UserID != "") ? $payment_info->UserID : set_value('user_id');
+$User = array('name' => 'user_id[]', 'id' => 'user_id', 'class' => "select2", 'multiple'=>"multiple", "tabindex" => 4, "data-validation" => "required");
+$UserList =  $Users;
+$UserID = (isset($payment_info) && $payment_info->UserID != "") ? explode(",",$payment_info->UserID) : set_value('user_id');
+
 
 $DueAmount = array('name' => 'due_amount', 'id' => 'due_amount', 'value' => (isset($payment_info) && $payment_info->DueAmount != "") ? $payment_info->DueAmount : set_value('due_amount'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Due Amount", "data-validation" => "required");
 
@@ -20,7 +21,7 @@ $PStatus = array('name' => 'payment_status', 'id' => 'payment_status', 'class' =
 $PStatusList = array("pending" => "Pending") + $PS;
 $PStatusID = (isset($payment_info) && $payment_info->PaymentStatus != "") ? $payment_info->PaymentStatus : set_value('payment_status');
 
-$S = array(
+$S = array( 
     "onhold" => "On hold",
         "completed" => "Completed"
 );

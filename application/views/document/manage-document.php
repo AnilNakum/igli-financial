@@ -70,7 +70,7 @@ if (count((array) $Document) > 0) {
                                             <thead>
                                                 <tr>
                                                     <th>Title</th>
-                                                    <th>User Name</th>
+                                                    <th>Users Name</th>
                                                     <th>Status</th>
                                                     <th>Created At</th>
                                                     <th class="no-sort text-center">Action</th>

@@ -118,11 +118,11 @@ class User_services extends Base_Controller
                     $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
 
                     if($this->tank_auth->get_user_id() == 1){
-                        $Name = 'Parth Mavani';
+                        $Name = 'Parth Mavani (+91 9409494483)';
                         $No = '9409494483';
                     }else{
                         $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
-                        $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
+                        $Name = $subAdmin->first_name.' '.$subAdmin->last_name . '('.$subAdmin->phone.')';
                         $No = $subAdmin->phone;
                     }
                     if($userService->ServiceStatus != $this->input->post('service_status')){

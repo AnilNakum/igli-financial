@@ -83,7 +83,7 @@ if (count((array) $Payments) > 0) {
                                                 <tr>
                                                     <th>No.</th>
                                                     <th>Service</th>
-                                                    <th>User</th>
+                                                    <th>Users</th>
                                                     <th>Payment</th>
                                                     <th>Payment Status</th>
                                                     <th>Service Status</th>

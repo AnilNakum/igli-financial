@@ -51,16 +51,18 @@ class Payment extends Base_Controller
             $PID = ($this->input->post('payment_id') && $this->input->post('payment_id') > 0) ? $this->input->post('payment_id') : 0;
             $this->form_validation
                 ->set_rules('service_id', 'Service', 'required')
-                ->set_rules('user_id', 'User', 'required')
+                ->set_rules('user_id[]', 'User', 'required')
                 ->set_rules('due_amount', 'Due Amount', 'required');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                
-                $post_data = array(
+                if($this->input->post('user_id')){
+                    $Users = implode(',', $this->input->post('user_id'));
+                }
+                $post_data = array( 
                     "ServiceID" => $this->input->post('service_id'),
-                    "UserID" => $this->input->post('user_id'),
+                    "UserID" => $Users,
                     "DueAmount" => $this->input->post('due_amount'),
                     "PaymentStatus" => $this->input->post('payment_status'),
                     "Status" => $this->input->post('status'),
@@ -68,15 +70,17 @@ class Payment extends Base_Controller
                 
                 if ($PID > 0) {
                     if($this->input->post('payment_status') == 'completed'){
-                        $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
-                        $Name = $user->first_name.' '.$user->last_name;
-                        $msgData = array(
-                            "name"=> 'payment_received__rq',
-                            "languageCode"=> "en", 
-                            'headerValues' => array(),
-                            'bodyValues' => array($Name,$this->input->post('due_amount')),
-                        );
-                        send_wp_msg($user->phone,$msgData);
+                        foreach ($this->input->post('user_id') as $key => $U) {
+                            $user = $this->Common->get_info(TBL_USERS, $U,'id');
+                            $Name = $user->first_name.' '.$user->last_name;
+                            $msgData = array(
+                                "name"=> 'payment_received__rq',
+                                "languageCode"=> "en", 
+                                'headerValues' => array(),
+                                'bodyValues' => array($Name,$this->input->post('due_amount')),
+                            );
+                            send_wp_msg($user->phone,$msgData);
+                        }
                     }
                     $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
@@ -86,6 +90,34 @@ class Payment extends Base_Controller
                         $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
                     endif;
                 }else{
+                    if($this->input->post('payment_status') == 'pending'){
+                        $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
+                        foreach ($this->input->post('user_id') as $key => $U) {
+                            $user = $this->Common->get_info(TBL_USERS, $U,'id');
+                            $Name = $user->first_name.' '.$user->last_name;
+                            $msgData = array(
+                                "name"=> 'payment_due',
+                                "languageCode"=> "en", 
+                                'headerValues' => array(),
+                                'bodyValues' => array($Name,$service->ServiceTitle,date("d-m-Y"),$this->input->post('due_amount')),
+                            );
+                            send_wp_msg($user->phone,$msgData);
+                        }
+                    }
+                    if($this->input->post('payment_status') == 'completed'){
+                        foreach ($this->input->post('user_id') as $key => $U) {
+                            $user = $this->Common->get_info(TBL_USERS, $U,'id');
+                            $Name = $user->first_name.' '.$user->last_name;
+                            $msgData = array(
+                                "name"=> 'payment_received__rq',
+                                "languageCode"=> "en", 
+                                'headerValues' => array(),
+                                'bodyValues' => array($Name,$this->input->post('due_amount')),
+                            );
+                            send_wp_msg($user->phone,$msgData);
+                        }
+                    }
+
                     $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['CreatedAt'] = date("Y-m-d H:i:s");
                     if ($PID = $this->Common->add_info(TBL_PAYMENT, $post_data)) {
@@ -105,7 +137,8 @@ class Payment extends Base_Controller
 
     public function manage()
     {
-        $this->datatables->select('p.PID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,p.DueAmount,p.PaymentStatus,p.Status,p.CreatedAt');
+        // $this->datatables->select('p.PID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,p.DueAmount,p.PaymentStatus,p.Status,p.CreatedAt');
+        $this->datatables->select('p.PID,s.ServiceTitle,p.UserID,p.DueAmount,p.PaymentStatus,p.Status,p.CreatedAt');
 
         if ($this->input->post('payment_status')) {
             $this->datatables->where('p.PaymentStatus', $this->input->post('payment_status'));
@@ -115,8 +148,9 @@ class Payment extends Base_Controller
         }
     
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=p.ServiceID', '');
-        $this->datatables->join(TBL_USERS . ' u', 'u.id=p.UserID', '');
+        // $this->datatables->join(TBL_USERS . ' u', 'u.id=p.UserID', '');
         $this->datatables->from(TBL_PAYMENT.' p')
+        ->edit_column('p.UserID', '$1', 'PartnersName(p.UserID)')
         ->edit_column('p.PaymentStatus', '$1', 'PaymentStatus(p.PaymentStatus)')
         ->edit_column('p.Status', '$1', 'ServiceStatus(p.Status)')
         ->edit_column('p.CreatedAt', '$1', 'DatetimeFormat(p.CreatedAt)')

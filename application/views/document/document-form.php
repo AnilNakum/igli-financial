@@ -5,9 +5,9 @@ if (isset($document_info) && $document_info->ID > 0) {
 
 $DocName = array('name' => 'doc_name', 'id' => 'doc_name', 'value' => (isset($document_info) && $document_info->DocName != "") ? $document_info->DocName : set_value('doc_name'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Document Name", "data-validation" => "required");
 
-$User = array('name' => 'user_id', 'id' => 'user_id', 'class' => "select2", "tabindex" => 4, "data-validation" => "required");
-$UserList = array("" => "Select User") + $Users;
-$UserID = (isset($payment_info) && $payment_info->UserID != "") ? $payment_info->UserID : set_value('user_id');
+$User = array('name' => 'user_id[]', 'id' => 'user_id', 'class' => "select2", 'multiple'=>"multiple", "tabindex" => 4, "data-validation" => "required");
+$UserList =  $Users;
+$UserID = (isset($document_info) && $document_info->UserID != "") ? explode(",",$document_info->UserID) : set_value('user_id');
 
 
 $OldDoc = array('name' => 'old_doc', 'id' => 'old_doc', 'value' => (isset($document_info) && $document_info->Document != "") ? $document_info->Document : '', 'type' => "hidden",);

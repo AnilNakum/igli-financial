@@ -607,9 +607,9 @@ class Api extends REST_Controller
 
     public function document_get($DocID = false) {
         if ($DocID) {
-            $Doc_info = $this->Common->get_info(TBL_DOCUMENT,$DocID, 'ID','UserID = '.$this->USER_ID.' AND isDeleted=0');
+            $Doc_info = $this->Common->get_info(TBL_DOCUMENT,$DocID, 'ID','FIND_IN_SET('.$this->USER_ID.',UserID)>0 AND isDeleted=0');
         } else {
-            $Doc_info['documents'] = $this->Common->get_all_info(TBL_DOCUMENT,1,'Status','UserID = '.$this->USER_ID.' AND isDeleted=0','*',false,false);
+            $Doc_info['documents'] = $this->Common->get_all_info(TBL_DOCUMENT,1,'Status','FIND_IN_SET('.$this->USER_ID.',UserID)>0 AND isDeleted=0','*',false,false);
         }
         if (!empty($Doc_info)) {
             $data['status'] = TRUE;
@@ -626,9 +626,9 @@ class Api extends REST_Controller
             array('table' => TBL_SERVICES . ' s', 'on' => "s.ServiceID=p.ServiceID", 'type' => ''),
         );
         if ($PaymentID) {
-            $Payment_info = $this->Common->get_info(TBL_PAYMENT.' p',$PaymentID, 'PID','p.UserID = '.$this->USER_ID);
+            $Payment_info = $this->Common->get_info(TBL_PAYMENT.' p',$PaymentID, 'PID','FIND_IN_SET('.$this->USER_ID.',p.UserID)>0');
         } else {
-            $Payment_info['payment'] = $this->Common->get_all_info(TBL_PAYMENT.' p',1,1,'p.UserID = '.$this->USER_ID,'p.*,s.ServiceTitle',$join);
+            $Payment_info['payment'] = $this->Common->get_all_info(TBL_PAYMENT.' p',1,1,'FIND_IN_SET('.$this->USER_ID.',p.UserID)>0','p.*,s.ServiceTitle',$join);
         }
         if (!empty($Payment_info)) {
             if(!is_object($Payment_info)){

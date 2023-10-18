@@ -32,15 +32,17 @@ class Document extends Base_Controller
             $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $ID = ($this->input->post('document_id') && $this->input->post('document_id') > 0) ? $this->input->post('document_id') : 0;
             $this->form_validation
-                ->set_rules('user_id', 'User', 'required')
+                ->set_rules('user_id[]', 'User', 'required')
                 ->set_rules('doc_name', 'Document Name', 'required');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                
+                if($this->input->post('user_id')){
+                    $Users = implode(',', $this->input->post('user_id'));
+                }
                 $post_data = array(
-                    "UserID" => $this->input->post('user_id'),
+                    "UserID" => $Users,
                     "DocName" => $this->input->post('doc_name'),
                     "Status" => $this->input->post('status')
                 );
@@ -78,25 +80,28 @@ class Document extends Base_Controller
                     $post_data['CreatedAt'] = date("Y-m-d H:i:s");
                     if ($ID = $this->Common->add_info(TBL_DOCUMENT, $post_data)) {
 
-                        $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
-    
+                        
                         if($this->tank_auth->get_user_id() == 1){
-                            $Name = 'Parth Mavani';
+                            $Name = 'Parth Mavani (+91 9409494483)';
                             $No = '9409494483';
                         }else{
                             $subAdmin = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(),'id');
-                            $Name = $subAdmin->first_name.' '.$subAdmin->last_name;
+                            $Name = $subAdmin->first_name.' '.$subAdmin->last_name . '('.$subAdmin->phone.')';
                             $No = $subAdmin->phone;
                         }
-
-                        $mailData = array(
-                            'username' => $user->name,
-                            'DocName' => $this->input->post('doc_name'),
-                            'RMName' => $Name,
-                            'site_name' => $this->config->item('website_name', 'tank_auth')
-                        );
-                        $Subject = $this->config->item('website_name', 'tank_auth').' - Document Uploaded';
-                        $this->_send_email($Subject,'document_uploaded', $user->email, $mailData);
+                        
+                        foreach ($this->input->post('user_id') as $key => $U) {
+                            $user = $this->Common->get_info(TBL_USERS, $U,'id');
+                            $mailData = array(
+                                'username' => $user->name,
+                                'DocName' => $this->input->post('doc_name'),
+                                'RMName' => $Name,
+                                'Document' => $post_data['Document'],
+                                'site_name' => $this->config->item('website_name', 'tank_auth')
+                            );
+                            $Subject = $this->config->item('website_name', 'tank_auth').' - Document Uploaded';
+                            $this->_send_email($Subject,'document_uploaded', $user->email, $mailData);
+                        }
 
                         $response = array("status" => "ok", "heading" => "Add successfully...", "message" => "Details added successfully.");
                     } else {
@@ -114,7 +119,8 @@ class Document extends Base_Controller
 
     public function manage()
     {
-        $this->datatables->select('d.ID,d.DocName,CONCAT(u.first_name," ",u.last_name) as  name,d.Status,d.CreatedAt');
+        // $this->datatables->select('d.ID,d.DocName,CONCAT(u.first_name," ",u.last_name) as  name,d.Status,d.CreatedAt');
+        $this->datatables->select('d.ID,d.DocName,d.UserID,d.Status,d.CreatedAt');
 
         if ($this->input->post('status')) {
             $this->datatables->where('d.Status', $this->input->post('status'));
@@ -122,8 +128,9 @@ class Document extends Base_Controller
         $this->datatables->where('d.isDeleted', 0);
         $this->datatables->where('d.CreatedBy', $this->tank_auth->get_user_id());
     
-        $this->datatables->join(TBL_USERS . ' u', 'u.id=d.UserID', '');
+        // $this->datatables->join(TBL_USERS . ' u', 'u.id=d.UserID', '');
         $this->datatables->from(TBL_DOCUMENT.' d')
+            ->edit_column('d.UserID', '$1', 'PartnersName(d.UserID)')
             ->edit_column('d.CreatedAt', '$1', 'DatetimeFormat(d.CreatedAt)')
             ->edit_column('d.Status', '$1', 'Status(d.Status)')
             ->add_column('action', '$1', 'document_action_row(d.ID)');
@@ -141,6 +148,9 @@ class Document extends Base_Controller
         $this->email->subject($subject, $this->config->item('website_name', 'tank_auth'));
         $this->email->message($this->load->view('email/' . $type . '-html', $data, true));
         $this->email->set_alt_message($this->load->view('email/' . $type . '-txt', $data, true));
+        if($data['Document'] != ''){
+            $this->email->attach(IMAGE_DIR.$data['Document']);
+        }
         $this->email->send();
         // echo $this->email->print_debugger();
         // exit;
