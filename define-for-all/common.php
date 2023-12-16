@@ -6,7 +6,7 @@ if ($_SERVER['HTTP_HOST'] == 'localhost') {
     define("PASSWORD", "");
     define("DATABASE", "igli_financial");
     $BASE_URL = 'http://' . $_SERVER['HTTP_HOST'] . '/igli-financial/';
-} else if ($_SERVER['HTTP_HOST'] == 'iglifinancial.online') {
+} else if ($_SERVER['HTTP_HOST'] == 'iglifinancial.in') {
     define("HOSTNAME", "localhost");
     define("USERNAME", "u420404249_igli");
     define("PASSWORD", "Igli_financial_01");

@@ -6158,3 +6158,31 @@ a.menu-toggle.active.toggled {
     border-bottom: 1px solid #eee !important;
     border-right: 1px solid #eee !important;
 }
+
+.form-wrap.form-builder .frmb-control li {
+    margin: 10px 70px !important;
+    padding: 12px !important;
+    border-radius: 10px;
+    font-weight: 600;
+}
+.form-wrap.form-builder .frmb-control li::before {
+    color: #208ad3 !important;
+}
+.form-wrap.form-builder .frmb-control {
+    border: 2px dotted #ccc !important;
+}
+.form-wrap.form-builder.formbuilder-embedded-bootstrap .form-control {
+    min-height: 38px !important;
+    border-radius: 22px !important;
+}
+.form-wrap.form-builder .frmb .field-actions .btn {
+    color: #208ad3 !important;
+}
+.form-wrap.form-builder .frmb .field-label, .form-wrap.form-builder .frmb .legend {
+    color: #424242 !important;
+    font-weight: 600 !important;
+}
+.form-wrap.form-builder .frmb .prev-holder input[type=number],
+.form-wrap.form-builder .frmb .prev-holder input[type=date] {
+    width: 100% !important;
+}
