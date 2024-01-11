@@ -91,16 +91,18 @@ if (count((array) $Data) > 0) {
                                                             if($value->type == 'checkbox-group'){  
                                                                 $Str = '';
                                                                 $C = json_decode($list->$Name);
-                                                                foreach ($C as $k => $v) {                        
-                                                                    foreach ($value->values as $k1 => $v1) {
-                                                                        if($v1->value == $v){
-                                                                            $Str .= $v1->label;
-                                                                            if(count($C) >= $k+2){
-                                                                                $Str .= ',';
+                                                                if(is_array($C)){
+                                                                    foreach ($C as $k => $v) {                        
+                                                                        foreach ($value->values as $k1 => $v1) {
+                                                                            if($v1->value == $v){
+                                                                                $Str .= $v1->label;
+                                                                                if(count($C) >= $k+2){
+                                                                                    $Str .= ',';
+                                                                                }
                                                                             }
                                                                         }
-                                                                    }
-                                                                }       
+                                                                    }       
+                                                                }
                                                             }
                                                             if($value->type == 'select'){   
                                                                 $Str = '';                        

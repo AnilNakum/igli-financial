@@ -27,8 +27,7 @@ class Form extends Base_Controller
 
     public function submit_form()
     {
-        if ($this->input->post()) {
-            // pr($_FILES);die;
+        if ($this->input->post()) {            
             $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $FID = ($this->input->post('form_id') && $this->input->post('form_id') > 0) ? $this->input->post('form_id') : 0;
             $FormCode = $this->input->post('form_code');
@@ -38,14 +37,20 @@ class Form extends Base_Controller
             $post_data = array();
             foreach ($FormData as $i => $f) {
                 if($f->type != 'header' && $f->type != 'paragraph' && $f->type != 'file'){
-                    if($f->type != 'checkbox-group'){
-                        $post_data[$f->name] = $this->input->post($f->name);
-                    }else{
+                    if(($f->type == 'checkbox-group') || ($f->type == 'select' && $f->multiple == 'true')){
                         $post_data[$f->name] = json_encode($this->input->post($f->name));
+                    }else{
+                        $post_data[$f->name] = $this->input->post($f->name);
                     }
                 }
-                if(isset($f->required) && $f->required == 'true'  && $f->type != 'file'){
+                if(isset($f->required) && $f->required == 'true'  && $f->type != 'file' && $f->type != 'select'){
                     $this->form_validation->set_rules($f->name, $f->label, 'required');
+                }
+                
+                if($f->type == 'select'){
+                    if((isset($f->required) && $f->required == 'true' &&  $post_data[$f->name] == 'null') || (isset($f->required) && $f->required == 'true' && $post_data[$f->name] == '')){                        
+                        $this->form_validation->set_rules($f->name, $f->label, 'required');
+                    }
                 }
                
             } 
@@ -106,8 +111,6 @@ class Form extends Base_Controller
                         }
                     }
                 }
-
-
                 $post_data['created_at'] = date("Y-m-d H:i:s");
                 $Data = $post_data;
                 if ($FormID = $this->Common->add_info($FormCode, $Data)) {
