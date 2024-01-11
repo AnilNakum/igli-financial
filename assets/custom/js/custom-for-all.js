@@ -225,11 +225,21 @@ $(document).ready(function () {
                             pop_up.notification(returnData.message, 'redirect', "'" + "contact_support/" + "'", true);
                         }
                     }
+                    if (form == 'pdf_frm') {
+                        if ($('.common_datatable').length > 0) {
+                            get_updated_datatable(false);
+                        } else {
+                            pop_up.notification(returnData.message, 'redirect', "'" + "form-builder/" + "'", true);
+                        }
+                    }
                     if (form == 'event_frm') {
                         pop_up.notification(returnData.message, 'redirect', "'" + "calendar/" + "'", true);
                     }
                     if (form == 'page_setting_frm') {
                         pop_up.notification(returnData.message, 'redirect', "'" + "pages/" + "'", true);
+                    }
+                    if (form == 'custom_frm') {
+                        pop_up.notification(returnData.message, 'redirect', "'" + "form/complete/" + returnData.FormCode+ "/'", true);
                     }
 
                     pop_up.close();
@@ -423,6 +433,7 @@ $(document).ready(function () {
     $(document).on("click", ".delete_btn", function () {
         var data_id = $(this).attr('data-id');
         var data_type = ($(this).attr('data-type')) ?? 'hard';
+        var data_table = ($(this).attr('data-table')) ?? '';
         var data_where = ($(this).attr('data-where')) ?? '';
         var control = $(this).attr('data-control');
         var method = $(this).attr('data-method');
@@ -470,18 +481,24 @@ $(document).ready(function () {
                             type: 'POST',
                             url: BASEURL + control + '/' + method,
                             async: false,
-                            data: { id: data_id, type: data_type, where: data_where, pass: btoa(result.value) },
+                            data: { id: data_id, type: data_type,table:data_table, where: data_where, pass: btoa(result.value) },
                             dataType: 'json',
 
                             success: function (returnData) {
                                 if (returnData.status == "ok") {
-                                    $ts.closest("tr").remove();
-                                    get_updated_datatable(false);
                                     swalWithBootstrapButtons.fire(
                                         'Deleted!',
                                         'Your data has been deleted.',
                                         'success'
                                     )
+                                    if(method != 'form_data'){
+                                        $ts.closest("tr").remove();
+                                        get_updated_datatable(false);
+                                    }else{
+                                        setTimeout(() => {                                            
+                                            window.location.reload();
+                                        }, 1000);
+                                    }
                                 } else {
                                     swalWithBootstrapButtons.fire(
                                         'Error!',
@@ -1030,6 +1047,10 @@ var loadImage = function (event) {
 
 function redirect(slug) {
     window.location.href = BASEURL + slug;
+}
+
+function copyText(content) {
+    navigator.clipboard.writeText(content);
 }
 
 function getEventData(start,end,view) {

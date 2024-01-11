@@ -18,6 +18,20 @@ EOF;
     return $return;
 }
 
+function isDeleted($status)
+{
+    if ($status == 1) {
+        $return = <<<EOF
+        <span class="text text-danger badge badge-danger m-l-10 hidden-sm-down">Deleted</span>
+        EOF;
+    } else {
+        $return = <<<EOF
+        <span class="text text-success badge badge-success m-l-10 hidden-sm-down">Active</span>
+EOF;
+    }
+    return $return;
+}
+
 function PaymentStatus($status)
 {
     if ($status == 'completed') {
@@ -128,13 +142,15 @@ EOF;
 }
 
 function GetImage($img)
-{
+{   
     $Img = IMAGE_DIR . $img;
     $action = <<<EOF
-            <img src="{$Img}" alt="Image" class="table-image img-thumbnail">
-EOF;
+        <img src="{$Img}" alt="Image" class="table-image img-thumbnail">
+        EOF;
     return $action;
 }
+
+
 
 function GetUserImage($img)
 {
@@ -244,6 +260,38 @@ EOF;
     return $action;
 }
 
+function form_data_action_row($ID,$Table){
+    $ID = encrypt($ID);        
+    // $Table = encrypt($Table);        
+    $pdfURL = base_url('form/pdf/'.$Table.'/'.$ID);
+    $action = <<<EOF
+            <div class="tooltip-top text-center">
+            <a data-original-title="Download As PDF" data-placement="top" data-toggle="tooltip" href="{$pdfURL}" class="btn btn-xs  l-cyan  btn-equal btn-sm btn-edit btn-mini" data-id="{$ID}" data-control="form" data-method="pdf"><i class="fa-solid fa-download"></i></a>
+            </div>
+            EOF;
+            // <a data-original-title="Remove Data" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-table="{$Table}" data-type="soft"  data-control="remove" data-method="form_data"><i class="far fa-trash-alt"></i></a>
+    return $action;
+
+}
+function form_action_row($FormID,$FormURL)
+{
+    $FormID = encrypt($FormID);
+    $URL = BASE_URL;
+    $dataURL = base_url('form-data/data-view/'.$FormID);
+    $pdfURL = base_url('form-data/pdf/'.$FormID);
+    $action = <<<EOF
+            <div class="tooltip-top text-center">
+            <a data-original-title="PDF Formate" data-placement="top" data-toggle="tooltip" href="{$pdfURL}" class="btn btn-xs  btn-info  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$pdfURL}"  data-control="form" data-method="form_data"><i class="fa-solid fa-file-signature"></i></a>
+            <a data-original-title="Form Data" data-placement="top" data-toggle="tooltip" href="{$dataURL}" class="btn btn-xs  btn-success  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$FormURL}"  data-control="form" data-method="form_data"><i class="fa-regular fa-rectangle-list"></i></a>
+            <a data-original-title="Form Link" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs  btn-warning  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$FormURL}"  onclick="copyText('{$URL}{$FormURL}')" data-control="form" data-method="form_link"><i class="fa-solid fa-link"></i></a>
+            <a data-original-title="View Form" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs  l-cyan  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$FormID}" data-control="form-builder" data-method="view_form"><i class="fa-solid fa-eye"></i></a>
+            <a data-original-title="Remove Form" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$FormID}" data-control="remove" data-method="form" data-type="soft"><i class="far fa-trash-alt"></i></a>
+            </div>
+            EOF;
+            return $action;
+            // <a data-original-title="Update Form" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini"  data-id="{$FormID}" data-control="form-builder" data-method="update"><i class="fas fa-pencil-alt"></i></a>
+}
+
 function document_action_row($DocID)
 {
     $DocID = encrypt($DocID);
@@ -287,6 +335,11 @@ EOF;
     return $action;
 }
 
+function form_filed($Name,$Type) {
+    pr($Name);
+    pr($Type);
+}
+
 
 function PartnersName($P) {
     $ci = &get_instance();
@@ -308,4 +361,30 @@ function PartnersName($P) {
     }else{
         return '-';
     }
+}
+
+function GetFile($file)
+{
+    $I = json_decode($file);
+    $action = '';
+    if(is_array($I)){
+        foreach ($I as $key => $value) {
+            $file = IMAGE_DIR . $value;
+            $action .= <<<EOF
+                <a href="{$file}" target="_blank"><i class="fa-solid fa-file-shield"></i></a>
+            EOF;
+        }
+    }else{
+
+        $file = IMAGE_DIR . $file;
+        $action .= <<<EOF
+                <a href="{$file}" target="_blank"><i class="fa-solid fa-file-shield"></i></a>
+            EOF;
+    }
+    return '<center>'.$action.'</center>';
+}
+
+function GetCheckBox($val) {
+    pr($val);die;    
+    return $Str;    
 }

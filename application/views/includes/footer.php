@@ -71,6 +71,7 @@ if (isset($extra_js) && is_array($extra_js) && !empty($extra_js)) {
     }
 }
 ?>
+
 </body>
 
 </html>

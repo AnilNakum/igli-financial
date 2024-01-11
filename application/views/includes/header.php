@@ -335,6 +335,10 @@
                         href="<?php echo base_url('pages'); ?>"><i class="fa-solid fa-file-lines"></i><span>App Help Pages
                         </span></a>
                 </li>
+                <li class="<?php echo (($this->uri->segment(1) == "form-builder-form") || ($this->uri->segment(1) == "form-builder")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('form-builder'); ?>"><i class="fa-brands fa-wpforms"></i><span>IGLI Form Builder
+                        </span></a>
+                </li>
                 <?php } ?>
                 <!-- <li> <a href="javascript:void(0);"
                         class="menu-toggle <?php echo (($this->uri->segment(1) == "banner") || ($this->uri->segment(1) == "setting")) ? 'active toggled' : ""; ?>"><i

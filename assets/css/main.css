@@ -2633,7 +2633,7 @@ textarea.form-control:active {
     position: relative;
     cursor: pointer;
     padding-left: 35px;
-    line-height: 27px;
+    line-height: 24px;
 }
 
 .radio label {
@@ -2645,8 +2645,8 @@ textarea.form-control:active {
     content: " ";
     display: inline-block;
     position: absolute;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     left: 0;
     cursor: pointer;
     border-radius: 3px;
@@ -20656,7 +20656,7 @@ section.content {
 
 .dtp div.dtp-date,
 .dtp div.dtp-time {
-    background: #007d72;
+    background: #208bd4;
 }
 
 .dtp > .dtp-content > .dtp-date-view > header.dtp-header {
@@ -20681,7 +20681,7 @@ section.content {
 }
 
 .dtp table.dtp-picker-days tr td a.selected {
-    background: #007d72;
+    background: #208bd4;
     color: #fff;
 }
 
@@ -24122,4 +24122,50 @@ section.content {
 
 .preview-thumbnail.nav-tabs .nav-item {
     width: 20%;
+}
+
+.dtp div.dtp-date, .dtp div.dtp-time {
+    background: #208bd4 !important;
+}
+.dtp table.dtp-picker-days tr td a.selected {
+    background: #208bd4 !important; 
+}
+.dtp > .dtp-content > .dtp-date-view > header.dtp-header {
+    background: #13537f !important;
+}
+.dtp .dtp-actual-meridien a.selected {
+    background: #13537f !important;
+}
+input[type="color"] {
+    height: 40px !important;
+}
+textarea.form-control {
+    border: 1px solid #e3e3e3 !important;
+    border-radius: 10px !important;
+}
+textarea.form-control:focus, textarea.form-control:active {
+    border: 1px solid #208bd4 !important;
+    -webkit-box-shadow: none;
+}
+.select2.select2-container.select2-container--default {
+    border-radius: 20px;
+    border: 1px solid #e3e3e3 !important;
+}
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+.select2-container .select2-selection--multiple {
+   cursor: pointer !important;
+   height: 38px !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    font-size: 14px;
+    margin-right: 5px;
+    margin-top: 3px;
+    line-height: normal;
+}
+.theme-blue .checkbox input[type="checkbox"]:checked+label::after {
+    border: 1px solid #2196f3;
+    background: #2196f3;
+    color: #fff;
 }

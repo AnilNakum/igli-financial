@@ -10,11 +10,27 @@ class Common extends CI_Model
     public function __construct()
     {
         parent::__construct();
+        $this->load->dbforge();
     }
 
     public function query($query, $type)
     {
-        return $this->db->query($query)->$type();
+        if($type != ''){
+            return $this->db->query($query)->$type();
+        }else{
+            return $this->db->query($query);
+        }
+    }
+
+    public function create_table($table,$fields) {
+        array_push($fields,'is_deleted INT default 0');
+        array_push($fields,'created_at datetime default current_timestamp');
+        $this->dbforge->add_field($fields);
+        return $this->dbforge->create_table($table, TRUE);
+    }
+
+    public function add_field($table,$fields) {
+        return $this->db->add_field($table, $fields);
     }
 
     public function get_info($table = "", $id = false, $field = "id", $whereCon = "", $all_field = '*', $join = false, $GroupBy = false, $OrderBy = false, $having = false)

@@ -30,5 +30,22 @@ class Remove_records extends CI_Model {
             return $this->db->delete($table);
         }
     }
+    function remove($id, $field, $table, $where ,$type ) {
+        
+        if ($id && $field) {
+            $this->db->where($field, $id);
+        }
+        if ($where) {
+            $this->db->where($where);
+        }
+        if($type == 'soft'){
+            $data = array(
+                "is_deleted" => 1
+            );
+            return $this->db->update($table, $data);
+        }else{
+            return $this->db->delete($table);
+        }
+    }
 
 }

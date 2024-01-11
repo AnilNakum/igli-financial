@@ -17,7 +17,8 @@ class Base_Controller extends CI_Controller
             $this->config->set_item($key, $setting);
         }
         $this->Method = $this->router->fetch_method();
-        if (!$auth && $this->Method != 'submit') {
+        // pr($this->Method);
+        if (!$auth && ($this->Method != 'submit' || $this->Method != 'igli_form')) {
             if (!$this->tank_auth->is_logged_in()) {
                 if ($this->input->is_ajax_request()) {
                     $sapi_type = php_sapi_name();
@@ -59,16 +60,15 @@ class Base_Controller extends CI_Controller
                     //         redirect('admin');
                     //     }
                     // }
-                }
+    }
                 
-                public function view($view, $data = false, $part = false)
-                {
-                    if ($this->tank_auth->is_logged_in() && $this->Method != 'submit') {
-                        $data['login_username'] = $this->tank_auth->get_fullname();
-                        $data['role_id'] = $this->tank_auth->get_role_id();
-                       
-            $this->load->view('includes/header', $data);
-        }
+    public function view($view, $data = false, $part = false)
+    {
+            if ($this->tank_auth->is_logged_in() && $this->Method != 'submit') {
+                $data['login_username'] = $this->tank_auth->get_fullname();
+                $data['role_id'] = $this->tank_auth->get_role_id();    
+                $this->load->view('includes/header', $data);
+            }
         $this->load->view($view, $data, $part);
         if ($this->tank_auth->is_logged_in() && $this->Method != 'submit') {
             $this->load->view('includes/footer');

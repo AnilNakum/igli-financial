@@ -24,3 +24,5 @@ define('TBL_EVENT', 'event');
 
 define("TBL_SITE_MODULE", "site_module");
 define("TBL_SITE_MODULE_PERMISSION", "site_module_permission");
+
+define("TBL_FORM", "form");

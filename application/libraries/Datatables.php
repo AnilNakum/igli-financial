@@ -260,7 +260,7 @@ class Datatables
     {
         $this->edit_columns[$column][] = array('content' => $content, 'replacement' => $this->explode(',', $match_replacement));
         return $this;
-    }
+    }  
 
     /**
      * Unset column

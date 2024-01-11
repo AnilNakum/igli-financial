@@ -104,7 +104,7 @@ a:focus {
 
 .checkbox label::before,
 .checkbox label::after {
-    border: 1px solid #1d1d1d;
+    border: 1px solid #a9a9a9;
 }
 
 @media screen and (max-width: 991px) {
@@ -798,3 +798,5 @@ table.dataTable thead > tr > td.sorting {
 .tree ul a:hover {
     text-decoration: none;
 }
+
+

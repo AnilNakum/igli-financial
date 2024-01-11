@@ -1998,6 +1998,15 @@ legend.question-border {
     color: #424242;
     font-size: 15px;
     letter-spacing: 1px;
+    font-family: "Muli", Arial, Tahoma, sans-serif;
+}
+
+.form-group .form-control, .input-group .form-control {
+    font-family: "Muli", Arial, Tahoma, sans-serif;
+    font-size: 14px;
+}
+.rendered-form label {
+    font-weight: 600;
 }
 
 .side-footer-button .form-group {
@@ -3386,7 +3395,7 @@ input[type="radio"]:checked+label .btn {
 }
 
 input:checked+.slider {
-    background-color: #4bd865;
+    background-color: #2196f3;
 }
 
 input:focus+.slider {
@@ -4228,7 +4237,7 @@ td .up-images img {
 }
 
 div.dataTables_wrapper div.dataTables_processing {
-    background-image: url("../images/logo.png");
+    background-image: url("../../images/favicon-bg.jpg");
     background-repeat: no-repeat;
     background-size: 40px 40px;
     box-shadow: none;
@@ -6185,4 +6194,32 @@ a.menu-toggle.active.toggled {
 .form-wrap.form-builder .frmb .prev-holder input[type=number],
 .form-wrap.form-builder .frmb .prev-holder input[type=date] {
     width: 100% !important;
+}
+input.form-name {
+    background-color: #fff;
+    color: #000;
+}
+label.form-label.switch-label {
+    margin-top: 8px;
+}
+.radio input[type="radio"]:checked + label::after {
+    width: 16px !important;
+    height: 16px !important;
+    background-color: #208bd4 !important;
+    border-color: #208bd4 !important;
+    top: 5px !important;
+    left: 5px !important;
+    opacity: 1;
+}
+.form-card.sidebar-section {
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 1px 3px;
+    border-radius: 6px;
+}
+
+.keyword-table{
+    width: 50% !important;
+}
+.sidebar-section .keyword-table td
+{
+    color: #000 !important;
 }

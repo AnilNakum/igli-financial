@@ -61,6 +61,10 @@ $route['services/completed'] = 'user_services/completed';
 $route['upload'] = 'document';
 $route['pages'] = 'setting/pages';
 
+$route['form-builder-form'] = 'form-builder/form-builder';
+$route['form-data/data-view/(:any)'] = 'form-builder/data_view/$1';
+$route['form-data/pdf/(:any)'] = 'form-builder/pdf/$1';
+
 $route['calendar'] = 'calendar/eventdata';
 $route['calendar/view/(:any)'] = 'calendar/eventdata/$1';
 $route['service-users'] = 'subadmin/service_users';
