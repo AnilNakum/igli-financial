@@ -247,8 +247,8 @@ class Form extends Base_Controller
     $FormCode =  $link_array[count($link_array)-2];
     $ID =  decrypt(end($link_array));
 
-    // pr($link_array[count($link_array)-2]);
-    // pr($ID);die;
+    pr($link_array[count($link_array)-2]);
+    pr($ID);die;
 
     $Form = $this->Common->get_info(TBL_FORM, $FormCode, 'FormCode');
     $Data = $this->Common->get_info($FormCode, $ID,'id');
