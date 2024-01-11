@@ -241,9 +241,14 @@ class Form extends Base_Controller
    }
 
    function pdf($ID) {
+    $link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $link_array = explode('/',$link);
 
-    $FormCode =  $this->uri->segment(3);
-    $ID =  decrypt($this->uri->segment(4));
+    $FormCode =  $link_array[count($link_array)-2];
+    $ID =  decrypt(end($link_array));
+
+    // pr($link_array[count($link_array)-2]);
+    // pr($ID);die;
 
     $Form = $this->Common->get_info(TBL_FORM, $FormCode, 'FormCode');
     $Data = $this->Common->get_info($FormCode, $ID,'id');
