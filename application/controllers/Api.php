@@ -23,7 +23,7 @@ class Api extends REST_Controller
         if($this->Method != 'update_profile'){
             $_POST = json_decode(file_get_contents("php://input"), true);
         }
-        if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt' && $this->Method != 'help_pages' && $this->Method != 'birthday_wise') {
+        if ($this->Class != 'login' && $this->Method != 'login' && $this->Class != 'register' && $this->Method != 'register' && $this->Method != 'forgot_password' && $this->Method != 'confirmopt' && $this->Method != 'resendopt' && $this->Method != 'help_pages' && $this->Method != 'birthday_wise' && $this->Method != 'encription') {
             $this->USER_ID = $this->_Check_Auth_Token();
         }
     }
@@ -795,4 +795,26 @@ public function help_pages_get() {
         $this->response(['status' => TRUE, 'message' => "Pages Info Not Found", 'data' => new stdClass()], REST_Controller::HTTP_OK);
     }
 }
+
+public function encription_post() {
+    $this->form_validation->set_rules('palin', 'Palin', 'trim|required');
+    if ($this->form_validation->run() == FALSE) {
+        $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
+    } else {
+        $PlainText = $this->post('palin');      
+
+            if ($EncryptedText = base64_encode($PlainText)) {
+                $Data = array(
+                    "enc_val" => $EncryptedText,
+                    "palin" => $PlainText
+                );
+                $this->response(['status' => TRUE,
+                'message' => 'Encripted successfully.','data' => $Data]
+                    , REST_Controller::HTTP_OK);
+            } else {
+                $this->response(['status' => FALSE, 'message' => "Something went wrong, Please try again!"], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        
+    }
 }
+} 
