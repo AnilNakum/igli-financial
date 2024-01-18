@@ -33,6 +33,19 @@ class Common extends CI_Model
         return $this->db->add_field($table, $fields);
     }
 
+    public function field_exists($field,$table,$data) {
+        $DB = $this->db;
+        if (!$this->db->field_exists($field,$table))
+        {   
+            $fields = array(
+                $field => $data
+            );         
+            // pr($fields);die;
+            return $this->dbforge->add_column($table, $fields);//$this->add_field($table,$fields);
+        }
+        return;
+    }
+
     public function get_info($table = "", $id = false, $field = "id", $whereCon = "", $all_field = '*', $join = false, $GroupBy = false, $OrderBy = false, $having = false)
     {
         $this->db->select($all_field);

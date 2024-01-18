@@ -50,7 +50,7 @@ $form_attr = array('class' => 'default_form custom_frm', 'id' => 'custom_frm', '
                         <img class="img-fluid" src="<?php echo ASSETS_PATH; ?>images/igli-logo.webp" alt="">
                     </div>
                 </div>
-                <?php if(!$Data || $Data->Status == 2) {?>
+                <?php if(!$Data || $Data->Status == 2 || $Data->isDeleted == 1) {?>
                 <div class="body text-center manage-list">
                     <div class="institute-box">
                         <img src="<?php echo ASSETS_PATH; ?>images/finder.png" width="50%">

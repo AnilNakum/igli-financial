@@ -1,6 +1,9 @@
 <?php 
 if (isset($form_info) && $form_info->FID > 0) {
     $FID = array('name' => 'form_id', 'id' => 'form_id', 'value' => ($form_info->FID > 0) ? $form_info->FID : "", 'type' => 'hidden');
+    $FormCode = array('name' => 'form_code', 'id' => 'form_code', 'value' => ($form_info->FormCode > 0) ? $form_info->FormCode : "", 'type' => 'hidden');
+    $FormData = $form_info->FormData;
+    
 }
 
 $FormName = array('name' => 'form_name', 'id' => 'form_name', 'value' => (isset($form_info) && $form_info->FormName != "") ? $form_info->FormName : set_value('form_name'), 'class' => "form-control form-name", "tabindex" => 1, 'placeholder' => "Enter Form Name", "data-validation" => "required");
@@ -27,6 +30,10 @@ $cancel_btn = array('name' => 'cancel_btn', 'id' => 'cancel_btn', 'content' => '
             <?php echo validation_errors(); 
              if (isset($form_info) && $form_info->FID > 0) {
                 echo form_input($FID);
+                echo form_input($FormCode);
+                $FormData = str_replace('"true"','true',$FormData);
+                $FormData = str_replace('"false"','false',$FormData);
+
             }
             
             ?>
@@ -80,12 +87,20 @@ jQuery(function($) {
 
     var fbEditor = document.getElementById('fb-editor');
     var formBuilder = $(fbEditor).formBuilder(options);
+    <?php if (isset($form_info) && $form_info->FID > 0) { ?>
+        setTimeout(() => {
+            var formData = <?php echo $FormData;?>;
+            formBuilder.actions.setData(formData);
+        }, 2000);
+    <?php } ?>
 
     document.getElementById('cancel_btn').addEventListener('click', function() {
         document.getElementById('form_name').value = '';
         formBuilder.actions.clearFields();
     });
     document.getElementById('getJSData').addEventListener('click', function() {
+        var form_id = document.getElementById('form_id');
+        var form_code = document.getElementById('form_code');
         var formName = document.getElementById('form_name').value;
         var formData = formBuilder.actions.getData();
         var error_html = '';
@@ -99,11 +114,12 @@ jQuery(function($) {
         if (error_html != '') {
             pop_up.alert(error_html);
         } else {
-            console.log(formData);
             $.ajax({
                 type: 'POST',
-                url: 'form_builder/submit_form',
+                url: BASEURL +'form_builder/submit_form',
                 data: {
+                    form_id: (form_id)?form_id.value:0,
+                    form_code: (form_code)?form_code.value:0,
                     formName: formName,
                     formData: formData
                 },

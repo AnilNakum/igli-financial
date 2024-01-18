@@ -39,7 +39,7 @@ $(document).ready(function () {
                     beforeSend: function () {
                     },
                     success: function (returnData, textStatus, xhr) {
-                        if (returnData.status == 'login' && pageType != 'igli_form' && pageType != 'complete') {                            
+                        if (returnData.status == 'login' && (pageType != 'igli_form' && pageType != 'complete')) {                            
                             window.location.href = BASEURL;
                         }
                         return true;

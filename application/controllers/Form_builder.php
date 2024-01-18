@@ -26,6 +26,22 @@ class Form_builder extends Base_Controller
         $this->view('form-builder/form-builder', $data);
     }
 
+
+    public function edit_form($id)
+    {
+        $id = decrypt($id);
+        if ($id > 0) {
+            $data_obj = $this->Common->get_info(TBL_FORM, $id, 'FID');
+            if (is_object($data_obj) && count((array) $data_obj) > 0) {
+                $data["form_info"] = $data_obj;
+            } else {
+                redirect('form/');
+            }
+        }
+        $data['page_title'] = "IGLI Form Builder :: Edit";
+        $this->view('form-builder/form-builder', $data);
+    }
+
     public function view_form($id)
     {
         $id = decrypt($id);
@@ -43,12 +59,12 @@ class Form_builder extends Base_Controller
 
     public function submit_form()
     {
+        // pr($this->input->post());die;
         if ($this->input->post()) { 
             $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $FormID = ($this->input->post('form_id') && $this->input->post('form_id') > 0) ? $this->input->post('form_id') : 0;
-            $FormCode = get_username('FD');
+            $FormCode = ($this->input->post('form_code') && $this->input->post('form_code') != '') ? $this->input->post('form_code') : get_username('FD');
             $FormData = $this->input->post('formData');
-            // pr($FormData);die;
             $post_data = array(
                 "FormCode" => $FormCode,
                 "FormName" => $this->input->post('formName'),
@@ -67,20 +83,24 @@ class Form_builder extends Base_Controller
                 }
             }
 
-            if($T = $this->Common->create_table($FormCode,$fields)){
-                $this->Common->query('ALTER TABLE '.$FormCode.'  ADD PRIMARY KEY (`id`)','');
-                $this->Common->query('ALTER TABLE '.$FormCode.'  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT','');
-            }
-
+            
             if ($FormID > 0) {
+                foreach ($fields as $key => $value) {                    
+                   $this->Common->field_exists($key,$FormCode,$fields[$key]);
+                }
+
                 $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
                 $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
                 if ($this->Common->update_info(TBL_FORM, $FormID, $post_data, 'FID')) :
                     $response = array("status" => "ok", "heading" => "Updated successfully...", "message" => "Details updated successfully.");
-                else :
-                    $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
-                endif;
+                    else :
+                        $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
+                    endif;
             }else{
+                if($T = $this->Common->create_table($FormCode,$fields)){
+                    $this->Common->query('ALTER TABLE '.$FormCode.'  ADD PRIMARY KEY (`id`)','');
+                    $this->Common->query('ALTER TABLE '.$FormCode.'  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT','');
+                }
                 $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
                 $post_data['CreatedAt'] = date("Y-m-d H:i:s");
                 if ($FormID = $this->Common->add_info(TBL_FORM, $post_data)) {
@@ -101,7 +121,7 @@ class Form_builder extends Base_Controller
         if ($this->input->post('status')) {
             $this->datatables->where('Status', $this->input->post('status'));
         }
-    
+        $this->datatables->where('isDeleted', 0);
         $this->datatables->from(TBL_FORM)
         ->edit_column('Status', '$1', 'Status(Status)')
         ->edit_column('CreatedAt', '$1', 'DatetimeFormat(CreatedAt)')

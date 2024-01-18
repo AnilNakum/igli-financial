@@ -279,12 +279,14 @@ function form_action_row($FormID,$FormURL)
     $URL = BASE_URL;
     $dataURL = base_url('form-data/data-view/'.$FormID);
     $pdfURL = base_url('form-data/pdf/'.$FormID);
+    $editURL = base_url('form_builder/edit_form/'.$FormID);
     $action = <<<EOF
             <div class="tooltip-top text-center">
-            <a data-original-title="PDF Formate" data-placement="top" data-toggle="tooltip" href="{$pdfURL}" class="btn btn-xs  btn-info  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$pdfURL}"  data-control="form" data-method="form_data"><i class="fa-solid fa-file-signature"></i></a>
-            <a data-original-title="Form Data" data-placement="top" data-toggle="tooltip" href="{$dataURL}" class="btn btn-xs  btn-success  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$FormURL}"  data-control="form" data-method="form_data"><i class="fa-regular fa-rectangle-list"></i></a>
-            <a data-original-title="Form Link" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs  btn-warning  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$FormURL}"  onclick="copyText('{$URL}{$FormURL}')" data-control="form" data-method="form_link"><i class="fa-solid fa-link"></i></a>
             <a data-original-title="View Form" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs  l-cyan  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$FormID}" data-control="form-builder" data-method="view_form"><i class="fa-solid fa-eye"></i></a>
+            <a data-original-title="PDF Formate" data-placement="top" data-toggle="tooltip" href="{$pdfURL}" class="btn btn-xs  btn-secoundry  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$pdfURL}"  data-control="form" data-method="form_data"><i class="fa-solid fa-file-signature"></i></a>
+            <a data-original-title="Form Link" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs  btn-warning  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$FormURL}"  onclick="copyText('{$URL}{$FormURL}')" data-control="form" data-method="form_link"><i class="fa-solid fa-link"></i></a>
+            <a data-original-title="Form Data" data-placement="top" data-toggle="tooltip" href="{$dataURL}" class="btn btn-xs  btn-success  btn-equal btn-sm btn-edit btn-mini" data-id="{$FormID}" data-link="{$FormURL}"  data-control="form" data-method="form_data"><i class="fa-regular fa-rectangle-list"></i></a>
+            <a data-original-title="Update Form" data-placement="top" data-toggle="tooltip" href="{$editURL}" class="btn btn-xs l-blue btn-equal btn-mini btn-sm" data-id="{$FormID}" data-control="3" data-method="edit_form"><i class="fas fa-pencil-alt"></i></a>
             <a data-original-title="Remove Form" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$FormID}" data-control="remove" data-method="form" data-type="soft"><i class="far fa-trash-alt"></i></a>
             </div>
             EOF;
