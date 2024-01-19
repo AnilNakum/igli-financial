@@ -806,7 +806,8 @@ public function encription_post() {
             if ($EncryptedText = base64_encode($PlainText)) {
                 $Data = array(
                     "enc_val" => $EncryptedText,
-                    "palin" => $PlainText
+                    "palin" => $PlainText,
+                    "ip" => $_SERVER['REMOTE_ADDR']
                 );
                 $this->response(['status' => TRUE,
                 'message' => 'Encripted successfully.','data' => $Data]
