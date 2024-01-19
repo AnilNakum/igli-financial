@@ -57,7 +57,7 @@ define('SMTP_PASS', "pvkzplieuxsufvob");
 // define('SMTP_PASS', "rpwhocxqzqiptpsc");
 
 define('SMSAUTHKEY', "69866AT3vL0g3m358ef28ef");
-define('WORKINGKEY', "D0A58AFD62DC19DF2E0925DD83E413E5");
+define('WORKINGKEY', "4E35C52C7E0D95F0061A7748FE721331");
 
 define('STATUS_TRUE', 200);
 define('STATUS_FALSE', 400);
