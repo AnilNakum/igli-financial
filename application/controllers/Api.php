@@ -802,7 +802,6 @@ public function encription_post() {
         $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
     } else {
         $PlainText = $this->post('palin');      
-        $Key = 
             if ($EncryptedText = cca_encrypt($PlainText,WORKINGKEY)) {
                 $Data = array(
                     "enc_val" => $EncryptedText,
