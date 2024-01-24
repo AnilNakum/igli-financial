@@ -798,11 +798,13 @@ public function help_pages_get() {
 
 public function encription_post() {
     $this->form_validation->set_rules('palin', 'Palin', 'trim|required');
+    $this->form_validation->set_rules('working_key', 'Working Key', 'trim|required');
     if ($this->form_validation->run() == FALSE) {
         $this->response(['status' => FALSE, 'message' => $this->convert_msg($this->form_validation->error_array()), 'data' => new stdClass()], REST_Controller::HTTP_BAD_REQUEST);
     } else {
         $PlainText = $this->post('palin');      
-            if ($EncryptedText = cca_encrypt($PlainText,WORKINGKEY)) {
+        $WorkingKey = $this->post('working_key');      
+            if ($EncryptedText = cca_encrypt($PlainText,$WorkingKey)) {
                 $Data = array(
                     "enc_val" => $EncryptedText,
                     "palin" => $PlainText,
