@@ -781,9 +781,9 @@ class Auth extends Base_Controller
 	}
 
 	//$encrypted_data=encrypt($merchant_data,$working_key); // Method for encrypting the data.
-	$this->load->library('someclass');
+	$this->load->library('ccavenue');
 
-    $encrypted_data = $this->someclass->encrypt($merchant_data,$working_key); 
+    $encrypted_data = $this->ccavenue->encrypt($merchant_data,$working_key); 
 
 	// var_dump($encrypted_data);
 

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 error_reporting(0);
 
-class someclass {
+class Ccavenue {
 
         public function some_method()
         {
