@@ -141,8 +141,14 @@
     padding: 25px;
 }
 .login-main.payment {
-    max-width: 70% !important;
+    max-width: 65% !important;
 }
+}
+.payment .amount {
+    color: green;
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
 }
 
 

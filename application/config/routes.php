@@ -70,5 +70,5 @@ $route['calendar/view/(:any)'] = 'calendar/eventdata/$1';
 $route['service-users'] = 'subadmin/service_users';
 $route['service-users/(:any)'] = 'subadmin/service_users/$1';
 $route['payment'] = 'auth/payment';
-$route['payment_success'] = 'auth/payment_success';
+$route['payment_handler'] = 'auth/payment_handler';
 $route['payment_cancel'] = 'auth/payment_cancel';

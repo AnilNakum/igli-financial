@@ -1,13 +1,33 @@
-<?php include 'auth_header.php';?>
+<?php include 'auth_header.php';
+
+$amount = array(
+    'name' => 'amount',
+    'id' => 'amount',
+    'class' => 'form-control amount',
+    'placeholder' => 'Amount',
+);
+$Name = array('name' => 'delivery_name', 'id' => 'delivery_name',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Name", "data-validation" => "required");
+$Email = array('name' => 'delivery_email', 'id' => 'delivery_email',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Email", "data-validation" => "required");
+$Phone = array('name' => 'delivery_tel', 'id' => 'delivery_tel',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Phone No", "data-validation" => "required");
+
+$submit_btn = array(
+    'name' => 'checkout',
+    'id' => 'checkout',
+    'value' => 'CheckOut',
+    'class' => 'btn l-blue btn-round btn-lg btn-block waves-effect waves-light',
+);
+$form_attr = array('class' => 'default_form pay_frm', 'id' => 'pay_frm', 'name' => 'pay_frm');
+?>
 <script>
-	window.onload = function() {
-		var d = new Date().getTime();
-		document.getElementById("tid").value = d;
-	};
+window.onload = function() {
+    var d = new Date().getTime();
+    document.getElementById("tid").value = d;
+    document.getElementById("order_id").value = d;
+};
 </script>
 
 <div class="row">
-    
+
     <div class="col-md-5">
         <div class="card profile-greeting">
             <div class="card-body pb-0">
@@ -21,12 +41,12 @@
                         <div class="badge f-10"><i class="fa-solid fa-clock"></i> <span id="txt"></span></div>
                     </div>
                 </div>
-                <div class="cartoon limg"><img class="img-fluid"
-                        src="<?php echo ASSETS_PATH; ?>images/payment.png" alt=""></div>
+                <div class="cartoon limg"><img class="img-fluid" src="<?php echo ASSETS_PATH; ?>images/payment.png"
+                        alt=""></div>
             </div>
         </div>
     </div>
-	<div class="col-md-7 p-0">
+    <div class="col-md-7 p-0">
         <div class="login-card">
             <div class="login-main payment">
                 <div class="header">
@@ -34,49 +54,38 @@
                         <img class="img-fluid" src="<?php echo ASSETS_PATH; ?>images/igli-logo.webp" alt="">
                     </div>
                 </div>
-                <!-- <?php //echo form_open($this->uri->uri_string(), array('action' => '', 'method' => 'post', 'id' => 'login-form', 'class' => 'login-form form')); ?>
-<img class="img-fluid"
-                        src="<?php echo ASSETS_PATH; ?>images/right.png" alt="">
-                <p class="text-center text-success">Your responce has been successfully recorded.</p>
-                <?php// echo anchor($FormURL, 'Submit Another Responce' , array('class' => 'btn l-blue btn-round btn-lg btn-block waves-effect waves-light')); ?>
-                -->
 
+                <?php echo form_open_multipart('auth/save_payment', $form_attr); ?>
+                <br>
+                <h6 class="text-center">Payment To IGLI FINANCIAL PRIVATE LIMITED</h6>
+                <input type="hidden" name="tid" id="tid" readonly />
+                <input type="hidden" name="merchant_id" value="<?php echo CCA_MERCHANT_ID;?>" />
+                <input type="hidden" name="order_id" id="order_id" />
+                <input type="hidden" name="currency" value="INR" />
+                <input type="hidden" name="redirect_url" value="<?php echo BASE_URL .'payment_handler';?>" />
+                <input type="hidden" name="cancel_url" value="<?php echo BASE_URL .'payment_handler';?>" />
+                <input type="hidden" name="language" value="EN" />
+                <br>
+                <div class="form-group">
+                    <?php echo form_input($amount); ?>
+                    <?php echo form_error($amount['name'], '<p class="text-danger  text-left">', '</p>'); ?><?php echo isset($errors[$amount['name']]) ? '<p class="text-danger text-left">' . $errors[$amount['name']] . '</p>' : ''; ?>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <?php echo form_input($Name); ?>
+                </div>
+                <div class="form-group">
+                    <?php echo form_input($Email); ?>
+                </div>
+                <div class="form-group">
+                    <?php echo form_input($Phone); ?>
+                </div>
 
-                <?php echo form_open_multipart('auth/save_payment', /*$form_attr*/); ?>
-		<table width="40%" height="100"  align="center">
-			<table width="40%" height="100"  align="center" class="table" >
-				
-				<tr>
-					<td>TID	:</td><td><input type="text" name="tid" id="tid" readonly /></td>
-				</tr>
-				<tr>
-					<td>Merchant Id	:</td><td><input type="text" name="merchant_id" value="78901"/></td>
-				</tr>
-				<tr>
-					<td>Order Id	:</td><td><input type="text" name="order_id" value="123654789"/></td>
-				</tr>
-				<tr>
-					<td>Amount	:</td><td><input type="text" name="amount" value="1.00"/></td>
-				</tr>
-				<tr>
-					<td>Currency	:</td><td><input type="text" name="currency" value="INR"/></td>
-				</tr>
-				<tr>
-					<td>Redirect URL	:</td><td><input type="text" name="redirect_url" value="http://localhost/CCAvenue/www/index.php/payment_handler/"/></td>
-				</tr>
-			 	<tr>
-			 		<td>Cancel URL	:</td><td><input type="text" name="cancel_url" value="http://localhost/CCAvenue/www/index.php/payment_handler/"/></td>
-			 	</tr>
-			 	<tr>
-					<td>Language	:</td><td><input type="text" name="language" value="EN"/></td>
-				</tr>
-		     	
-		        
-		        <tr>
-		        	<td></td><td><INPUT TYPE="submit" value="CheckOut"></td>
-		        </tr>
-	      	</table>
-			  <?php echo form_close(); ?>
+                <div class="form-group mb-0">
+                    <?php echo form_submit($submit_btn); ?>
+                </div>
+
+                <?php echo form_close(); ?>
             </div>
         </div>
     </div>

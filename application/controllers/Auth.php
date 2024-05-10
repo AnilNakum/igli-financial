@@ -750,6 +750,18 @@ class Auth extends Base_Controller
     }
 
     public function save_payment()  {
+        if ($this->input->post()) {
+            $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
+            $id = ($this->input->post('user_id') && $this->input->post('user_id') > 0) ? $this->input->post('user_id') : 0;
+            $this->form_validation
+                ->set_rules('amount', 'Amount', 'required')
+                ->set_rules('delivery_name', 'Name', 'required')
+                ->set_rules('delivery_email', 'Email', 'required')
+                ->set_rules('delivery_tel', 'Phone No', 'required');
+            $this->form_validation->set_message('required', '{field} field should not be blank.');
+            $error_element = error_elements();
+            $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
+            if ($this->form_validation->run()) {
         $data=$this->input->post(array(
 			'tid'=>'tid',
             'merchant_id'=>'merchant_id',
@@ -789,7 +801,7 @@ class Auth extends Base_Controller
 
 ?>
         <form method="post" name="redirect"
-            action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+            action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
             <?php
         echo "<input type=hidden name=encRequest value=$encrypted_data>";
         echo "<input type=hidden name=access_code value=$access_code>";
@@ -801,9 +813,56 @@ class Auth extends Base_Controller
         </script>
 
 <?php
+} else {
+    $response['error'] = $this->form_validation->error_array();
+}
+echo json_encode($response);
+die;
+}
 	}
 
-    public function payment_success(){
+    public function payment_handler(){
+        $this->load->library('someclass');
+
+	//$encrypted_data=$this->someclass->encrypt($merchant_data,$working_key); 
+
+
+	$workingKey='change_with_your_working_key';		//Working Key should be provided here.
+	$encResponse=$_POST["encResp"];			//This is the response sent by the CCAvenue Server
+	$rcvdString=$this->someclass->decrypt($encResponse,$workingKey);		//Crypto Decryption used as per the specified working key.
+	$order_status="";
+	$decryptValues=explode('&', $rcvdString);
+	$dataSize=sizeof($decryptValues);
+	echo "<center>";
+
+	for($i = 0; $i < $dataSize; $i++) 
+	{
+		$information=explode('=',$decryptValues[$i]);
+		if($i==3)	$order_status=$information[1];
+	}
+
+	if($order_status==="Success")
+	{
+		$this->load->view('auth/payment_complete', $data);
+		
+	}
+	else if($order_status==="Aborted")
+	{
+		echo "<br>Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail";
+	
+	}
+	else if($order_status==="Failure")
+	{
+		echo "<br>Thank you for shopping with us.However,the transaction has been declined.";
+	}
+	else
+	{
+		echo "<br>Security Error. Illegal access detected";
+	
+	}
+
+	
+	var_dump($encrypted_data);
         $this->load->view('auth/payment_complete', $data);
     }
     public function payment_cancel(){
