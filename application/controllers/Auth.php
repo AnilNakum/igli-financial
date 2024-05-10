@@ -856,7 +856,7 @@ echo "Please Wait...";
         
 	}
     
-    $data['FormURL']= BASE_URL .'payment';
+    $data['FormURL']= BASE_URL .'auth/payment';
 	
         $this->load->view('auth/payment_complete', $data);
     }
