@@ -12,8 +12,8 @@
                 <?php echo form_open($this->uri->uri_string(), array('action' => '', 'method' => 'post', 'id' => 'login-form', 'class' => 'login-form form')); ?>
 <img class="img-fluid"
                         src="<?php echo ASSETS_PATH; ?>images/right.png" alt="">
-                <p class="text-center text-success">Your responce has been successfully recorded.</p>
-                <?php echo anchor($FormURL, 'Submit Another Responce' , array('class' => 'btn l-blue btn-round btn-lg btn-block waves-effect waves-light')); ?>
+                <p class="text-center text-info"><?php echo $message;?></p>
+                <?php echo anchor($FormURL, 'Back' , array('class' => 'btn l-blue btn-round btn-lg btn-block waves-effect waves-light')); ?>
                
             </div>
         </div>

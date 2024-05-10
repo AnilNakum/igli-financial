@@ -162,6 +162,7 @@ $(document).ready(function () {
             },
             success: function (returnData) {
                 if (returnData.status == "ok") {
+                  
                     if (form == 'banner_frm') {
                         if ($('.common_datatable').length > 0) {
                             get_updated_datatable(false);
@@ -266,7 +267,11 @@ $(document).ready(function () {
                     login.pop_up();
                 } else {
                     if (xhr.responseText != '') {
-                        pop_up.alert(xhr.responseText);
+                        if (form == 'pay_frm') {      
+                            $('.sweet-alert.showSweetAlert.visible.alerts').css('diaplay','none !important');
+                        }                           
+                         pop_up.alert(xhr.responseText);
+                       
                     } else {
                         pop_up.alert('There was an unknown error that occurred. You will need to refresh the page to continue working.');
                     }
@@ -282,6 +287,7 @@ $(document).ready(function () {
         });
         return false;
     });
+    
     $(document).on("change", ".change_list", function () {
         var method = $(this).data('method');
         var change = $(this).data('change');

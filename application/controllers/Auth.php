@@ -751,7 +751,8 @@ class Auth extends Base_Controller
 
     public function save_payment()  {
         if ($this->input->post()) {
-            $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
+            $response = array("message" => "Please Wait...");
+            // $response = array("status" => "success", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $id = ($this->input->post('user_id') && $this->input->post('user_id') > 0) ? $this->input->post('user_id') : 0;
             $this->form_validation
                 ->set_rules('amount', 'Amount', 'required')
@@ -762,42 +763,36 @@ class Auth extends Base_Controller
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-        $data=$this->input->post(array(
-			'tid'=>'tid',
-            'merchant_id'=>'merchant_id',
-            'order_id'=>'order_id',
-            'amount'=>'amount',
-            'currency'=>'currency',
-            'redirect_url'=>'redirect_url',
-            'cancel_url'=>'cancel_url',
-            'language'=>'language',
-            'delivery_name'=>'delivery_name',
-            'delivery_address'=>'delivery_address',
-            'delivery_city'=>'delivery_city',
-            'delivery_state'=>'delivery_state',
-            'delivery_zip'=>'delivery_zip',
-            'delivery_country'=>'delivery_country',
-            'delivery_tel'=>'delivery_tel'
+                $data=$this->input->post(array(
+                    'tid'=>'tid',
+                    'merchant_id'=>'merchant_id',
+                    'order_id'=>'order_id',
+                    'amount'=>'amount',
+                    'currency'=>'currency',
+                    'redirect_url'=>'redirect_url',
+                    'cancel_url'=>'cancel_url',
+                    'language'=>'language',
+                    'delivery_name'=>'delivery_name',
+                    'delivery_address'=>'delivery_address',
+                    'delivery_city'=>'delivery_city',
+                    'delivery_state'=>'delivery_state',
+                    'delivery_zip'=>'delivery_zip',
+                    'delivery_country'=>'delivery_country',
+                    'delivery_tel'=>'delivery_tel'
 
-		));
+                ));
 
-// var_dump($data);
+                $merchant_data='';
+                $working_key=CCA_WORKING_KEY;//Shared by CCAVENUES	
+                $access_code=CCA_ACCESS_CODE;//Shared by CCAVENUES
 
-	$merchant_data='';
-	$working_key=CCA_WORKING_KEY;//Shared by CCAVENUES	
-	$access_code=CCA_ACCESS_CODE;//Shared by CCAVENUES
+                
+                foreach ($data as $key => $value){
+                    $merchant_data.=$key.'='.$value.'&';
+                }
 
-	
-	foreach ($data as $key => $value){
-		$merchant_data.=$key.'='.$value.'&';
-	}
-
-	//$encrypted_data=encrypt($merchant_data,$working_key); // Method for encrypting the data.
-	$this->load->library('ccavenue');
-
-    $encrypted_data = $this->ccavenue->encrypt($merchant_data,$working_key); 
-
-	// var_dump($encrypted_data);
+            	$this->load->library('ccavenue');
+                $encrypted_data = $this->ccavenue->encrypt($merchant_data,$working_key); 
 
 ?>
         <form method="post" name="redirect"
@@ -813,27 +808,27 @@ class Auth extends Base_Controller
         </script>
 
 <?php
+echo "Please Wait...";
 } else {
     $response['error'] = $this->form_validation->error_array();
+    echo json_encode($response);
+    die;
 }
-echo json_encode($response);
-die;
 }
 	}
 
     public function payment_handler(){
-        $this->load->library('someclass');
+        $this->load->library('ccavenue');
 
-	//$encrypted_data=$this->someclass->encrypt($merchant_data,$working_key); 
+	//$encrypted_data=$this->ccavenue->encrypt($merchant_data,$working_key); 
 
 
-	$workingKey='change_with_your_working_key';		//Working Key should be provided here.
+	$workingKey=CCA_WORKING_KEY;		//Working Key should be provided here.
 	$encResponse=$_POST["encResp"];			//This is the response sent by the CCAvenue Server
-	$rcvdString=$this->someclass->decrypt($encResponse,$workingKey);		//Crypto Decryption used as per the specified working key.
+	$rcvdString=$this->ccavenue->decrypt($encResponse,$workingKey);		//Crypto Decryption used as per the specified working key.
 	$order_status="";
 	$decryptValues=explode('&', $rcvdString);
 	$dataSize=sizeof($decryptValues);
-	echo "<center>";
 
 	for($i = 0; $i < $dataSize; $i++) 
 	{
@@ -848,21 +843,21 @@ die;
 	}
 	else if($order_status==="Aborted")
 	{
-		echo "<br>Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail";
+		$data['message'] = "Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail";
 	
 	}
 	else if($order_status==="Failure")
 	{
-		echo "<br>Thank you for shopping with us.However,the transaction has been declined.";
+		$data['message']= "Thank you for shopping with us.However,the transaction has been declined.";
 	}
 	else
 	{
-		echo "<br>Security Error. Illegal access detected";
-	
+		$data['message']= "Security Error. Illegal access detected";
+        
 	}
-
+    
+    $data['FormURL']= BASE_URL .'payment';
 	
-	var_dump($encrypted_data);
         $this->load->view('auth/payment_complete', $data);
     }
     public function payment_cancel(){

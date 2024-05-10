@@ -54,6 +54,7 @@ window.onload = function() {
                         <img class="img-fluid" src="<?php echo ASSETS_PATH; ?>images/igli-logo.webp" alt="">
                     </div>
                 </div>
+                <span id="innerHTML"></span>
 
                 <?php echo form_open_multipart('auth/save_payment', $form_attr); ?>
                 <br>
