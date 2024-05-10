@@ -140,4 +140,9 @@
 .login-main.form-main {
     padding: 25px;
 }
+.login-main.payment {
+    max-width: 70% !important;
 }
+}
+
+

@@ -742,6 +742,73 @@ class Auth extends Base_Controller
         echo json_encode($responce);
         die;
     }
+    
+    public function payment()
+    {
+        $data['page_title'] = "Manage Payments";
+        $this->load->view('auth/ccavenue', $data);
+    }
+
+    public function save_payment()  {
+        $data=$this->input->post(array(
+			'tid'=>'tid',
+            'merchant_id'=>'merchant_id',
+            'order_id'=>'order_id',
+            'amount'=>'amount',
+            'currency'=>'currency',
+            'redirect_url'=>'redirect_url',
+            'cancel_url'=>'cancel_url',
+            'language'=>'language',
+            'delivery_name'=>'delivery_name',
+            'delivery_address'=>'delivery_address',
+            'delivery_city'=>'delivery_city',
+            'delivery_state'=>'delivery_state',
+            'delivery_zip'=>'delivery_zip',
+            'delivery_country'=>'delivery_country',
+            'delivery_tel'=>'delivery_tel'
+
+		));
+
+// var_dump($data);
+
+	$merchant_data='';
+	$working_key=CCA_WORKING_KEY;//Shared by CCAVENUES	
+	$access_code=CCA_ACCESS_CODE;//Shared by CCAVENUES
+
+	
+	foreach ($data as $key => $value){
+		$merchant_data.=$key.'='.$value.'&';
+	}
+
+	//$encrypted_data=encrypt($merchant_data,$working_key); // Method for encrypting the data.
+	$this->load->library('someclass');
+
+    $encrypted_data = $this->someclass->encrypt($merchant_data,$working_key); 
+
+	// var_dump($encrypted_data);
+
+?>
+        <form method="post" name="redirect"
+            action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+            <?php
+        echo "<input type=hidden name=encRequest value=$encrypted_data>";
+        echo "<input type=hidden name=access_code value=$access_code>";
+        ?>
+        </form>
+        
+        <script language='javascript'>
+        document.redirect.submit();
+        </script>
+
+<?php
+	}
+
+    public function payment_success(){
+        $this->load->view('auth/payment_complete', $data);
+    }
+    public function payment_cancel(){
+        $this->load->view('auth/payment_cancel', $data);
+    }
 }
 
 /* End of file auth.php */
