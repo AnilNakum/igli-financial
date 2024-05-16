@@ -838,7 +838,7 @@ echo "Please Wait...";
 
 	if($order_status==="Success")
 	{
-		$this->load->view('auth/payment_complete', $data);
+        $data['message'] = "Thank you for payment.";
 		
 	}
 	else if($order_status==="Aborted")
