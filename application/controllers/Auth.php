@@ -859,7 +859,7 @@ echo "Please Wait...";
     $post_data = array(         
         "PaymentStatus" => 'completed',
         "Status" => $order_status,
-        "CCResponse" => json_encode($information)
+        "CCResponse" => $decryptValues
     );
    
     $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
