@@ -859,11 +859,11 @@ echo "Please Wait...";
     $post_data = array(         
         "PaymentStatus" => 'completed',
         "Status" => $order_status,
-        "CCResponse" =>  $information
+        "CCResponse" => json_encode($information)
     );
    
-                    $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
-                    $this->Common->update_info(TBL_CCA_PAYMENT, 2, $post_data, 'PID');
+    $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
+    $this->Common->update_info(TBL_CCA_PAYMENT,2, $post_data, 'PID');
 
 	if($order_status==="Success")
 	{
@@ -885,7 +885,7 @@ echo "Please Wait...";
         
 	}
     
-    $data['FormURL']= BASE_URL .'auth/payment';
+    $data['FormURL']= BASE_URL .'payment';
 	
         $this->load->view('auth/payment_complete', $data);
     }
