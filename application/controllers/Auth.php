@@ -761,7 +761,8 @@ class Auth extends Base_Controller
                 ->set_rules('billing_tel', 'Phone No', 'required')
                 ->set_rules('company_name', 'Company Name', 'required')
                 ->set_rules('gst', 'GST No', 'required')
-                ->set_rules('billing_address', 'Address', 'required');
+                ->set_rules('billing_address', 'Address', 'required')
+                ->set_rules('billing_zip', 'Zip Code', 'required');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
@@ -782,7 +783,8 @@ class Auth extends Base_Controller
                     'delivery_zip'=>'delivery_zip',
                     'delivery_country'=>'delivery_country',
                     'billing_tel'=>'billing_tel',
-                    'billing_email'=>'billing_email'
+                    'billing_email'=>'billing_email',
+                    'billing_zip'=>'billing_zip',
 
                 ));
 
@@ -854,6 +856,7 @@ echo "Please Wait...";
 	{
 		$information=explode('=',$decryptValues[$i]);
 		if($i==3)	$order_status=$information[1];
+		if($i==0)	$OrderID=$information[1];
 	}
 
     $post_data = array(         
@@ -863,7 +866,7 @@ echo "Please Wait...";
     );
    
     $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
-    $this->Common->update_info(TBL_CCA_PAYMENT,2, $post_data, 'PID');
+    $this->Common->update_info(TBL_CCA_PAYMENT,$OrderID, $post_data, 'OrderID');
 
 	if($order_status==="Success")
 	{
@@ -885,6 +888,7 @@ echo "Please Wait...";
         
 	}
     
+    $data['Data']= $decryptValues;
     $data['FormURL']= BASE_URL .'payment';
 	
         $this->load->view('auth/payment_complete', $data);
