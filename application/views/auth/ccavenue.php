@@ -6,9 +6,12 @@ $amount = array(
     'class' => 'form-control amount',
     'placeholder' => 'Amount',
 );
-$Name = array('name' => 'delivery_name', 'id' => 'delivery_name',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Name", "data-validation" => "required");
-$Email = array('name' => 'delivery_email', 'id' => 'delivery_email',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Email", "data-validation" => "required");
-$Phone = array('name' => 'delivery_tel', 'id' => 'delivery_tel',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Phone No", "data-validation" => "required");
+$Name = array('name' => 'billing_name', 'id' => 'billing_name',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Name", "data-validation" => "required");
+$Email = array('name' => 'billing_email', 'id' => 'billing_email',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Email", "data-validation" => "required");
+$Phone = array('name' => 'billing_tel', 'id' => 'billing_tel',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Phone No", "data-validation" => "required");
+$CompanyName = array('name' => 'company_name', 'id' => 'company_name',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Company Name", "data-validation" => "required");
+$GST = array('name' => 'gst', 'id' => 'gst',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter GST No", "data-validation" => "required");
+$Address = array('name' => 'billing_address', 'id' => 'billing_address',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Address", "data-validation" => "required","rows" => 2);
 
 $submit_btn = array(
     'name' => 'checkout',
@@ -69,7 +72,6 @@ window.onload = function() {
                 <br>
                 <div class="form-group">
                     <?php echo form_input($amount); ?>
-                    <?php echo form_error($amount['name'], '<p class="text-danger  text-left">', '</p>'); ?><?php echo isset($errors[$amount['name']]) ? '<p class="text-danger text-left">' . $errors[$amount['name']] . '</p>' : ''; ?>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -80,6 +82,15 @@ window.onload = function() {
                 </div>
                 <div class="form-group">
                     <?php echo form_input($Phone); ?>
+                </div>
+                <div class="form-group">
+                    <?php echo form_input($CompanyName); ?>
+                </div>
+                <div class="form-group">
+                    <?php echo form_input($GST); ?>
+                </div>
+                <div class="form-group">
+                    <?php echo form_textarea($Address); ?>
                 </div>
 
                 <div class="form-group mb-0">

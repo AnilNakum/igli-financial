@@ -756,9 +756,12 @@ class Auth extends Base_Controller
             $id = ($this->input->post('user_id') && $this->input->post('user_id') > 0) ? $this->input->post('user_id') : 0;
             $this->form_validation
                 ->set_rules('amount', 'Amount', 'required')
-                ->set_rules('delivery_name', 'Name', 'required')
-                ->set_rules('delivery_email', 'Email', 'required')
-                ->set_rules('delivery_tel', 'Phone No', 'required');
+                ->set_rules('billing_name', 'Name', 'required')
+                ->set_rules('billing_email', 'Email', 'required')
+                ->set_rules('billing_tel', 'Phone No', 'required')
+                ->set_rules('company_name', 'Company Name', 'required')
+                ->set_rules('gst', 'GST No', 'required')
+                ->set_rules('billing_address', 'Address', 'required');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
@@ -772,15 +775,32 @@ class Auth extends Base_Controller
                     'redirect_url'=>'redirect_url',
                     'cancel_url'=>'cancel_url',
                     'language'=>'language',
-                    'delivery_name'=>'delivery_name',
-                    'delivery_address'=>'delivery_address',
+                    'billing_name'=>'billing_name',
+                    'billing_address'=>'billing_address',
                     'delivery_city'=>'delivery_city',
                     'delivery_state'=>'delivery_state',
                     'delivery_zip'=>'delivery_zip',
                     'delivery_country'=>'delivery_country',
-                    'delivery_tel'=>'delivery_tel'
+                    'billing_tel'=>'billing_tel',
+                    'billing_email'=>'billing_email'
 
                 ));
+
+                $post_data = array( 
+                    "TransactionID" => $this->input->post('tid'),
+                    "OrderID" => $this->input->post('tid'),
+                    "Amount" => $this->input->post('amount'),
+                    "Name" => $this->input->post('billing_name'),
+                    "Email" => $this->input->post('billing_email'),
+                    "Phone" => $this->input->post('billing_tel'),
+                    "CompanyName" => $this->input->post('company_name'),
+                    "GST" => $this->input->post('gst'),
+                    "Address" => $this->input->post('billing_address'),
+                    "PaymentStatus" => 'Pending',
+                );
+
+                $post_data['CreatedAt'] = date("Y-m-d H:i:s");
+                $PID = $this->Common->add_info(TBL_CCA_PAYMENT, $post_data);
 
                 $merchant_data='';
                 $working_key=CCA_WORKING_KEY;//Shared by CCAVENUES	
@@ -795,8 +815,10 @@ class Auth extends Base_Controller
                 $encrypted_data = $this->ccavenue->encrypt($merchant_data,$working_key); 
 
 ?>
+        <!-- <form method="post" name="redirect"
+            action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction"> -->
         <form method="post" name="redirect"
-            action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+            action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
             <?php
         echo "<input type=hidden name=encRequest value=$encrypted_data>";
         echo "<input type=hidden name=access_code value=$access_code>";

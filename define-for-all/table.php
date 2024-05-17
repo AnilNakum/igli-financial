@@ -16,6 +16,7 @@ define('TBL_SERVICES', 'services');
 define('TBL_TOP_SERVICES', 'top_services');
 define('TBL_CONTACT_SUPPORT', 'contact_support');
 define('TBL_PAYMENT', 'payment');
+define('TBL_CCA_PAYMENT', 'ccavenue_payment');
 define('TBL_SUBADMIN_SERVICES', 'subadmin_services');
 define('TBL_USER_SERVICES', 'user_services');
 define('TBL_DOCUMENT', 'document');

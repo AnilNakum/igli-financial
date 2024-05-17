@@ -302,8 +302,12 @@
                 </li>
                 <?php if(ROLE == 1){?>
                 <li class="header">PAYMENT</li>
-                <li class="<?php echo (($this->uri->segment(1) == "payment")) ? 'active' : ""; ?>"> <a
-                        href="<?php echo base_url('payment'); ?>"><i class="fa-solid fa-receipt"></i><span>Payment
+                <li class="<?php echo (($this->uri->segment(1) == "user-payment")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('user-payment'); ?>"><i class="fa-solid fa-receipt"></i><span>Payment
+                        </span></a>
+                </li>
+                <li class="<?php echo (($this->uri->segment(1) == "ccavenue_payment")) ? 'active' : ""; ?>"> <a
+                        href="<?php echo base_url('ccavenue_payment'); ?>"><i class="fa-solid fa-receipt"></i><span>Ccavenue Payment
                         </span></a>
                 </li>
 

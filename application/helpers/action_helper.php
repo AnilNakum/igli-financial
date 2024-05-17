@@ -260,6 +260,17 @@ EOF;
     return $action;
 }
 
+function cca_payment_action_row($PaymentID)
+{
+    $PaymentID = encrypt($PaymentID);
+    $action = <<<EOF
+            <div class="tooltip-top text-center">
+            <a data-original-title="View Details" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$PaymentID}" data-control="ccavenue_payment" data-method="view_payment"><i class="fa-solid fa-eye"></i></a>
+            </div>
+EOF;
+    return $action;
+}
+
 function form_data_action_row($ID,$Table){
     $ID = encrypt($ID);        
     // $Table = encrypt($Table);        
