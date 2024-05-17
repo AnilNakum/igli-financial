@@ -815,10 +815,8 @@ class Auth extends Base_Controller
                 $encrypted_data = $this->ccavenue->encrypt($merchant_data,$working_key); 
 
 ?>
-        <!-- <form method="post" name="redirect"
-            action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction"> -->
         <form method="post" name="redirect"
-            action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+            action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
             <?php
         echo "<input type=hidden name=encRequest value=$encrypted_data>";
         echo "<input type=hidden name=access_code value=$access_code>";
@@ -857,6 +855,15 @@ echo "Please Wait...";
 		$information=explode('=',$decryptValues[$i]);
 		if($i==3)	$order_status=$information[1];
 	}
+
+    $post_data = array(         
+        "PaymentStatus" => 'completed',
+        "Status" => $order_status,
+        "CCResponse" =>  $information
+    );
+   
+                    $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
+                    if ($this->Common->update_info(TBL_CCA_PAYMENT, 2, $post_data, 'PID')) :
 
 	if($order_status==="Success")
 	{
