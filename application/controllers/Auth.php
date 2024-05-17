@@ -863,7 +863,7 @@ echo "Please Wait...";
     );
    
                     $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
-                    if ($this->Common->update_info(TBL_CCA_PAYMENT, 2, $post_data, 'PID')) :
+                    $this->Common->update_info(TBL_CCA_PAYMENT, 2, $post_data, 'PID');
 
 	if($order_status==="Success")
 	{
