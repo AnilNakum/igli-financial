@@ -12,6 +12,9 @@ $Phone = array('name' => 'billing_tel', 'id' => 'billing_tel',  'class' => "form
 $CompanyName = array('name' => 'company_name', 'id' => 'company_name',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Company Name", "data-validation" => "required");
 $GST = array('name' => 'gst', 'id' => 'gst',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter GST No", "data-validation" => "required");
 $Address = array('name' => 'billing_address', 'id' => 'billing_address',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Address", "data-validation" => "required","rows" => 2);
+$City = array('name' => 'billing_city', 'id' => 'billing_city',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter City", "data-validation" => "required");
+$State = array('name' => 'billing_state', 'id' => 'billing_state',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter State", "data-validation" => "required");
+$Country = array('name' => 'billing_country', 'id' => 'billing_country',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Country", "data-validation" => "required");
 $Zip = array('name' => 'billing_zip', 'id' => 'billing_zip',  'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Zip Code", "data-validation" => "required");
 
 $submit_btn = array(
@@ -93,8 +96,29 @@ window.onload = function() {
                 <div class="form-group">
                     <?php echo form_textarea($Address); ?>
                 </div>
-                <div class="form-group">
-                    <?php echo form_input($Zip); ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <?php echo form_input($City); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <?php echo form_input($State); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <?php echo form_input($Country); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <?php echo form_input($Zip); ?>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group mb-0">

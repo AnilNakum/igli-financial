@@ -10,8 +10,13 @@
                     </div>
                 </div>
                 <?php echo form_open($this->uri->uri_string(), array('action' => '', 'method' => 'post', 'id' => 'login-form', 'class' => 'login-form form')); ?>
-<img class="img-fluid"
-                        src="<?php echo ASSETS_PATH; ?>images/right.png" alt="">
+                <?php
+                if($OrderStatus == 'Success') {?>
+                <img class="img-fluid" src="<?php echo ASSETS_PATH; ?>images/done.png" alt="">
+                <?php }else{?>
+                <img class="img-fluid" src="<?php echo ASSETS_PATH; ?>images/s-cancel.png" alt="">
+                <?php } ?>
+                <p class="text-center text-info"><b><?php echo "#".$OrderID;?></b></p>
                 <p class="text-center text-info"><?php echo $message;?></p>
                 <?php echo anchor($FormURL, 'Back' , array('class' => 'btn l-blue btn-round btn-lg btn-block waves-effect waves-light')); ?>
                
@@ -31,8 +36,15 @@
                         <div class="badge f-10"><i class="fa-solid fa-clock"></i> <span id="txt"></span></div>
                     </div>
                 </div>
-                <div class="cartoon limg"><img class="img-fluid"
+                <?php
+                if($OrderStatus == 'Success') {?>
+                    <div class="cartoon limg"><img class="img-fluid"
                         src="<?php echo ASSETS_PATH; ?>images/completed.png" alt=""></div>
+                <?php }else{?>
+                    <div class="cartoon limg"><img class="img-fluid"
+                            src="<?php echo ASSETS_PATH; ?>images/cancel.png" alt=""></div>
+                <?php }
+                ?>
             </div>
         </div>
     </div>

@@ -759,9 +759,10 @@ class Auth extends Base_Controller
                 ->set_rules('billing_name', 'Name', 'required')
                 ->set_rules('billing_email', 'Email', 'required')
                 ->set_rules('billing_tel', 'Phone No', 'required')
-                ->set_rules('company_name', 'Company Name', 'required')
-                ->set_rules('gst', 'GST No', 'required')
                 ->set_rules('billing_address', 'Address', 'required')
+                ->set_rules('billing_city', 'City', 'required')
+                ->set_rules('billing_state', 'State', 'required')
+                ->set_rules('billing_country', 'Country', 'required')
                 ->set_rules('billing_zip', 'Zip Code', 'required');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
@@ -785,7 +786,9 @@ class Auth extends Base_Controller
                     'billing_tel'=>'billing_tel',
                     'billing_email'=>'billing_email',
                     'billing_zip'=>'billing_zip',
-
+                    'billing_city'=>'billing_city',
+                    'billing_state'=>'billing_state',
+                    'billing_country'=>'billing_country',
                 ));
 
                 $post_data = array( 
@@ -849,6 +852,7 @@ echo "Please Wait...";
 	$encResponse=$_POST["encResp"];			//This is the response sent by the CCAvenue Server
 	$rcvdString=$this->ccavenue->decrypt($encResponse,$workingKey);		//Crypto Decryption used as per the specified working key.
 	$order_status="";
+	$amount=0;
 	$decryptValues=explode('&', $rcvdString);
 	$dataSize=sizeof($decryptValues);
 
@@ -856,11 +860,12 @@ echo "Please Wait...";
 	{
 		$information=explode('=',$decryptValues[$i]);
 		if($i==3)	$order_status=$information[1];
+		if($i==10)	$amount=$information[1];
 		if($i==0)	$OrderID=$information[1];
 	}
 
     $post_data = array(         
-        "PaymentStatus" => 'completed',
+        "PaymentStatus" => $order_status,
         "Status" => $order_status,
         "CCResponse" => json_encode($decryptValues)
     );
@@ -870,24 +875,26 @@ echo "Please Wait...";
 
 	if($order_status==="Success")
 	{
-        $data['message'] = "Thank you for payment.";
+        $data['message'] = "Thank you for your payment of INR ".$amount.".";
 		
 	}
 	else if($order_status==="Aborted")
 	{
-		$data['message'] = "Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail";
+		$data['message'] = "Your payment of Rs. ".$amount. " has Aborted. Please try again.";
 	
 	}
 	else if($order_status==="Failure")
 	{
-		$data['message']= "Thank you for shopping with us.However,the transaction has been declined.";
+		$data['message'] = "Your payment of Rs. ".$amount. " has faild. Please try again.";
 	}
 	else
 	{
-		$data['message']= "Security Error. Illegal access detected";
+		$data['message']= "Security Error. Illegal access detected. Please try again.";
         
 	}
     
+    $data['OrderID']= $OrderID;
+    $data['OrderStatus']= $order_status;
     $data['Data']= $decryptValues;
     $data['FormURL']= BASE_URL .'payment';
 	
