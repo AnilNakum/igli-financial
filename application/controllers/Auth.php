@@ -852,6 +852,7 @@ echo "Please Wait...";
 	$encResponse=$_POST["encResp"];			//This is the response sent by the CCAvenue Server
 	$rcvdString=$this->ccavenue->decrypt($encResponse,$workingKey);		//Crypto Decryption used as per the specified working key.
 	$order_status="";
+	$Phone="";
 	$amount=0;
 	$decryptValues=explode('&', $rcvdString);
 	$dataSize=sizeof($decryptValues);
@@ -862,6 +863,8 @@ echo "Please Wait...";
 		if($i==3)	$order_status=$information[1];
 		if($i==10)	$amount=$information[1];
 		if($i==0)	$OrderID=$information[1];
+		if($i==11)	$Name=$information[1];
+		if($i==17)	$Phone=$information[1];
 	}
 
     $post_data = array(         
@@ -876,16 +879,36 @@ echo "Please Wait...";
 	if($order_status==="Success")
 	{
         $data['message'] = "Thank you for your payment of INR ".$amount.".";
-		
+        $msgData = array(
+            "name"=> 'new_payments',
+            "languageCode"=> "en", 
+            'headerValues' => array(),
+            'bodyValues' => array($Name,$amount),
+        );
+        send_wp_msg($Phone,$msgData);
 	}
 	else if($order_status==="Aborted")
 	{
 		$data['message'] = "Your payment of Rs. ".$amount. " has Aborted. Please try again.";
+        $msgData = array(
+            "name"=> 'payment_unsuccessful',
+            "languageCode"=> "en", 
+            'headerValues' => array(),
+            'bodyValues' => array($Name,$amount),
+        );
+        send_wp_msg($Phone,$msgData);
 	
 	}
 	else if($order_status==="Failure")
 	{
 		$data['message'] = "Your payment of Rs. ".$amount. " has faild. Please try again.";
+        $msgData = array(
+            "name"=> 'payment_unsuccessful',
+            "languageCode"=> "en", 
+            'headerValues' => array(),
+            'bodyValues' => array($Name,$amount),
+        );
+        send_wp_msg($Phone,$msgData);
 	}
 	else
 	{

@@ -73,6 +73,7 @@ window.onload = function() {
                 <input type="hidden" name="redirect_url" value="<?php echo BASE_URL .'payment_handler';?>" />
                 <input type="hidden" name="cancel_url" value="<?php echo BASE_URL .'payment_handler';?>" />
                 <input type="hidden" name="language" value="EN" />
+                <input type="hidden" name="billing_country" value="India" />
                 <br>
                 <div class="form-group">
                     <?php echo form_input($amount); ?>
@@ -109,12 +110,12 @@ window.onload = function() {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <div class="form-group">
-                            <?php echo form_input($Country); ?>
+                            <?php //echo form_input($Country); ?>
                         </div>
-                    </div>
-                    <div class="col-md-6">
+                    </div> -->
+                    <div class="col-md-12">
                         <div class="form-group">
                             <?php echo form_input($Zip); ?>
                         </div>
