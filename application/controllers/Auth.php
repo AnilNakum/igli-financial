@@ -802,6 +802,7 @@ class Auth extends Base_Controller
                     "GST" => $this->input->post('gst'),
                     "Address" => $this->input->post('billing_address'),
                     "PaymentStatus" => 'Pending',
+                    "Status" => 'Pending',
                 );
 
                 $post_data['CreatedAt'] = date("Y-m-d H:i:s");

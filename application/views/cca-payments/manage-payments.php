@@ -1,7 +1,14 @@
 <?php
 if (count((array) $Payments) > 0) {
     $PStatus = array('name' => 'payment_status', 'id' => 'payment_status_filter', 'class' => "select2 PaymentStatusFilter", "tabindex" => 4);
-    $PS = array("pending" => "Pending", "completed" => "Completed");
+    $PS = array(
+        "Pending" => "Pending",
+        "Invalid"=>"Invalid",
+        "Timeout"=>"Timeout",
+        "Awaited"=>"Awaited",
+        "Aborted"=>"Aborted",
+        "Failure"=>"Failure",
+        "Success" => "Success");
     $PStatusList = array("" => "All") + $PS;
 }
 ?>

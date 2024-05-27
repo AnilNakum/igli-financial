@@ -45,6 +45,45 @@ EOF;
     }
     return $return;
 }
+function CCPaymentStatus($status)
+{
+    if ($status == 'Success') {
+        $return = <<<EOF
+        <span class="text text-success badge badge-success m-l-10 hidden-sm-down">Success</span>
+EOF;
+    } 
+    else if ($status == 'Invalid') {
+        $return = <<<EOF
+        <span class="text text-danger badge badge-danger m-l-10 hidden-sm-down">Invalid</span>
+EOF;
+    } 
+    else if ($status == 'Timeout') {
+        $return = <<<EOF
+        <span class="text text-secondary badge badge-secondary m-l-10 hidden-sm-down">Timeout</span>
+EOF;
+    } 
+    else if ($status == 'Awaited') {
+        $return = <<<EOF
+        <span class="text text-info badge badge-info m-l-10 hidden-sm-down">Awaited</span>
+EOF;
+    } 
+    else if ($status == 'Aborted') {
+        $return = <<<EOF
+        <span class="text text-secondary badge badge-secondary m-l-10 hidden-sm-down">Aborted</span>
+EOF;
+    } 
+    else if ($status == 'Failure') {
+        $return = <<<EOF
+        <span class="text text-danger badge badge-danger m-l-10 hidden-sm-down">Failure</span>
+EOF;
+    } 
+    else {
+        $return = <<<EOF
+        <span class="text text-warning badge badge-warning m-l-10 hidden-sm-down">Pending</span>
+EOF;
+    }
+    return $return;
+}
 
 function PStatus($status)
 {

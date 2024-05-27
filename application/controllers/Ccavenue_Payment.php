@@ -137,14 +137,14 @@ class Ccavenue_payment extends Base_Controller
 
     public function manage()
     {
-        $this->datatables->select('p.PID,p.TransactionID,p.Name,p.Phone,p.Amount,p.PaymentStatus,p.CreatedAt');
+        $this->datatables->select('p.PID,p.TransactionID,p.Name,p.Phone,p.Amount,p.Status,p.CreatedAt');
 
         if ($this->input->post('payment_status')) {
-            $this->datatables->where('p.PaymentStatus', $this->input->post('payment_status'));
+            $this->datatables->where('p.Status', $this->input->post('payment_status'));
         }
     
         $this->datatables->from(TBL_CCA_PAYMENT.' p')
-        // ->edit_column('p.PaymentStatus', '$1', 'PaymentStatus(p.PaymentStatus)')
+        ->edit_column('p.Status', '$1', 'CCPaymentStatus(p.Status)')
         ->edit_column('p.CreatedAt', '$1', 'DatetimeFormat(p.CreatedAt)')
         ->add_column('action', '$1', 'cca_payment_action_row(p.PID)');
         $this->datatables->unset_column('PID');
