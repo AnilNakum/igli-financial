@@ -10,8 +10,8 @@ $FirstName = array('name' => 'first_name', 'id' => 'first_name', 'value' => (iss
 $LastName = array('name' => 'last_name', 'id' => 'last_name', 'value' => (isset($user_info) && $user_info->last_name != "") ? $user_info->last_name : set_value('last_name'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Last Name", "data-validation" => "required");
 $Email = array('name' => 'email', 'id' => 'email', 'value' => (isset($user_info) && $user_info->email != "") ? $user_info->email : set_value('email'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Email", "data-validation" => "required");
 $Phone = array('name' => 'phone', 'id' => 'phone', 'value' => (isset($user_info) && $user_info->phone != "") ? $user_info->phone : set_value('phone'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Phone No", "data-validation" => "required");
-$Password = array('name' => 'password', 'id' => 'password', 'value' =>  "" , 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Password", "data-validation" => "required");
-$RePassword = array('name' => 're_password', 'id' => 're_password', 'value' => "" , 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Confirm Password", "data-validation" => "required");
+$Password = array('name' => 'password', 'id' => 'password', 'value' =>  (isset($Pass))?$Pass:'' , 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Password", "data-validation" => "required");
+$RePassword = array('name' => 're_password', 'id' => 're_password', 'value' => (isset($Pass))?$Pass:'' , 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Confirm Password", "data-validation" => "required");
 
 $OldImage = array('name' => 'old_image', 'id' => 'old_image', 'value' => (isset($user_info) && $user_info->profile_image_name != "") ? $user_info->profile_image_name : '', 'type' => "hidden",);
 

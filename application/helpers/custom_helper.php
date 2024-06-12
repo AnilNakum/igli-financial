@@ -154,6 +154,18 @@ function get_username($pre = 'IGLI')
     }
 }
 
+function get_ticket_no($pre = 'CS')
+{
+    $ci = &get_instance();
+    $ci->load->helper('string');
+    $NO = $pre . random_string('nozero', 6);
+    if ($ci->Common->get_info(TBL_CONTACT_SUPPORT, $NO,'TicketNo')) {
+        return get_username($pre);
+    } else {
+        return $NO;
+    }
+}
+
 function encryptionKey()
 {
     $username = strtolower(ENC_USERNAME);

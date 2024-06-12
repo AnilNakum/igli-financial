@@ -77,7 +77,7 @@ if (count((array) $Payments) > 0) {
                                                 <tr>
                                                     <th>No.</th>
                                                     <th>TransactionID</th>
-                                                    <th>Name</th>
+                                                    <th max-width="15%">Name</th>
                                                     <th>Phone No</th>
                                                     <th>Amount</th>
                                                     <th>Payment Status</th>

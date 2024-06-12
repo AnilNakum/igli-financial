@@ -14,10 +14,11 @@ class Form_builder extends Base_Controller
 
     public function index()
     {
-        $data['page_title'] = "Manage IGLI Form Builder";        
-        $data['Forms'] = $this->Common->get_all_info(TBL_FORM);
+        $data['page_title'] = "Manage IGLI Form Builder";       
+        $User = $this->tank_auth->get_user_id(); 
+        $data['Forms'] = $this->Common->get_all_info(TBL_FORM, $User ,'CreatedBy','isDeleted=0');
         $this->view('form-builder/form', $data);
-    }
+    } 
 
     public function form_builder()
     {
@@ -116,12 +117,14 @@ class Form_builder extends Base_Controller
 
     public function manage()
     {
+        $User = $this->tank_auth->get_user_id(); 
         $this->datatables->select('FID,FormName,FormCode,FormURL,Status,CreatedAt');
 
         if ($this->input->post('status')) {
             $this->datatables->where('Status', $this->input->post('status'));
         }
         $this->datatables->where('isDeleted', 0);
+        $this->datatables->where('CreatedBy', $User);
         $this->datatables->from(TBL_FORM)
         ->edit_column('Status', '$1', 'Status(Status)')
         ->edit_column('CreatedAt', '$1', 'DatetimeFormat(CreatedAt)')

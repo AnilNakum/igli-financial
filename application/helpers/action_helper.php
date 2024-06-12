@@ -45,7 +45,8 @@ EOF;
     }
     return $return;
 }
-function CCPaymentStatus($status)
+
+function CCPayment_Status($status)
 {
     if ($status == 'Success') {
         $return = <<<EOF

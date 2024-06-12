@@ -23,6 +23,7 @@ class User extends Base_Controller
     {
         $data['page_title'] = "Add User";
         $data['Username'] = get_username();
+        $data['Pass'] =  decrypt(generateRandomString(8));
         $this->partial('users/user-form', $data);
     }
 
@@ -101,6 +102,15 @@ class User extends Base_Controller
                 }else{
                     $post_data['created'] = date("Y-m-d H:i:s");
                     if ($id = $this->Common->add_info(TBL_USERS, $post_data)) {
+                        $user = $this->Common->get_info(TBL_USERS, $id,'id');
+                        $mailData = array(
+                            'username' => $user->name,
+                            'email' => $user->email,
+                            'password' => $this->input->post('password'),
+                            'site_name' => $this->config->item('website_name', 'tank_auth')
+                        );
+                        $Subject = $this->config->item('website_name', 'tank_auth').' Account Details';
+                        $this->_send_email($Subject,'welcome', $user->email, $mailData);
                         $response = array("status" => "ok", "heading" => "Add successfully...", "message" => "Details added successfully.");
                     } else {
                         $response = array("status" => "error", "heading" => "Not Added successfully...", "message" => "Details not added successfully.");
@@ -129,11 +139,18 @@ class User extends Base_Controller
         }
         $this->datatables->where('isDeleted', 0);
         $this->datatables->where('role_id', 3);
-        $this->datatables->from(TBL_USERS)
-            ->edit_column('created', '$1', 'DatetimeFormat(created)')
-            ->edit_column('profile_image_name', '$1', 'GetUserImage(profile_image_name)')
-            ->edit_column('activated', '$1', 'Status(activated)')
-            ->add_column('action', '$1', 'user_action_row(id)');
+        if(ROLE == 1){
+            $this->datatables->from(TBL_USERS)
+                ->edit_column('created', '$1', 'DatetimeFormat(created)')
+                ->edit_column('profile_image_name', '$1', 'GetUserImage(profile_image_name)')
+                ->edit_column('activated', '$1', 'Status(activated)')
+                ->add_column('action', '$1', 'user_action_row(id)');
+        }else{
+            $this->datatables->from(TBL_USERS)
+                ->edit_column('created', '$1', 'DatetimeFormat(created)')
+                ->edit_column('profile_image_name', '$1', 'GetUserImage(profile_image_name)')
+                ->edit_column('activated', '$1', 'Status(activated)');
+        }
         $this->datatables->unset_column('id');
         echo $this->datatables->generate();
     }
@@ -173,5 +190,20 @@ class User extends Base_Controller
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');  
         $objWriter->save('php://output'); 
  
+    }
+
+    public function _send_email($subject,$type, $email, &$data)
+    {
+        $this->load->library('email');
+        $this->email->from($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->to($email);
+        $this->email->subject($subject, $this->config->item('website_name', 'tank_auth'));
+        $this->email->message($this->load->view('email/' . $type . '-html', $data, true));
+        $this->email->set_alt_message($this->load->view('email/' . $type . '-txt', $data, true));
+        $this->email->send();
+        // echo $this->email->print_debugger();
+        // exit;
+        return;
     }
 }

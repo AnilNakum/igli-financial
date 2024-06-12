@@ -64,6 +64,7 @@ if (count((array) $ContactSupport) > 0) {
                                             data-method="manage">
                                             <thead>
                                                 <tr>
+                                                    <th>TicketNo</th>
                                                     <th>User Name</th>
                                                     <th>Query</th>
                                                     <th>Status</th>

@@ -144,7 +144,7 @@ class Ccavenue_payment extends Base_Controller
         }
     
         $this->datatables->from(TBL_CCA_PAYMENT.' p')
-        ->edit_column('p.Status', '$1', 'CCPaymentStatus(p.Status)')
+        ->edit_column('p.Status', '$1', 'CCPayment_Status(p.Status)')
         ->edit_column('p.CreatedAt', '$1', 'DatetimeFormat(p.CreatedAt)')
         ->add_column('action', '$1', 'cca_payment_action_row(p.PID)');
         $this->datatables->unset_column('PID');

@@ -12,9 +12,8 @@ Your username: <?php echo $username; ?>
 
 Your email address: <?php echo $email; ?>
 
-<?php /* Your password: <?php echo $password; ?>
+Your password: <?php echo $password; ?>
 
-*/ ?>
 
 Have fun!
 The <?php echo $site_name; ?> Team

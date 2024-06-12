@@ -586,8 +586,10 @@ class Api extends REST_Controller
             $Subject = $this->post('subject');
             $Message = $this->post('message');
             $UserID = $this->USER_ID;
+            $TicketNo = get_ticket_no();
 
             $data = array(
+                'TicketNo' => $TicketNo,
                 'Subject' => $Subject,
                 'Message' => $Message,
                 'Status' => 1,
