@@ -39,7 +39,7 @@ class User_services extends Base_Controller
         $data['Services'] = $this->Common->get_all_info(TBL_USER_SERVICES,'completed','ServiceStatus','isDeleted=0');
         $data['type'] = "completed";
         $this->view('user-services/manage-user-services', $data);
-    }
+    } 
     
     public function add()
     {
@@ -49,10 +49,11 @@ class User_services extends Base_Controller
         $data['page_title'] = "Assign New Services";
         $data['type'] = $page;
         $data['Services'] =  $this->Common->get_list(TBL_SERVICES, 'ServiceID', 'ServiceTitle', "Status=1 AND isDeleted=0");
-        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'first_name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,'username');
+        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,['username','email','phone']);
         $this->partial('user-services/assign-service-form', $data);
     }
-
+    
+    
     public function update($id)
     {
         $link = $_SERVER['HTTP_HOST'];
@@ -83,6 +84,7 @@ class User_services extends Base_Controller
             $this->form_validation
                 ->set_rules('service_id', 'Service', 'required')
                 ->set_rules('user_id', 'User', 'required')
+                ->set_rules('compnay_name', 'Compnay Name', 'required')
                 ->set_rules('service_status', 'Service Status', 'required');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
@@ -94,9 +96,11 @@ class User_services extends Base_Controller
                 }
                 $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"";
                 $post_data = array(
+                    "SID" => get_SID(),
                     "ServiceID" => $this->input->post('service_id'),
                     "UserID" => $this->input->post('user_id'),
                     "PartnersID" => $Partner,
+                    "CompnayName" => $this->input->post('compnay_name'),
                     "ServiceStatus" => $this->input->post('service_status'),
                     "ProgressStatus" => ($this->input->post('progress_status'))?$this->input->post('progress_status'):"On Going",
                     "Reason" => $Reason,
@@ -250,9 +254,9 @@ class User_services extends Base_Controller
         $link_array = explode('/',$link);
         $page = end($link_array);
         if($page == 'ongoing'){
-            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.ProgressStatus,us.CreatedAt');
+            $this->datatables->select('us.ID,u.id,us.SID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.CompnayName,us.ProgressStatus,us.CreatedAt');
         }else{
-            $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.CreatedAt');
+            $this->datatables->select('us.ID,u.id,us.SID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.CompnayName,us.CreatedAt');
         }
         
         $this->datatables->where('us.AdminID', $this->tank_auth->get_user_id());
@@ -270,6 +274,7 @@ class User_services extends Base_Controller
         $this->datatables->join(TBL_SERVICES . ' s', 's.ServiceID=us.ServiceID', '');
         $this->datatables->join(TBL_USERS . ' u', 'u.id=us.UserID', '');
         $this->datatables->from(TBL_USER_SERVICES.' us')
+            ->edit_column('name', '$1', 'getUserDetails(u.id,name)')
             ->edit_column('us.PartnersID', '$1', 'PartnersName(us.PartnersID)')
             ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)')
             ->edit_column('us.ProgressStatus', '$1', 'GetProgressStatus(us.ProgressStatus)');
@@ -277,8 +282,130 @@ class User_services extends Base_Controller
         //     $this->datatables->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
         // }
         $this->datatables->add_column('action', '$1', 'user_service_action_row(us.ID)');
+        $this->datatables->unset_column('u.id');
         $this->datatables->unset_column('us.ID');
         echo $this->datatables->generate();
+    }
+
+    public function notes($id)
+    {
+        $link = $_SERVER['REQUEST_URI'];
+        $link_array = explode('/',$link);
+        $page = end($link_array);
+        $id = decrypt($id);
+        $data['page_title'] = "Services Notes";
+        $data['type'] = $page;
+        $data['USID'] =  $id;
+        $data['UserID'] =  $this->tank_auth->get_user_id();
+        $data['UserServices'] = $this->Common->get_all_info(TBL_USER_SERVICES_NOTES, $id,'USID');
+        $this->partial('user-services/service-notes', $data);
+    }
+
+    public function submit_note_form()
+    {
+        if ($this->input->post()) {
+            $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
+            $ID = ($this->input->post('id') && $this->input->post('id') > 0) ? $this->input->post('id') : 0;
+            $this->form_validation
+                ->set_rules('note', 'Note', 'required');
+            $this->form_validation->set_message('required', '{field} field should not be blank.');
+            $error_element = error_elements();
+            $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
+            if ($this->form_validation->run()) {
+                
+                $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"";
+                $post_data = array(
+                    "USID" => $this->input->post('usid'),
+                    "Note" => $this->input->post('note'),
+                );
+                
+                if ($ID > 0) {
+                    $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
+                    $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
+                    if ($this->Common->update_info(TBL_USER_SERVICES_NOTES, $ID, $post_data, 'ID')) {
+                        $response = array("status" => "ok", "heading" => "Updated successfully...", "message" => "Details updated successfully.");
+                    } else {
+                        $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
+                     }
+                }else{
+                    $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
+                    $post_data['CreatedAt'] = date("Y-m-d H:i:s");
+                    if ($ID = $this->Common->add_info(TBL_USER_SERVICES_NOTES, $post_data)) {
+                        $response = array("status" => "ok", "heading" => "Add successfully...", "message" => "Details added successfully.");
+                    } else {
+                        $response = array("status" => "error", "heading" => "Not Added successfully...", "message" => "Details not added successfully.");
+                    }
+                }
+
+            } else {
+                $response['error'] = $this->form_validation->error_array();
+            }
+            echo json_encode($response);
+            die;
+        }
+    }
+
+    public function assign_service($id){
+        $link = $_SERVER['REQUEST_URI'];
+        $link_array = explode('/',$link);
+        $page = end($link_array);
+        $id = decrypt($id);
+        $data['page_title'] = "Assign New Services Task";
+        $data['type'] = $page;
+        $data['USID'] =  $id;
+        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'name', "role_id != 3 AND activated=1 AND isDeleted=0",false,false,false,['username','email','phone']);
+        $this->partial('user-services/assign-task-form', $data);
+    }
+
+    public function submit_task_form()
+    {
+        if ($this->input->post()) {
+            $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
+            $ID = ($this->input->post('id') && $this->input->post('id') > 0) ? $this->input->post('id') : 0;
+            $this->form_validation
+                ->set_rules('task_name', 'Task Name', 'required')
+                ->set_rules('user_id', 'User', 'required')
+                ->set_rules('reason', 'Reason Note', 'required')
+                ->set_rules('description', 'Description', 'required');
+            $this->form_validation->set_message('required', '{field} field should not be blank.');
+            $error_element = error_elements();
+            $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
+            if ($this->form_validation->run()) {
+                
+                $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"";
+                $post_data = array(
+                    "USID" => $this->input->post('usid'),
+                    "UserID" => $this->input->post('user_id'),
+                    "TaskName" => $this->input->post('task_name'),
+                    "Reason" => $this->input->post('reason'),
+                    "Description" => $this->input->post('description'),
+                    "Status" => $this->input->post('task_status'),
+                );
+                
+                if ($ID > 0) {
+                    $post_data['UpdatedBy'] = $this->tank_auth->get_user_id();
+                    $post_data['UpdatedAt'] = date("Y-m-d H:i:s");
+                    if ($this->Common->update_info(TBL_USER_SERVICES_TASK, $ID, $post_data, 'ID')) {
+                        $response = array("status" => "ok", "heading" => "Updated successfully...", "message" => "Details updated successfully.");
+                    } else {
+                        $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
+                     }
+                }else{
+                    $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
+                    $post_data['CreatedAt'] = date("Y-m-d H:i:s");
+                    if ($ID = $this->Common->add_info(TBL_USER_SERVICES_TASK, $post_data)) {
+                        $response = array("status" => "ok", "heading" => "Add successfully...", "message" => "Details added successfully.");
+                    } else {
+                        $response = array("status" => "error", "heading" => "Not Added successfully...", "message" => "Details not added successfully.");
+                    }
+                }
+
+            } else {
+                $response['error'] = $this->form_validation->error_array();
+            }
+            echo json_encode($response);
+            die;
+        }
     }
 
     public function _send_email($subject,$type, $email, &$data)

@@ -49,13 +49,13 @@ if (count((array) $Services) > 0) {
                                 <div class="row">
                                     <div class="col-md-3 col-sm-3">
                                         <div class="form-group">
-                                            <?php echo form_dropdown($ServiceType, $ServiceTypesList); ?>
+                                            <?php echo form_dropdown($Status, $StatusList); ?>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3">
-                                        <div class="form-group">
-                                            <?php echo form_dropdown($Status, $StatusList); ?>
-                                        </div>
+                                        <!-- <div class="form-group">
+                                            <?php echo form_dropdown($ServiceType, $ServiceTypesList); ?>
+                                        </div> -->
                                     </div>
                                     <div class="col-md-6 col-sm-6">
                                         <div class="manage-rightside">
@@ -79,7 +79,7 @@ if (count((array) $Services) > 0) {
                                             <thead>
                                                 <tr>
                                                     <th>Logo</th>
-                                                    <th>Service Type</th>
+                                                    <!-- <th>Service Type</th> -->
                                                     <th>Service Name</th>
                                                     <th>Status</th>
                                                     <th>Created At</th>

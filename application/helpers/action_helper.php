@@ -159,6 +159,28 @@ EOF;
     return $return;
 }
 
+function GetTaskStatus($status)
+{
+    if ($status == 'inprogress') {
+        $return = <<<EOF
+        <span class="text text-info badge badge-info m-l-10 hidden-sm-down"> In Progress</span>
+EOF;
+    } else if ($status == 'completed') {
+        $return = <<<EOF
+        <span class="text text-success badge badge-success m-l-10 hidden-sm-down"> completed</span>
+EOF;
+    }else if ($status == 'onhold') {
+        $return = <<<EOF
+        <span class="text text-danger badge badge-danger m-l-10 hidden-sm-down"> onhold</span>
+EOF;
+    } else {
+        $return = <<<EOF
+        <span class="text text-warning badge badge-warning m-l-10 hidden-sm-down"> Pending</span>
+EOF;
+    }
+    return $return;
+}
+
 function ProductAprovelStatus($status)
 {
     if ($status == 'pending') {
@@ -211,6 +233,19 @@ function banner_action_row($BannerID)
             <div class="tooltip-top text-center">
                 <a data-original-title="Update Banner" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-id="{$BannerID}" data-control="banner" data-method="update"><i class="fas fa-pencil-alt"></i></a>
                 <a data-original-title="Remove Banner" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$BannerID}" data-control="remove" data-method="banner"><i class="far fa-trash-alt"></i></a>
+            </div>
+EOF;
+    return $action;
+}
+
+function task_action_row($ID,$USID)
+{
+    $ID = encrypt($ID);
+    $USID = encrypt($USID);
+    $action = <<<EOF
+            <div class="tooltip-top text-center">
+                <a data-original-title="View Task" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue btn-equal btn-sm btn-edit btn-mini open_my_form" data-id="{$ID}" data-control="task" data-method="view_task"><i class="fa-solid fa-eye"></i></a>
+                <a data-original-title="Service Notes" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$USID}" data-control="user_services" data-method="notes"><i class="fa-solid fa-clipboard"></i></a>       
             </div>
 EOF;
     return $action;
@@ -305,7 +340,7 @@ function cca_payment_action_row($PaymentID)
     $PaymentID = encrypt($PaymentID);
     $action = <<<EOF
             <div class="tooltip-top text-center">
-            <a data-original-title="View Details" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-form_type="half" data-id="{$PaymentID}" data-control="ccavenue_payment" data-method="view_payment"><i class="fa-solid fa-eye"></i></a>
+            <a data-original-title="View Details" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form" data-id="{$PaymentID}" data-control="ccavenue_payment" data-method="view_payment"><i class="fa-solid fa-eye"></i></a>
             </div>
 EOF;
     return $action;
@@ -362,19 +397,23 @@ function user_service_action_row($ID)
     if(ROLE == 1){
     $action = <<<EOF
     <div class="tooltip-top text-center">
+    <a data-original-title="Assign Service Task" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs  l-cyan  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="assign_service"><i class="fa-regular fa-circle-right"></i></a>       
+    <a data-original-title="Service Notes" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="notes"><i class="fa-solid fa-clipboard"></i></a></br>       
     <a data-original-title="Update Service Status" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="update"><i class="fas fa-pencil-alt"></i></a>       
     <a data-original-title="Remove User Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-control="remove" data-method="user_service" data-type="soft"><i class="far fa-trash-alt"></i></a>
-           </div>
-EOF;
+    </div>
+    EOF;
 }else{
     $action = <<<EOF
     <div class="tooltip-top text-center">
+    <a data-original-title="Assign Service Task" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs  l-cyan  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="assign_service"><i class="fa-regular fa-circle-right"></i></a>       
+    <a data-original-title="Service Notes" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="notes"><i class="fa-solid fa-clipboard"></i></a>       
     <a data-original-title="Update Service Status" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs l-blue  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="update"><i class="fas fa-pencil-alt"></i></a>       
-           </div>
-EOF;
-
+    </div>
+    EOF;
+    
 }
-    return $action;
+return $action;
 }
 
 function sa_user_service_action_row($ID)
@@ -382,6 +421,7 @@ function sa_user_service_action_row($ID)
     $ID = encrypt($ID);
     $action = <<<EOF
     <div class="tooltip-top text-center">
+        <a data-original-title="Service Notes" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-warning  btn-equal btn-sm btn-edit btn-mini open_my_form"  data-id="{$ID}" data-control="user_services" data-method="notes"><i class="fa-solid fa-clipboard"></i></a>       
         <a data-original-title="Remove User Service" data-placement="top" data-toggle="tooltip" href="javascript:;" class="btn btn-xs btn-danger btn-equal btn-mini btn-sm delete_btn" data-id="{$ID}" data-control="remove" data-method="user_service" data-type="soft"><i class="far fa-trash-alt"></i></a>
     </div>
 EOF;
@@ -394,10 +434,28 @@ function form_filed($Name,$Type) {
 }
 
 
+function getUserDetails($ID,$Name) {
+    $ID = encrypt($ID);
+    $action = <<<EOF
+    <div class="tooltip-top text-center">
+        <a data-original-title="User Details" data-placement="top" data-toggle="tooltip" href="javascript:;" class="text text-info open_my_form" data-id="{$ID}" data-control="user" data-method="view_user">{$Name}</a>
+    </div>
+EOF;
+    return $action;
+}
+function getMulUserDetails($ID,$Name) {
+    $ID = encrypt($ID);
+    $action = <<<EOF
+        <a data-original-title="User Details" data-placement="top" data-toggle="tooltip" href="javascript:;" class="text text-secound open_my_form" data-id="{$ID}" data-control="user" data-method="view_user">{$Name}</a>
+    
+EOF;
+    return $action;
+}
+
 function PartnersName($P) {
     $ci = &get_instance();
     if($P != ''){
-        $Name = '';
+        $Name = '<div class="tooltip-top ">';
         $Partners = explode(",",$P);
         $cnt = 0;
         foreach ($Partners as $key => $p) {
@@ -406,10 +464,12 @@ function PartnersName($P) {
                 if($cnt != 0){
                     $Name .= ', ';
                 }
-                $Name .= $user->first_name.' '.$user->last_name;
+                // $Name .= $user->first_name.' '.$user->last_name;
+                $Name .= getMulUserDetails($user->id,$user->first_name.' '.$user->last_name);
                 $cnt++;
             }
         }
+        $Name .= "</div>";
         return $Name;
     }else{
         return '-';

@@ -82,9 +82,11 @@ if($type == 'ongoing'){
                                             data-method="manage" data-id="<?php echo $type;?>">
                                             <thead>
                                                 <tr>
+                                                    <th>SID</th>
                                                     <th>Service</th>
                                                     <th>User</th>
                                                     <th width="20%">Sub Users/Partners</th>
+                                                    <th>Compnay Name</th>
                                                     <?php if($type == 'ongoing'){ ?><th>Progress Status</th><?php } ?>
                                                     <th>Created At</th>
                                                     <th class="no-sort text-center">Action</th>

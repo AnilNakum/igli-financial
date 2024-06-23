@@ -46,6 +46,7 @@
 
     <!-- Custom Css -->
     <link rel="stylesheet" href="<?php echo ASSETS_PATH; ?>css/main.css">
+    <link rel="stylesheet" href="<?php echo ASSETS_PATH; ?>css/chatapp.css">
     <link rel="stylesheet" href="<?php echo ASSETS_PATH; ?>css/ecommerce.css">
     <link rel="stylesheet" href="<?php echo ASSETS_PATH; ?>css/color_skins.css">
 
@@ -242,7 +243,8 @@
                         </div>
                         <div class="detail">
                             <h4><?php echo $login_username; ?></h4>
-                            <small></small>
+                            <small><?php echo $userData->email;?></small><br>
+                            <small><?php echo $userData->phone;?></small>
                         </div>
                         <a href="<?php echo base_url(); ?>" title="Profile"><i
                                 class="fa-regular fa-address-card"></i></a>
@@ -257,25 +259,26 @@
                     <a href="<?php echo base_url(); ?>"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a>
                 </li>
                 
+                <?php if(ROLE == 1){?>
                 <li class="header">Services</li>
                 <li> <a href="javascript:void(0);"
                         class="menu-toggle <?php echo (($this->uri->segment(1) == "services" && $this->uri->segment(2) == "")|| ($this->uri->segment(1) == "type") || ($this->uri->segment(1) == "top-services")) ? 'active toggled' : ""; ?>"><i
                             class="zmdi zmdi-apps"></i><span>Services</span>
                     </a>
                     <ul class="ml-menu">
-                    <?php if(ROLE == 1){?>
+                    <!-- <?php if(ROLE == 1){?>
                         <li class="<?php echo ($this->uri->segment(1) == "type") ? 'active' : ""; ?>"><a
                                 href="<?php echo base_url('type'); ?>">Services Type</a></li>
-                                <?php } ?>
+                                <?php } ?> -->
                         <li
                             class="<?php echo ($this->uri->segment(1) == "services" && $this->uri->segment(2) == "") ? 'active' : ""; ?>">
                             <a href="<?php echo base_url('services'); ?>">Services</a></li>
-                            <?php if(ROLE == 1){?>
+                            
                         <li class="<?php echo ($this->uri->segment(1) == "top-services") ? 'active' : ""; ?>"><a
                                 href="<?php echo base_url('top-services'); ?>">Our Top Services</a></li>
-                                <?php } ?>
-                    </ul>
-                </li>
+                            </ul>
+                        </li>
+                        <?php } ?>
                
                 <li class="header">User Services</li>
                 <li class="<?php echo (($this->uri->segment(2) == "ongoing") ) ? 'active' : ""; ?>">
@@ -295,6 +298,9 @@
                     <a href="<?php echo base_url('service-users'); ?>"><i class="fa-solid fa-circle-user"></i><span>By SubAdmin</span></a>
                 </li>
 <?php } ?>
+<li class="<?php echo (($this->uri->segment(1) == "task") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('task'); ?>"><i class="fa-solid fa-list-check"></i><span>Service Task</span></a>
+                </li>
                 <li class="header">Document Upload </li>
                 <li class="<?php echo (($this->uri->segment(1) == "upload")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('upload'); ?>"><i class="fa-solid fa-cloud-arrow-up"></i><span>Upload
@@ -344,10 +350,10 @@
                         </span></a>
                 </li>
                 <?php }else{?>
-                    <li class="header">OTHERS</li>
-                    <li class="<?php echo (($this->uri->segment(1) == "user")) ? 'active' : ""; ?>"> <a
+                <li class="header">OTHERS</li>
+                <!-- <li class="<?php echo (($this->uri->segment(1) == "user")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('user'); ?>"><i class="zmdi zmdi-accounts"></i><span>Users</span></a>
-                </li>
+                </li> -->
                 <li class="<?php echo (($this->uri->segment(1) == "form-builder-form") || ($this->uri->segment(1) == "form-builder")) ? 'active' : ""; ?>"> <a
                         href="<?php echo base_url('form-builder'); ?>"><i class="fa-brands fa-wpforms"></i><span>IGLI Form Builder
                         </span></a>

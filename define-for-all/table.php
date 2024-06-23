@@ -19,6 +19,8 @@ define('TBL_PAYMENT', 'payment');
 define('TBL_CCA_PAYMENT', 'ccavenue_payment');
 define('TBL_SUBADMIN_SERVICES', 'subadmin_services');
 define('TBL_USER_SERVICES', 'user_services');
+define('TBL_USER_SERVICES_NOTES', 'user_services_notes');
+define('TBL_USER_SERVICES_TASK', 'user_services_task');
 define('TBL_DOCUMENT', 'document');
 define('TBL_USER_INTEREST', 'user_interest');
 define('TBL_EVENT', 'event');

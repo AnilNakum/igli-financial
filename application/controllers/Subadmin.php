@@ -51,6 +51,7 @@ class Subadmin extends Base_Controller
                 ->set_rules('last_name', 'Last Name', 'required')
                 ->set_rules('email', 'Email', 'required')
                 ->set_rules('phone', 'Phone No', 'required')
+                ->set_rules('dob', 'Date Of Birth', 'required')
                 ->set_rules('password', 'Password', 'required')
                 ->set_rules('re_password', 'Confirm Password', 'required|matches[password]');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
@@ -79,6 +80,8 @@ class Subadmin extends Base_Controller
                     "name" => $this->input->post('first_name').' '. $this->input->post('last_name'),
                     "email" => $this->input->post('email'),
                     "phone" => $this->input->post('phone'),
+                    'dob' =>$this->post('dob'),
+                    'compnay_name' =>$this->post('compnay_name'),
                     "activated" => $this->input->post('activated'),
                     "role_id" => 2
                 );
@@ -253,7 +256,7 @@ class Subadmin extends Base_Controller
     }
 
     public function manage_user_service($id) {
-        $this->datatables->select('us.ID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.ServiceStatus,CONCAT(a.first_name," ",a.last_name) as  rm,us.CreatedAt');
+        $this->datatables->select('us.ID,u.id,us.SID,s.ServiceTitle,CONCAT(u.first_name," ",u.last_name) as  name,us.PartnersID,us.ServiceStatus,CONCAT(a.first_name," ",a.last_name) as  rm,us.CreatedAt');
         
         if ($this->input->post('user_id')) {
             $this->datatables->where('us.AdminID', $this->input->post('user_id'));
@@ -275,11 +278,13 @@ class Subadmin extends Base_Controller
         $this->datatables->join(TBL_USERS . ' a', 'a.id=us.AdminID', '');
         $this->datatables->from(TBL_USER_SERVICES.' us')
         ->edit_column('us.PartnersID', '$1', 'PartnersName(us.PartnersID)')
+        ->edit_column('name', '$1', 'getUserDetails(u.id,name)')
             ->edit_column('us.ServiceStatus', '$1', 'ServiceStatus(us.ServiceStatus)')
             ->edit_column('us.CreatedAt', '$1', 'DatetimeFormat(us.CreatedAt)');
         
         $this->datatables->add_column('action', '$1', 'sa_user_service_action_row(us.ID)');
         $this->datatables->unset_column('us.ID');
+        $this->datatables->unset_column('u.id');
         echo $this->datatables->generate();
     }
 }

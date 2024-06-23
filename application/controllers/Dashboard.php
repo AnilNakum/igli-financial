@@ -32,6 +32,8 @@ class Dashboard extends Base_Controller
             $data['Contact'] =  $this->Common->get_all_info(TBL_CONTACT_SUPPORT, 0, "isDeleted","",'*', false, false,false, true);
             $data['Event'] =  $this->Common->get_all_info(TBL_EVENT, 0, "isDeleted","",'*', false, false,false, true);
         }
+        $OrderBy = array("field"=>'CreatedAt',"order"=>'desc');
+        $data['ServiceTask'] =  $this->Common->get_all_info(TBL_USER_SERVICES_TASK, $User, "UserID","","*",false,false,$OrderBy);
         $this->view('dashboard/dashboard', $data);
     }
 }

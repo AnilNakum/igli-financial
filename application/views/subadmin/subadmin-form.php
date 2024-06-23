@@ -10,6 +10,8 @@ $FirstName = array('name' => 'first_name', 'id' => 'first_name', 'value' => (iss
 $LastName = array('name' => 'last_name', 'id' => 'last_name', 'value' => (isset($user_info) && $user_info->last_name != "") ? $user_info->last_name : set_value('last_name'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Last Name", "data-validation" => "required");
 $Email = array('name' => 'email', 'id' => 'email', 'value' => (isset($user_info) && $user_info->email != "") ? $user_info->email : set_value('email'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Email", "data-validation" => "required");
 $Phone = array('name' => 'phone', 'id' => 'phone', 'value' => (isset($user_info) && $user_info->phone != "") ? $user_info->phone : set_value('phone'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Phone No", "data-validation" => "required");
+$DOB = array('name' => 'dob', 'id' => 'dob', 'value' => (isset($user_info) && $user_info->dob != "") ? $user_info->dob : set_value('dob'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Date of Birth", "data-validation" => "required");
+$CompnayName = array('name' => 'compnay_name', 'id' => 'compnay_name', 'value' => (isset($user_info) && $user_info->compnay_name != "") ? $user_info->compnay_name : set_value('compnay_name'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Compnay Name");
 $Password = array('name' => 'password', 'id' => 'password', 'value' =>  "" , 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Password", "data-validation" => "required");
 $RePassword = array('name' => 're_password', 'id' => 're_password', 'value' => "" , 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Confirm Password", "data-validation" => "required");
 
@@ -75,6 +77,14 @@ $form_attr = array('class' => 'default_form subadmin_frm', 'id' => 'subadmin_frm
                             <div class="form-group">
                                 <label class="form-label">Phone No<span class="text-danger">*</span></label>
                                 <?php echo form_input($Phone); ?>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date Of Birth<span class="text-danger">*</span></label>
+                                <?php echo form_input($DOB); ?>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Compnay Name</label>
+                                <?php echo form_input($CompnayName); ?>
                             </div>
                             <?php if (!isset($user_info)) {?>
                             <div class="form-group">

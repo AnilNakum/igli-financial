@@ -67,6 +67,7 @@ class Base_Controller extends CI_Controller
             if ($this->tank_auth->is_logged_in() && $this->Method != 'submit') {
                 $data['login_username'] = $this->tank_auth->get_fullname();
                 $data['role_id'] = $this->tank_auth->get_role_id();    
+                $data['userData'] = $this->Common->get_info(TBL_USERS, $this->tank_auth->get_user_id(), 'id');   
                 $this->load->view('includes/header', $data);
             }
         $this->load->view($view, $data, $part);

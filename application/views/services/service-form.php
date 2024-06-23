@@ -60,12 +60,12 @@ $form_attr = array('class' => 'default_form service_frm', 'id' => 'service_frm',
                 <div class="col-md-12 card">
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Service Type <span class="text-danger">*</span></label>
                                 <?php echo form_dropdown($ServiceType, $ServiceTypesList,$STID ); ?>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Service Title <span class="text-danger">*</span></label>
@@ -114,7 +114,7 @@ $form_attr = array('class' => 'default_form service_frm', 'id' => 'service_frm',
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Service Logo <span class="text-danger">*</span></label>
+                                <label class="form-label">Service Logo </label>
                                 <div class="file-loading">
                                     <input id="file" type="file" name="image" class="file form-control"
                                         data-upload-url="#" data-browse-on-zone-click="true"

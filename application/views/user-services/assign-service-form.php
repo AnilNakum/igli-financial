@@ -12,6 +12,8 @@ if (isset($us_info) && $us_info->ID > 0) {
     $Partner = array('name' => 'partner[]', 'id' => 'partner', 'class' => "select2",'multiple'=>"multiple", "tabindex" => 4);
 }
 
+$CompnayName = array('name' => 'compnay_name', 'id' => 'compnay_name', 'value' => (isset($user_info) && $user_info->compnay_name != "") ? $user_info->compnay_name : set_value('compnay_name'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Compnay Name");
+
 $ServiceList = array("" => "Select Service") + $Services;
 $ServiceID = (isset($us_info) && $us_info->ServiceID != "") ? $us_info->ServiceID : set_value('service_id');
 
@@ -20,7 +22,7 @@ $UserID = (isset($us_info) && $us_info->UserID != "") ? $us_info->UserID : set_v
 
 $PartnersList = $Users;
 $PartnersID =  (isset($us_info) && $us_info->PartnersID != "") ? explode(",",$us_info->PartnersID) : set_value('partner');
-
+ 
 
 
 $SS = array(
@@ -74,7 +76,6 @@ $form_attr = array('class' => 'default_form assign_services_frm', 'id' => 'assig
             <div class="row">
                 <div class="col-md-12 card">
 
-
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -96,6 +97,14 @@ $form_attr = array('class' => 'default_form assign_services_frm', 'id' => 'assig
                             <div class="form-group">
                                 <label class="form-label">Sub Users / Partners  <span class="text-info">Optional</span></label>
                                 <?php echo form_dropdown($Partner, $PartnersList, $PartnersID); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Compnay Name  <span class="text-danger">*</span></label>
+                                <?php echo form_input($CompnayName); ?>
                             </div>
                         </div>
                     </div>

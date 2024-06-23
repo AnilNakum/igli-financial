@@ -27,7 +27,7 @@ class Ccavenue_payment extends Base_Controller
         $this->partial('cca-payments/payment-form', $data);
     }
 
-    public function update($id)
+    public function view_payment($id)
     {
         $id = decrypt($id);
         if ($id > 0) {
@@ -38,10 +38,8 @@ class Ccavenue_payment extends Base_Controller
                 redirect('cca-payments/');
             }
         }
-        $data['page_title'] = "Update Payment";
-        $data['Services'] =  $this->Common->get_list(TBL_SERVICES, 'ServiceID', 'ServiceTitle', "Status=1 AND isDeleted=0");
-        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'first_name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,'username');
-        $this->partial('cca-payments/payment-form', $data);
+        $data['page_title'] = "View Payment";
+        $this->partial('cca-payments/view-payment', $data);
     }
 
     public function submit_form()

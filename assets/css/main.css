@@ -24156,7 +24156,7 @@ textarea.form-control:focus, textarea.form-control:active {
 }
 .select2-container .select2-selection--multiple {
    cursor: pointer !important;
-   height: 38px !important;
+   min-height: 38px !important;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     font-size: 14px;

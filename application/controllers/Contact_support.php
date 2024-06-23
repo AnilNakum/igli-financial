@@ -103,17 +103,19 @@ class Contact_support extends Base_Controller
 
     public function manage()
     {
-        $this->datatables->select('c.ID,TicketNo,CONCAT(u.first_name," ",u.last_name) as  name,c.Subject,c.Status,c.CreatedAt');
+        $this->datatables->select('c.ID,u.id,TicketNo,CONCAT(u.first_name," ",u.last_name) as  name,c.Subject,c.Status,c.CreatedAt');
         if ($this->input->post('status')) {
             $this->datatables->where('c.Status', $this->input->post('status'));
         }
         $this->datatables->where('c.isDeleted', 0);
         $this->datatables->join(TBL_USERS . ' u', 'u.id=c.CreatedBy', '');
         $this->datatables->from(TBL_CONTACT_SUPPORT .' c')
+        ->edit_column('name', '$1', 'getUserDetails(u.id,name)')
             ->edit_column('c.CreatedAt', '$1', 'DatetimeFormat(c.CreatedAt)')
             ->edit_column('c.Status', '$1', 'ContactStatus(c.Status)')
             ->add_column('action', '$1', 'support_action_row(c.ID)');
         $this->datatables->unset_column('c.ID');
+        $this->datatables->unset_column('u.id');
         echo $this->datatables->generate();
     }
 

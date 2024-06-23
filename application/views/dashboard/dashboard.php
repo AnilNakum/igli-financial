@@ -19,7 +19,7 @@
                 </center>
             </div> -->
         <div class="row clearfix">
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-4 col-md-12" >
                 <div class="card">
                     <div class="header">
                         <h2><strong>Total</strong> Services</h2>
@@ -62,50 +62,93 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-            <?php if(ROLE == 1){?>
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Total</strong> Sub Admins</h2>
-                    </div>
-                    <div class="body text-center">
-                        <h3 class="m-b-0"><i class="fa-solid fa-user-tie"></i> <?php echo $SubAdmin;?></h3>
-                        <span><a href="<?php echo base_url('subadmin'); ?>"> View all </a></span>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="header">
+            <div class="col-lg-8 col-md-12" >
+                <div class="row">
+                    <div class="col-lg-6 col-md-6" >
+                        <?php if(ROLE == 1){?>
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Total</strong> Sub Admins</h2>
+                            </div>
+                            <div class="body text-center">
+                                <h3 class="m-b-0"><i class="fa-solid fa-user-tie"></i> <?php echo $SubAdmin;?></h3>
+                                <span><a href="<?php echo base_url('subadmin'); ?>"> View all </a></span>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="header">
 
-                        <h2><strong>Total</strong> Contact Request</h2>
+                                <h2><strong>Total</strong> Contact Request</h2>
+                            </div>
+                            <div class="body text-center">
+                                <h3 class="m-b-0"><i class="fa-solid fa-inbox"></i> <?php echo $Contact;?></h3>
+                                <span><a href="<?php echo base_url('contact_support'); ?>"> View all </a></span>
+                            </div>
+                        </div>
+                        <?php } ?>
                     </div>
-                    <div class="body text-center">
-                        <h3 class="m-b-0"><i class="fa-solid fa-inbox"></i> <?php echo $Contact;?></h3>
-                        <span><a href="<?php echo base_url('contact_support'); ?>"> View all </a></span>
+                    <div class="col-lg-6 col-md-6" >
+                        <?php if(ROLE == 1){?>
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Total</strong> Active Users</h2>
+                            </div>
+                            <div class="body text-center">
+                                <h3 class="m-b-0"><i class="fa-solid fa-users"></i> <?php echo $Users;?></h3>
+                                <span><a href="<?php echo base_url('user'); ?>"> View all </a></span>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Total</strong> Compliance Calendar</h2>
+                            </div>
+                            <div class="body text-center">
+                                <h3 class="m-b-0"><i class="fa-solid fa-calendar-day"></i> <?php echo $Event;?></h3>
+                                <span><a href="<?php echo base_url('calendar'); ?>"> View all </a></span>
+                            </div>
+                        </div>
+                        <?php } ?>
+                        
                     </div>
                 </div>
-            <?php } ?>
-            </div>
-            <div class="col-lg-4 col-md-6">
-            <?php if(ROLE == 1){?>
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Total</strong> Active Users</h2>
-                    </div>
-                    <div class="body text-center">
-                        <h3 class="m-b-0"><i class="fa-solid fa-users"></i> <?php echo $Users;?></h3>
-                        <span><a href="<?php echo base_url('user'); ?>"> View all </a></span>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="header">
-                        <h2><strong>Total</strong> Compliance Calendar</h2>
-                    </div>
-                    <div class="body text-center">
-                        <h3 class="m-b-0"><i class="fa-solid fa-calendar-day"></i> <?php echo $Event;?></h3>
-                        <span><a href="<?php echo base_url('calendar'); ?>"> View all </a></span>
-                    </div>
-                </div>
-                <?php } ?>
+                <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="header">
+                                        <h2><strong>My</strong> Service Task </h2>
+                                        <ul class="header-dropdown">
+                                            <li class="remove">
+                                                <a href="<?php echo base_url('task'); ?>" class="btn btn-xs  l-cyan  btn-equal btn-sm btn-edit btn-mini" role="button">View All </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="body">
+                                        <?php if(count($ServiceTask) > 0){?>
+                                        <ul class="row list-unstyled c_review">
+                                            <?php foreach ($ServiceTask as $key => $value) {?>
+                                                <li class="col-12">
+                                                    <div class="comment">
+                                                        <h6 class="c_name"><?php echo $value->TaskName; ?></h6>
+                                                        <p class="c_msg m-b-0"><?php echo $value->Reason;?> </p>
+                                                            <?php echo GetTaskStatus($value->Status);?>
+                                                            
+                                                        <small class="comment-date float-sm-right"><?php echo DatetimeFormat($value->CreatedAt);?></small>
+                                                    </div>
+                                                </li>
+                                            <?php }?>
+                                        </ul>
+                                        <?php }else{?>
+                                            <div class="body text-center manage-list">
+                                                <div class="institute-box">
+                                                    <img width="80%" src="<?php echo ASSETS_PATH; ?>images/finder.png">
+                                                    <h3>No Task right now  </h3><br />
+                                                </div>
+                                            </div>
+                                        <?php }?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
             </div>
         </div>
     </div>

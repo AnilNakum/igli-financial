@@ -134,6 +134,7 @@ class Api extends REST_Controller
             $Phone = $this->post('phone');
             $Email = $this->post('email');
             $DOB = $this->post('dob');
+            $CompnayName = $this->post('compnay_name');
             $Password = $this->post('password');
             $CPassword = $this->post('confirm_password');
             $DeviceID = $this->post('device_id');
@@ -164,6 +165,7 @@ class Api extends REST_Controller
                     'email' => $Email,
                     'phone' => $Phone,
                     'dob' => $DOB,
+                    'compnay_name' => $CompnayName,
                     'activated' => 0
                 );
 

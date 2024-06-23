@@ -140,7 +140,7 @@ class Services extends Base_Controller
             $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $ServiceID = ($this->input->post('service_id') && $this->input->post('service_id') > 0) ? $this->input->post('service_id') : 0;
             $this->form_validation
-                ->set_rules('service_type', 'Service Type', 'required')
+                // ->set_rules('service_type', 'Service Type', 'required')
                 ->set_rules('service_title', 'Service Title', 'required')
                 ->set_rules('amount', 'Amount', 'required')
                 ->set_rules('amount_type', 'amount Type', 'required')
@@ -156,7 +156,7 @@ class Services extends Base_Controller
             if ($this->form_validation->run()) {
                 
                 $post_data = array(
-                    "STID" => $this->input->post('service_type'),
+                    // "STID" => $this->input->post('service_type'),
                     "ServiceTitle" => $this->input->post('service_title'),
                     "Amount" => $this->input->post('amount'),
                     "AmountType" => $this->input->post('amount_type'),
@@ -180,11 +180,12 @@ class Services extends Base_Controller
                         echo json_encode($response);
                         die;
                     }
-                } else if (($this->input->post('old_image') && empty($this->input->post('old_image'))) || $ServiceID == 0) {
-                    $response = array("status" => "error", "heading" => "Service Logo Missing", "message" => "Service Logo Missing.");
-                    echo json_encode($response);
-                    die;
-                }
+                } 
+                // else if (($this->input->post('old_image') && empty($this->input->post('old_image'))) || $ServiceID == 0) {
+                //     $response = array("status" => "error", "heading" => "Service Logo Missing", "message" => "Service Logo Missing.");
+                //     echo json_encode($response);
+                //     die;
+                // }
 
 
                 
@@ -217,7 +218,7 @@ class Services extends Base_Controller
     public function manage()
     {
         
-        $this->datatables->select('s.Logo,s.ServiceID,st.Name,s.ServiceTitle,s.Status,s.CreatedAt');
+        $this->datatables->select('s.Logo,s.ServiceID,s.ServiceTitle,s.Status,s.CreatedAt');
 
         if ($this->input->post('type')) {
             $this->datatables->where('s.STID', $this->input->post('type'));
@@ -229,7 +230,7 @@ class Services extends Base_Controller
             $this->datatables->where_in('s.ServiceID',USER_SERVICE);
         }
         $this->datatables->where('s.isDeleted', 0);
-        $this->datatables->join(TBL_SERVICE_TYPE . ' st', 'st.STID=s.STID', '');
+        // $this->datatables->join(TBL_SERVICE_TYPE . ' st', 'st.STID=s.STID', '');
         $this->datatables->from(TBL_SERVICES.' s')
             ->edit_column('s.CreatedAt', '$1', 'DatetimeFormat(s.CreatedAt)')
             ->edit_column('s.Logo', '$1', 'GetImage(s.Logo)')

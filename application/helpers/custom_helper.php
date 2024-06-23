@@ -154,7 +154,7 @@ function get_username($pre = 'IGLI')
     }
 }
 
-function get_ticket_no($pre = 'CS')
+function get_ticket_no($pre = 'IGLI')
 {
     $ci = &get_instance();
     $ci->load->helper('string');
@@ -164,6 +164,22 @@ function get_ticket_no($pre = 'CS')
     } else {
         return $NO;
     }
+}
+
+function get_SID()
+{
+    $ci = &get_instance();
+    $data = $ci->Common->get_info(TBL_USER_SERVICES, 0,'isDeleted','1=1','max(SID) as MAXID');
+    $max_sid = $data->MAXID;
+    // Set the starting SID if no records are found
+    if ($max_sid === null || $max_sid === '') {
+        $new_sid = 51;
+    } else {
+        $new_sid = (int)$max_sid + 1;
+    }
+
+    // Format the new SID as a 6-digit number
+    return str_pad($new_sid, 6, '0', STR_PAD_LEFT);
 }
 
 function encryptionKey()

@@ -6223,4 +6223,10 @@ label.form-label.switch-label {
 {
     color: #000 !important;
 }
+.footer-input .in-div{
+    background: #effaff !important;
+}
+.footer-input textarea#note {
+    background: #fff !important;
+}
 

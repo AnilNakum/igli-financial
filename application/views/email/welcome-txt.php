@@ -10,6 +10,8 @@ Follow this link to login on the site:
 Your username: <?php echo $username; ?>
 <?php } ?>
 
+Your ID: <?php echo $userid; ?>
+
 Your email address: <?php echo $email; ?>
 
 Your password: <?php echo $password; ?>

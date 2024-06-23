@@ -41,6 +41,20 @@ class User extends Base_Controller
         $data['page_title'] = "Update User";
         $this->partial('users/user-form', $data);
     }
+    public function view_user($id)
+    {
+        $id = decrypt($id);
+        if ($id > 0) {
+            $data_obj = $this->Common->get_info(TBL_USERS, $id, 'id');
+            if (is_object($data_obj) && count((array) $data_obj) > 0) {
+                $data["user_info"] = $data_obj;
+            } else {
+                redirect('users/');
+            }
+        }
+        $data['page_title'] = "View User";
+        $this->partial('users/view-user', $data);
+    }
 
     public function submit_form()
     {
@@ -52,6 +66,7 @@ class User extends Base_Controller
                 ->set_rules('last_name', 'Last Name', 'required')
                 ->set_rules('email', 'Email', 'required')
                 ->set_rules('phone', 'Phone No', 'required')
+                ->set_rules('dob', 'Date Of Birth', 'required')
                 ->set_rules('password', 'Password', 'required')
                 ->set_rules('re_password', 'Confirm Password', 'required|matches[password]');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
@@ -66,6 +81,8 @@ class User extends Base_Controller
                     "name" => $this->input->post('first_name').' '. $this->input->post('last_name'),
                     "email" => $this->input->post('email'),
                     "phone" => $this->input->post('phone'),
+                    'dob' =>$this->post('dob'),
+                    'compnay_name' =>$this->post('compnay_name'),
                     "activated" => $this->input->post('activated'),
                     "role_id" => 3
                 );
@@ -104,6 +121,7 @@ class User extends Base_Controller
                     if ($id = $this->Common->add_info(TBL_USERS, $post_data)) {
                         $user = $this->Common->get_info(TBL_USERS, $id,'id');
                         $mailData = array(
+                            'userid' => $user->username,
                             'username' => $user->name,
                             'email' => $user->email,
                             'password' => $this->input->post('password'),
@@ -169,6 +187,8 @@ class User extends Base_Controller
         $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Name');
         $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Email');
         $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Contact No');
+        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Date Of Birth');
+        $objPHPExcel->getActiveSheet()->SetCellValue('F1', 'Compnay Name');
         // set Row
         $rowCount = 2;
         foreach ($Users as $list) {
@@ -176,6 +196,8 @@ class User extends Base_Controller
             $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $list->name);
             $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $list->email);
             $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $list->phone);
+            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $list->dob);
+            $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $list->compnay_name);
             $rowCount++;
         }
         foreach(range('A','D') as $columnID) {
