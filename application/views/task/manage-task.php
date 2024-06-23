@@ -21,8 +21,7 @@ if (count((array) $ServiceTask) > 0) {
                 </h2>
             </div>
             <div class="col-lg-7 col-md-8 col-sm-8">
-                <a href="javascript:void(0);" class="btn btn-round l-blue pull-right open_my_form" data-control="task"
-                    data-method="add">Add New Task</a>
+               
             </div>
         </div>
     </div>
@@ -35,10 +34,8 @@ if (count((array) $ServiceTask) > 0) {
                     <div class="body text-center manage-list">
                         <div class="institute-box">
                             <img src="<?php echo ASSETS_PATH; ?>images/finder.png">
-                            <h3>No records for Task right now <br /> Please add new</h3>
-                            <a href="javascript:void(0);" class="open_my_form" data-control="task"
-                                data-method="add"><img class="add-btn"
-                                    src="<?php echo ASSETS_PATH; ?>images/btn.png"></a>
+                            <h3>No records for Task right now </h3>
+                           
                         </div>
                     </div>
                     <?php } else {?>
