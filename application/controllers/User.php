@@ -41,6 +41,7 @@ class User extends Base_Controller
         $data['page_title'] = "Update User";
         $this->partial('users/user-form', $data);
     }
+
     public function view_user($id)
     {
         $id = decrypt($id);
@@ -62,18 +63,17 @@ class User extends Base_Controller
             $response = array("status" => "error", "heading" => "Unknown Error", "message" => "There was an unknown error that occurred. You will need to refresh the page to continue working.");
             $id = ($this->input->post('user_id') && $this->input->post('user_id') > 0) ? $this->input->post('user_id') : 0;
             $this->form_validation
-                ->set_rules('first_name', 'First Name', 'required')
-                ->set_rules('last_name', 'Last Name', 'required')
-                ->set_rules('email', 'Email', 'required')
-                ->set_rules('phone', 'Phone No', 'required')
-                ->set_rules('dob', 'Date Of Birth', 'required')
-                ->set_rules('password', 'Password', 'required')
-                ->set_rules('re_password', 'Confirm Password', 'required|matches[password]');
+            ->set_rules('first_name', 'First Name', 'required')
+            ->set_rules('last_name', 'Last Name', 'required')
+            ->set_rules('email', 'Email', 'required')
+            ->set_rules('phone', 'Phone No', 'required')
+            ->set_rules('dob', 'Date Of Birth', 'required')
+            ->set_rules('password', 'Password', 'required')
+            ->set_rules('re_password', 'Confirm Password', 'required|matches[password]');
             $this->form_validation->set_message('required', '{field} field should not be blank.');
             $error_element = error_elements();
             $this->form_validation->set_error_delimiters($error_element[0], $error_element[1]);
             if ($this->form_validation->run()) {
-                
                 $post_data = array(
                     "username" => $this->input->post('username'),
                     "first_name" => $this->input->post('first_name'),
@@ -81,12 +81,12 @@ class User extends Base_Controller
                     "name" => $this->input->post('first_name').' '. $this->input->post('last_name'),
                     "email" => $this->input->post('email'),
                     "phone" => $this->input->post('phone'),
-                    'dob' =>$this->post('dob'),
-                    'compnay_name' =>$this->post('compnay_name'),
+                    'dob' =>$this->input->post('dob'),
+                    'compnay_name' =>$this->input->post('compnay_name'),
                     "activated" => $this->input->post('activated'),
                     "role_id" => 3
                 );
-
+                
                 if($this->input->post('password') != '111'){
                     // Hash password using phpass
                     $Password = $this->input->post('password');
