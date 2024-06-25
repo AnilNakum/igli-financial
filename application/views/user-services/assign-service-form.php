@@ -12,7 +12,7 @@ if (isset($us_info) && $us_info->ID > 0) {
     $Partner = array('name' => 'partner[]', 'id' => 'partner', 'class' => "select2",'multiple'=>"multiple", "tabindex" => 4);
 }
 
-$CompnayName = array('name' => 'compnay_name', 'id' => 'compnay_name', 'value' => (isset($user_info) && $user_info->compnay_name != "") ? $user_info->compnay_name : set_value('compnay_name'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Compnay Name");
+$CompnayName = array('name' => 'compnay_name', 'id' => 'compnay_name', 'value' => (isset($us_info) && $us_info->CompnayName != "") ? $us_info->CompnayName : set_value('compnay_name'), 'class' => "form-control", "tabindex" => 1, 'placeholder' => "Enter Compnay Name");
 
 $ServiceList = array("" => "Select Service") + $Services;
 $ServiceID = (isset($us_info) && $us_info->ServiceID != "") ? $us_info->ServiceID : set_value('service_id');

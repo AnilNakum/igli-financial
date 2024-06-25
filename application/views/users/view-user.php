@@ -26,7 +26,7 @@ $cancel_btn = array('name' => 'cancel_btn', 'id' => 'cancel_btn', 'content' => '
                                 <label class="form-label"><b> Full Name :</b> <?php echo $user_info->name; ?></label>
                             </div>
                             <div class="form-group">
-                                <label class="form-label"><b> Email :</b> <?php echo $user_info->phone; ?></label>
+                                <label class="form-label"><b> Email :</b> <?php echo $user_info->email; ?></label>
                             </div>
                             <div class="form-group">
                                 <label class="form-label"><b> Phone No :</b> <?php echo $user_info->phone; ?></label>

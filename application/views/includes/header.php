@@ -274,8 +274,8 @@
                             class="<?php echo ($this->uri->segment(1) == "services" && $this->uri->segment(2) == "") ? 'active' : ""; ?>">
                             <a href="<?php echo base_url('services'); ?>">Services</a></li>
                             
-                        <li class="<?php echo ($this->uri->segment(1) == "top-services") ? 'active' : ""; ?>"><a
-                                href="<?php echo base_url('top-services'); ?>">Our Top Services</a></li>
+                        <!-- <li class="<?php echo ($this->uri->segment(1) == "top-services") ? 'active' : ""; ?>"><a
+                                href="<?php echo base_url('top-services'); ?>">Our Top Services</a></li> -->
                             </ul>
                         </li>
                         <?php } ?>

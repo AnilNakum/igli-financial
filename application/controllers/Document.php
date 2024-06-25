@@ -22,7 +22,7 @@ class Document extends Base_Controller
     public function add()
     {
         $data['page_title'] = "Add New Document";
-        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'first_name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,'username');
+        $data['Users'] =  $this->Common->get_list(TBL_USERS, 'id', 'name', "role_id=3 AND activated=1 AND isDeleted=0",false,false,false,['username','email','phone']);
         $this->partial('document/document-form', $data);
     }
 
