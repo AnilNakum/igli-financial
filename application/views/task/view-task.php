@@ -78,10 +78,10 @@ $form_attr = array('class' => 'default_form task_frm', 'id' => 'task_frm', 'name
                         <label class="form-label"><b> Service Name :</b> <?php echo $Services_info->ServiceTitle; ?></label>
                     </div>
                     <div class="form-group">
-                        <label class="form-label"><b> User Name :</b> <?php echo $Services_info->name; ?></label>
+                        <label class="form-label"><b> User Name :</b> <span class="user-details-view"><?php echo getUserDetails($Services_info->id,$Services_info->name); ?></span></label>
                     </div>
                     <div class="form-group">
-                        <label class="form-label"><b> Partners Name :</b> <?php echo PartnersName($Services_info->PartnersID); ?></label>
+                        <label class="form-label"><b> Partners Name :</b> <span class="user-details-view"><?php echo PartnersName($Services_info->PartnersID); ?></span></label>
                     </div>
                     <div class="form-group">
                         <label class="form-label"><b> Progress Status :</b> <?php echo GetProgressStatus($Services_info->ProgressStatus); ?></label>

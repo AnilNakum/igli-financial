@@ -6229,4 +6229,9 @@ label.form-label.switch-label {
 .footer-input textarea#note {
     background: #fff !important;
 }
-
+span.user-details-view {
+    float: right;
+    line-height: unset;
+    font-size: unset;
+    margin-left: 6px;
+}

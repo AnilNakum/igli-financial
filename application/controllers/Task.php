@@ -19,6 +19,13 @@ class Task extends Base_Controller
         $data['ServiceTask'] =  $this->Common->get_all_info(TBL_USER_SERVICES_TASK, $User, "UserID");
         $this->view('task/manage-task', $data);
     }
+    public function track()
+    {
+        $data['page_title'] = "Track Service Task";
+        $User = $this->tank_auth->get_user_id();
+        $data['ServiceTask'] =  $this->Common->get_all_info(TBL_USER_SERVICES_TASK, $User, "CreatedBy");
+        $this->view('task/track-task', $data);
+    }
 
     public function add()
     {
@@ -82,7 +89,7 @@ class Task extends Base_Controller
     public function manage()
     {
         $User = $this->tank_auth->get_user_id();
-        $this->datatables->select('ID,USID,TaskName,Status,CreatedAt');
+        $this->datatables->select('ID,USID,TaskName,Status,CreatedBy,CreatedAt');
 
         if ($this->input->post('status')) {
             $this->datatables->where('Status', $this->input->post('status'));
@@ -92,6 +99,28 @@ class Task extends Base_Controller
         $this->datatables->from(TBL_USER_SERVICES_TASK)
             ->edit_column('CreatedAt', '$1', 'DatetimeFormat(CreatedAt)')
             ->edit_column('Status', '$1', 'GetTaskStatus(Status)')
+            ->edit_column('CreatedBy', '$1', 'PartnersName(CreatedBy)')
+            ->add_column('action', '$1', 'task_action_row(ID,USID)');
+        $this->datatables->unset_column('ID');
+        $this->datatables->unset_column('USID');
+        $this->datatables->order_by('CreatedAt','desc');
+        echo $this->datatables->generate();
+    }
+
+    public function manage_track_task()
+    {
+        $User = $this->tank_auth->get_user_id();
+        $this->datatables->select('ID,USID,TaskName,Status,UserID,CreatedAt');
+
+        if ($this->input->post('status')) {
+            $this->datatables->where('Status', $this->input->post('status'));
+        }
+        $this->datatables->where('CreatedBy', $User);
+    
+        $this->datatables->from(TBL_USER_SERVICES_TASK)
+            ->edit_column('CreatedAt', '$1', 'DatetimeFormat(CreatedAt)')
+            ->edit_column('Status', '$1', 'GetTaskStatus(Status)')
+            ->edit_column('UserID', '$1', 'PartnersName(UserID)')
             ->add_column('action', '$1', 'task_action_row(ID,USID)');
         $this->datatables->unset_column('ID');
         $this->datatables->unset_column('USID');

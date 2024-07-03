@@ -298,8 +298,10 @@
                     <a href="<?php echo base_url('service-users'); ?>"><i class="fa-solid fa-circle-user"></i><span>By SubAdmin</span></a>
                 </li>
 <?php } ?>
-<li class="<?php echo (($this->uri->segment(1) == "task") ) ? 'active' : ""; ?>">
+                <li class="<?php echo (($this->uri->segment(2) != "track") && ($this->uri->segment(1) == "task") ) ? 'active' : ""; ?>">
                     <a href="<?php echo base_url('task'); ?>"><i class="fa-solid fa-list-check"></i><span>Service Task</span></a>
+                <li class="<?php echo (($this->uri->segment(2) == "track") ) ? 'active' : ""; ?>">
+                    <a href="<?php echo base_url('task/track'); ?>"><i class="fa-solid fa-list-check"></i><span>Track Task</span></a>
                 </li>
                 <li class="header">Document Upload </li>
                 <li class="<?php echo (($this->uri->segment(1) == "upload")) ? 'active' : ""; ?>"> <a

@@ -67,12 +67,12 @@ if (count((array) $ServiceTask) > 0) {
                                 <div class="manage-body">
                                     <div class="table-responsive">
                                         <table class="table table-hover common_datatable" data-control="task"
-                                            data-method="manage">
+                                            data-method="manage_track_task">
                                             <thead>
                                                 <tr>
                                                     <th>TaskName</th>
                                                     <th>Status</th>
-                                                    <th>Assign By</th>
+                                                    <th>Assign To</th>
                                                     <th>Created At</th>
                                                     <th class="no-sort text-center">Action</th>
                                                 </tr>
