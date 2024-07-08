@@ -96,7 +96,6 @@ class User_services extends Base_Controller
                 }
                 $Reason = ($this->input->post('reason'))?$this->input->post('reason'):"";
                 $post_data = array(
-                    "SID" => get_SID(),
                     "ServiceID" => $this->input->post('service_id'),
                     "UserID" => $this->input->post('user_id'),
                     "PartnersID" => $Partner,
@@ -209,6 +208,7 @@ class User_services extends Base_Controller
                         $response = array("status" => "error", "heading" => "Not Updated...", "message" => "Details not updated successfully.");
                      }
                 }else{
+                    
                     if($this->input->post('service_status') == 'ongoing'){
                         $user = $this->Common->get_info(TBL_USERS, $this->input->post('user_id'),'id');
                         $service = $this->Common->get_info(TBL_SERVICES, $this->input->post('service_id'),'ServiceID');
@@ -230,7 +230,7 @@ class User_services extends Base_Controller
                             $this->partnerMsg($this->input->post('partner'),$msgData);
                         }
                     }
-
+                    $post_data['SID'] => get_SID();
                     $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['CreatedAt'] = date("Y-m-d H:i:s");
                     if ($ID = $this->Common->add_info(TBL_USER_SERVICES, $post_data)) {
