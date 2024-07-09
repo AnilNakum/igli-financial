@@ -230,7 +230,7 @@ class User_services extends Base_Controller
                             $this->partnerMsg($this->input->post('partner'),$msgData);
                         }
                     }
-                    $post_data['SID'] => get_SID();
+                    $post_data['SID'] = get_SID();
                     $post_data['CreatedBy'] = $this->tank_auth->get_user_id();
                     $post_data['CreatedAt'] = date("Y-m-d H:i:s");
                     if ($ID = $this->Common->add_info(TBL_USER_SERVICES, $post_data)) {
